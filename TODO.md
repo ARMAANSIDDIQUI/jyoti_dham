@@ -1,44 +1,33 @@
-# TODO List for Jyotidham Updates
+# Admin Pages Enhancement Plan
 
-## Phase 1: Database Connection & Initialization
-- [x] Ensure dependencies: vlucas/phpdotenv, cloudinary/cloudinary_php, google/apiclient, fullcalendar/core
-- [x] Create .env file with DB_HOST, DB_NAME, DB_USER, DB_PASS, CLOUDINARY_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI
-- [x] Create config/db_connect.php with PDO connection and load .env
-- [x] Create config/db_init.php to auto-create users and family_members tables if not exist
+## Information Gathered
+- Admin pages use Bootstrap 4.5.2 for layout and responsiveness.
+- Sidebar navigation with toggle functionality for mobile.
+- Pages include dashboard, manage_users, manage_satsang, etc.
+- Current design is functional but basic; lacks modern styling, icons, and optimal mobile experience.
+- Tables and forms need better mobile responsiveness.
+- No icons or visual enhancements present.
+- Website is for a spiritual place: design should be serene, mild, and comforting (soft pastels, earth tones, whites, light blues/greens).
 
-## Phase 2: Unified Authentication & Complex Registration
-- [ ] Update register.php with comprehensive form (all user fields, family_size, dynamic family inputs, profile_image)
-- [ ] Update register_action.php with transaction, Cloudinary upload, password_hash, insert user and family members
-- [ ] Update login.php for users and admins, session management, role-based redirect
-- [ ] Update logout.php
-- [ ] Update site header/navigation with conditional links
+## Plan
+- **admin_header.php**: Add Font Awesome icons, improve sidebar styling with serene gradients (soft blues/whites), enhance mobile toggle.
+- **admin_footer.php**: No changes needed.
+- **dashboard.php**: Add icons to buttons, improve card layout with soft colors, make fully responsive.
+- **manage_users.php**: Make table responsive with horizontal scroll on mobile, add icons to actions, improve modal styling with calming colors.
+- **manage_satsang.php**: Add icons to form elements, improve form layout and responsiveness with serene theme.
+- **General**: Ensure all pages use consistent serene styling, add subtle hover effects, and confirm mobile responsiveness.
 
-## Phase 3: Profile & Family Management (Edit)
-- [ ] Update profile.php as edit page with user details, profile picture, family management
-- [ ] Update update_profile.php for handling updates and Cloudinary image replacement
-- [ ] Update add_family_member.php for adding family members and updating family_size
-- [ ] Update delete_family_member.php for deleting and updating family_size
+## Dependent Files to Edit
+- admin/admin_header.php
+- admin/dashboard.php
+- admin/manage_users.php
+- admin/manage_satsang.php
 
-## Phase 4: Admin Panel & Event Management
-- [x] Create admin/auth_check.php
-- [x] Create admin/dashboard.php
-- [x] Create admin/manage_users.php
-- [ ] Create local events table schema (id, title, description, start_time, end_time, created_by_admin_id)
-- [ ] Create admin/manage_events.php with FullCalendar.js integration
-- [ ] Create admin/calendar_api.php with load_events.php, create_event.php, update_event.php, delete_event.php
-
-## Phase 5: Google Calendar Integration (User & Admin)
-- [ ] Create google_calendar_service.php with OAuth and API functions
-- [ ] Create settings.php for users to connect Google Calendar
-- [ ] Create oauth_callback.php for handling OAuth callback
-- [ ] Update admin/calendar_api.php to sync events to users' Google Calendars after creation
-
-## Phase 6: Security & Integration Review
-- [ ] Review all features for security: prepared statements, password hashing, .env usage, htmlspecialchars, CSRF protection
-- [ ] Confirm admin pages are protected
-- [ ] Test all functionalities
-
-## Additional Requirements
-- [ ] Add satsang end_date to schema and logic
-- [ ] Update user_events junction table for user-event relationships
-- [ ] Filter events by user in management pages
+## Followup Steps
+- [x] Updated admin_header.php with serene colors, icons, and mobile responsiveness.
+- [x] Enhanced dashboard.php with better layout, icons, and responsive grid.
+- [x] Improved manage_users.php with responsive table, icons, and better styling.
+- [x] Updated manage_satsang.php with icons, better form layout, and responsiveness.
+- Test pages on different screen sizes.
+- Verify sidebar toggle works on mobile.
+- Check for any broken links or functionality.

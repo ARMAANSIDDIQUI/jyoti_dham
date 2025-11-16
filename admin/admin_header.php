@@ -13,8 +13,14 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
     <title>Admin Dashboard</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS for sidebar -->
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
         #wrapper {
             display: flex;
         }
@@ -22,12 +28,15 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
             min-height: 100vh;
             margin-left: -15rem;
             transition: margin .25s ease-out;
-            background-color: #343a40; /* Dark background for sidebar */
+            background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
         #sidebar-wrapper .sidebar-heading {
-            padding: 0.875rem 1.25rem;
-            font-size: 1.2rem;
-            color: #fff;
+            padding: 1rem 1.25rem;
+            font-size: 1.4rem;
+            color: #2e2e2e;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
         }
         #sidebar-wrapper .list-group {
             width: 15rem;
@@ -51,17 +60,83 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
             }
         }
         .list-group-item {
-            background-color: #343a40;
-            color: #adb5bd;
+            background-color: transparent;
+            color: #424242;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            transition: all 0.3s ease;
         }
         .list-group-item:hover {
-            background-color: #495057;
-            color: #fff;
+            background-color: rgba(255,255,255,0.5);
+            color: #2e2e2e;
+            transform: translateX(5px);
         }
         .list-group-item.active {
-            background-color: #007bff;
-            border-color: #007bff;
-            color: #fff;
+            background-color: rgba(255,255,255,0.7);
+            border-left: 4px solid #66bb6a;
+            color: #2e2e2e;
+        }
+        .list-group-item i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar .btn-primary {
+            background-color: rgba(255,255,255,0.7);
+            border: none;
+            color: #2e2e2e;
+        }
+        .navbar .btn-primary:hover {
+            background-color: rgba(255,255,255,0.9);
+        }
+        .navbar .nav-link {
+            color: #2e2e2e !important;
+            font-weight: 500;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .btn {
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .thead-dark {
+            background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%);
+            color: #2e2e2e;
+        }
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        @media (max-width: 767.98px) {
+            .container-fluid {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            .table-responsive {
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
         }
     </style>
 </head>
@@ -71,14 +146,14 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
         <div class="bg-dark border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Admin Panel</div>
             <div class="list-group list-group-flush">
-                <a href="dashboard.php" class="list-group-item list-group-item-action">Dashboard</a>
-                <a href="manage_users.php" class="list-group-item list-group-item-action">Manage Users</a>
-                <a href="../add-event.php" class="list-group-item list-group-item-action">Add Event</a>
-                <a href="../event-list.php" class="list-group-item list-group-item-action">Manage Events</a>
-                <a href="manage_satsang.php" class="list-group-item list-group-item-action">Manage Satsang</a>
-                <!-- <a href="#" class="list-group-item list-group-item-action">Manage News</a> -->
-                <a href="../index.php" class="list-group-item list-group-item-action">View Homepage</a>
-                <a href="../logout.php" class="list-group-item list-group-item-action">Logout</a>
+                <a href="dashboard.php" class="list-group-item list-group-item-action"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                <a href="manage_users.php" class="list-group-item list-group-item-action"><i class="fas fa-users"></i>Manage Users</a>
+                <a href="../add-event.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-plus"></i>Add Event</a>
+                <a href="../event-list.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-alt"></i>Manage Events</a>
+                <a href="manage_satsang.php" class="list-group-item list-group-item-action"><i class="fas fa-video"></i>Manage Satsang</a>
+                <!-- <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-newspaper"></i>Manage News</a> -->
+                <a href="../index.php" class="list-group-item list-group-item-action"><i class="fas fa-home"></i>View Homepage</a>
+                <a href="../logout.php" class="list-group-item list-group-item-action"><i class="fas fa-sign-out-alt"></i>Logout</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->

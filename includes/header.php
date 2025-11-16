@@ -40,7 +40,7 @@ $conn = DB::getInstance()->getConnection();
                             <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" target="_blank" href="https://www.youtube.com/live/QCCh6J9TWDw?si=6vgJNra2bprx9AxJ">Live Satsang</a>
+                            <a class="nav-link" href="live-satsang.php">Live Satsang</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="donate.php">Donate</a>

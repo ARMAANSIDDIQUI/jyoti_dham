@@ -30,27 +30,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_role'])) {
 $stmt = $conn->query("SELECT id, name, email, role, created_at, gender, dob, phone, address, family_size, vehicle_number FROM users ORDER BY created_at DESC");
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<div class="container-fluid">
-    <h1 class="mt-4">Manage Users</h1>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="text-center">User Management</h2>
+<div class="container-fluid" style="padding-top: 30px; margin-top: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-center" style="background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%); color: #2e2e2e;">
+                    <h1 class="mb-0"><i class="fas fa-users"></i> Manage Users</h1>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <a href="dashboard.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
                     </div>
-                    <div class="card-body">
-                        <a href="dashboard.php" class="btn btn-secondary mb-3">Back to Dashboard</a>
-                        <table class="table table-bordered">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-
-                                    <th>Role</th>
-                                    <th>Created At</th>
-                                    <th>Actions</th>
+                                    <th><i class="fas fa-id-badge"></i> ID</th>
+                                    <th><i class="fas fa-user"></i> Name</th>
+                                    <th><i class="fas fa-envelope"></i> Email</th>
+                                    <th><i class="fas fa-user-tag"></i> Role</th>
+                                    <th><i class="fas fa-calendar-alt"></i> Created At</th>
+                                    <th><i class="fas fa-cogs"></i> Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

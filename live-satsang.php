@@ -35,9 +35,6 @@ require_once 'includes/header.php';
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header text-center">
-                    <h2>Live Satsang</h2>
-                </div>
                 <div class="card-body text-center">
                     <?php if ($satsang && $satsang['is_active']): ?>
                         <p>Satsang is scheduled on <?= htmlspecialchars($satsang['satsang_date']) ?> from <?= htmlspecialchars($satsang['start_time']) ?> to <?= htmlspecialchars($satsang['end_time']) ?> (<?= htmlspecialchars($satsang['time_zone']) ?>).</p>

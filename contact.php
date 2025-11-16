@@ -14,7 +14,7 @@
 
 
                         <div class="et_pb_text_inner">
-                            <h1>Contact Us</h1>
+                            <!-- <h1>Contact Us</h1> -->
                         </div>
                     </div> <!-- .et_pb_text -->
                 </div> <!-- .et_pb_column -->
