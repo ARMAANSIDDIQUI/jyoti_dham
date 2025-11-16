@@ -56,24 +56,26 @@
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    include 'db.php';
+    require_once __DIR__ . '/config/db_connect.php';
+    require_once __DIR__ . '/vendor/autoload.php';
+    $conn = DB::getInstance()->getConnection();
 
-    $firstName = $conn->real_escape_string($_POST['firstName']);
-    $lastName = $conn->real_escape_string($_POST['lastName']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $phoneNumber = $conn->real_escape_string($_POST['phoneNumber']);
-    $address = $conn->real_escape_string($_POST['address']);
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $email = $_POST['email'];
+    $phoneNumber = $_POST['phoneNumber'];
+    $address = $_POST['address'];
 
     $sql = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Address) 
-            VALUES ('$firstName', '$lastName', '$email', '$phoneNumber', '$address')";
+            VALUES (?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($sql);
 
-    if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute([$firstName, $lastName, $email, $phoneNumber, $address])) {
         echo "<div class='alert alert-success mt-3'>New record created successfully</div>";
     } else {
-        echo "<div class='alert alert-danger mt-3'>Error: " . $sql . "<br>" . $conn->error . "</div>";
+        echo "<div class='alert alert-danger mt-3'>Error: " . $stmt->errorInfo()[2] . "</div>";
     }
-
-    $conn->close();
 }
 ?>
 

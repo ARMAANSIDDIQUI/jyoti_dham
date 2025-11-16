@@ -1,6 +1,8 @@
 <?php
 session_start();
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config/db_connect.php'; // Include database connection
+$conn = DB::getInstance()->getConnection();
 
 // If already logged in as admin, redirect to admin dashboard
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {

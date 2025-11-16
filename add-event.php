@@ -1,6 +1,8 @@
 <?php
 // Database connection
-include 'db.php';
+require_once __DIR__ . '/config/db_connect.php';
+require_once __DIR__ . '/vendor/autoload.php';
+$conn = DB::getInstance()->getConnection();
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -17,14 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $longitude = $_POST['longitude'];
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
-    // Insert event into database
+    // Insert event into database using a prepared statement
     $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, organizer, event_venue, latitude, longitude, is_featured) 
-            VALUES ('$day', '$event_date', '$event_time', '$event_end_time', '$time_zone', '$event_name', '$event_description', '$organizer', '$event_venue', '$latitude', '$longitude', '$is_featured')";
-
-    if ($conn->query($sql) === TRUE) {
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($sql);
+    
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $is_featured])) {
         echo "<div class='alert alert-success'>New event created successfully</div>";
     } else {
-        echo "<div class='alert alert-danger'>Error: " . $sql . "<br>" . $conn->error . "</div>";
+        echo "<div class='alert alert-danger'>Error: " . $stmt->errorInfo()[2] . "</div>";
     }
 }
 

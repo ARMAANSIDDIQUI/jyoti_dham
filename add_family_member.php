@@ -1,6 +1,8 @@
 <?php
 session_start();
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config/db_connect.php';
+$conn = DB::getInstance()->getConnection();
 
 // Protection: Redirect to login.php if user is not logged in
 if (!isset($_SESSION['user_id'])) {

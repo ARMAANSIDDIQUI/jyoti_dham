@@ -1,13 +1,18 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/db_connect.php';
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/config/db_connect.php';
+
+// This will load the .env file and get the connection
+$conn = DB::getInstance()->getConnection();
 
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
 
 // Configure Cloudinary
-Configuration::instance($_ENV['CLOUDINARY_URL']);
+if (isset($_ENV['CLOUDINARY_URL'])) {
+    Configuration::instance($_ENV['CLOUDINARY_URL']);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Store form data in session in case of failure

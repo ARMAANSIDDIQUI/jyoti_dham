@@ -1,17 +1,20 @@
 <?php
 // Include database connection
-include 'db.php';
+require_once __DIR__ . '/config/db_connect.php';
+require_once __DIR__ . '/vendor/autoload.php';
+$conn = DB::getInstance()->getConnection();
 
 // Handle event deletion
 if (isset($_GET['delete'])) {
     $event_id = intval($_GET['delete']);
-    $conn->query("DELETE FROM events WHERE id = $event_id");
+    $stmt = $conn->prepare("DELETE FROM events WHERE id = ?");
+    $stmt->execute([$event_id]);
     header("Location: event-list.php");
     exit();
 }
 
 // Fetch all events
-$result = $conn->query("SELECT id, event_name, event_date, event_time FROM events ORDER BY event_date DESC");
+$stmt = $conn->query("SELECT id, event_name, event_date, event_time FROM events ORDER BY event_date DESC");
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +33,7 @@ $result = $conn->query("SELECT id, event_name, event_date, event_time FROM event
 <body>
 <div class="container mt-5">
     <h2 class="mb-4">Manage Events</h2> 
-    <a href="dashboard.php" class="btn btn-primary mb-3">Return to dashboard</a> 
+    <a href="admin/dashboard.php" class="btn btn-primary mb-3">Return to dashboard</a> 
     <br>
     <table class="table table-bordered">
         <thead class="thead-dark">
@@ -42,7 +45,7 @@ $result = $conn->query("SELECT id, event_name, event_date, event_time FROM event
             </tr>
         </thead>
         <tbody>
-        <?php while ($row = $result->fetch_assoc()): ?>
+        <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
             <tr>
                 <td><?= htmlspecialchars($row['event_name']) ?></td>
                 <td><?= htmlspecialchars($row['event_date']) ?></td>
@@ -58,5 +61,3 @@ $result = $conn->query("SELECT id, event_name, event_date, event_time FROM event
 </div>
 </body>
 </html>
-
-<?php $conn->close(); ?>

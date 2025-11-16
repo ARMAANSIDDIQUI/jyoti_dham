@@ -1,6 +1,8 @@
 <?php
 // Include database connection
-include 'db.php';
+require_once __DIR__ . '/config/db_connect.php';
+require_once __DIR__ . '/vendor/autoload.php';
+$conn = DB::getInstance()->getConnection();
 
 // Get event ID
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -10,14 +12,14 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $event_id = intval($_GET['id']);
 
 // Fetch event data
-$sql = "SELECT * FROM events WHERE id = $event_id";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM events WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$event_id]);
+$event = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($result->num_rows == 0) {
+if (!$event) {
     die("Event not found.");
 }
-
-$event = $result->fetch_assoc();
 
 // Handle update submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -35,25 +37,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
     $update_sql = "UPDATE events SET 
-        day='$day',
-        event_date='$event_date',
-        event_time='$event_time',
-        event_end_time='$event_end_time',
-        time_zone='$time_zone',
-        event_name='$event_name',
-        event_description='$event_description',
-        organizer='$organizer',
-        event_venue='$event_venue',
-        latitude='$latitude',
-        longitude='$longitude',
-        is_featured='$is_featured'
-        WHERE id = $event_id";
+        day=?,
+        event_date=?,
+        event_time=?,
+        event_end_time=?,
+        time_zone=?,
+        event_name=?,
+        event_description=?,
+        organizer=?,
+        event_venue=?,
+        latitude=?,
+        longitude=?,
+        is_featured=?
+        WHERE id = ?";
 
-    if ($conn->query($update_sql) === TRUE) {
+    $stmt = $conn->prepare($update_sql);
+
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $is_featured, $event_id])) {
         echo "<div class='alert alert-success'>Event updated successfully</div>";
-        $event = array_merge($event, $_POST); // Refresh form with updated data
+        // Refresh form with updated data by re-fetching from the database
+        $sql = "SELECT * FROM events WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$event_id]);
+        $event = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
-        echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        echo "<div class='alert alert-danger'>Error: " . $stmt->errorInfo()[2] . "</div>";
     }
 }
 ?>
