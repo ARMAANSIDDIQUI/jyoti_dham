@@ -185,7 +185,7 @@
         // JavaScript function to handle button click and redirect to a URL
         function redirectToUrl() {
             // Replace the URL with your dedicated URL
-            const url = 'https://web.na.bambora.com/scripts/payment/payment.asp?merchant_id=376297730&hashValue=88e88f7b24c0f342125257b2e20f10b87ee19268';
+            const url = 'https://web.na.bambora.com/scripts/payment/payment.asp?merchant_id=376297730&hashValue=88e88f7b24c0f342125257b2e20f10b87ee19268&approved_url=https://jyotidham.ca/thank_you.php&declined_url=https://jyotidham.ca/donate.php';
 
             // Set dimensions and other options for the popup window
             const width = 500;

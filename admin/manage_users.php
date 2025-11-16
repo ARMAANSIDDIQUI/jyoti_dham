@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_role'])) {
 }
 
 // Fetch all users
-$stmt = $conn->query("SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC");
+$stmt = $conn->query("SELECT id, name, email, role, created_at, gender, dob, phone, address, family_size, vehicle_number FROM users ORDER BY created_at DESC");
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <div class="container-fluid">
@@ -72,6 +72,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </td>
                                     <td><?= htmlspecialchars($user['created_at']) ?></td>
                                     <td>
+                                        <button onclick="viewUserDetails(<?= $user['id'] ?>)" class="btn btn-info btn-sm">View Details</button>
                                         <?php if ($user['role'] != 'admin'): ?>
                                             <button onclick="confirmDelete(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')" class="btn btn-danger btn-sm">Delete</button>
                                         <?php else: ?>
@@ -93,6 +94,91 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if (confirm('Are you sure you want to delete user: ' + userName + '?')) {
             window.location.href = 'manage_users.php?delete=' + userId;
         }
+    }
+
+    function viewUserDetails(userId) {
+        // Fetch user details via AJAX
+        fetch('get_user_details.php?id=' + userId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const user = data.user;
+                    const modalContent = `
+                        <div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="userDetailsModalLabel">User Details: ${user.name}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>ID:</strong> ${user.id}</p>
+                                                <p><strong>Name:</strong> ${user.name}</p>
+                                                <p><strong>Email:</strong> ${user.email}</p>
+                                                <p><strong>Role:</strong> ${user.role}</p>
+                                                <p><strong>Gender:</strong> ${user.gender || 'Not specified'}</p>
+                                                <p><strong>Date of Birth:</strong> ${user.dob || 'Not specified'}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>Phone:</strong> ${user.phone || 'Not specified'}</p>
+                                                <p><strong>Address:</strong> ${user.address || 'Not specified'}</p>
+                                                <p><strong>Family Size:</strong> ${user.family_size || 'Not specified'}</p>
+                                                <p><strong>Vehicle Number:</strong> ${user.vehicle_number || 'Not specified'}</p>
+                                                <p><strong>Created At:</strong> ${user.created_at}</p>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h6><strong>Family Members:</strong></h6>
+                                            <div id="family-members-${user.id}"></div>
+                                        </div>
+                                        ${user.profile_image_url ? `<div class="text-center mt-3"><img src="${user.profile_image_url}" alt="Profile Image" class="img-fluid rounded" style="max-width: 200px;"></div>` : ''}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.insertAdjacentHTML('beforeend', modalContent);
+                    $('#userDetailsModal').modal('show');
+
+                    // Fetch family members
+                    fetch('get_family_members.php?id=' + userId)
+                        .then(response => response.json())
+                        .then(familyData => {
+                            const familyContainer = document.getElementById('family-members-' + userId);
+                            if (familyData.success && familyData.members.length > 0) {
+                                let familyHtml = '<ul>';
+                                familyData.members.forEach(member => {
+                                    familyHtml += `<li>${member.name} (${member.age} years old, ${member.gender})</li>`;
+                                });
+                                familyHtml += '</ul>';
+                                familyContainer.innerHTML = familyHtml;
+                            } else {
+                                familyContainer.innerHTML = '<p>No family members listed.</p>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching family members:', error);
+                            document.getElementById('family-members-' + userId).innerHTML = '<p>Error loading family members.</p>';
+                        });
+
+                    $('#userDetailsModal').on('hidden.bs.modal', function () {
+                        $(this).remove();
+                    });
+                } else {
+                    alert('Error fetching user details');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error fetching user details');
+            });
     }
 </script>
 <?php

@@ -44,10 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':gender', $gender);
         $stmt->execute();
 
-        // Update family_size count in the users table (increment)
-        $stmt = $conn->prepare("UPDATE users SET family_size = family_size + 1 WHERE id = :id");
-        $stmt->bindParam(':id', $user_id);
-        $stmt->execute();
+        // Update family_size count in the users table (including the user)
+        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM family_members WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+        $family_size = $count + 1; // Include the user in the family size
+        $update = $conn->prepare("UPDATE users SET family_size = ? WHERE id = ?");
+        $update->execute([$family_size, $user_id]);
 
         $conn->commit(); // Commit transaction
         unset($_SESSION['add_family_member_form_data']); // Clear form data on successful addition
