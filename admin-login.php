@@ -1,21 +1,47 @@
 <?php
 session_start();
-if(isset($_SESSION['username'])) {
-    header("Location: dashboard.php");
+require_once __DIR__ . '/config/db_connect.php'; // Include database connection
+
+// If already logged in as admin, redirect to admin dashboard
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+    header("Location: admin/dashboard.php");
     exit();
 }
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate credentials
-    $admin_username = "Admin"; // Admin username
-    $admin_password = "123456"; // Admin password
+$error = '';
 
-    if($_POST['username'] == $admin_username && $_POST['password'] == $admin_password) {
-        $_SESSION['username'] = $_POST['username'];
-        header("Location: dashboard.php");
-        exit();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = htmlspecialchars(trim($_POST['email'])); // Use email for login
+    $password = $_POST['password'];
+
+    if (empty($email) || empty($password)) {
+        $error = "Please enter both email and password.";
     } else {
-        $error = "Invalid username or password";
+        try {
+            $stmt = $conn->prepare("SELECT id, name, password_hash, role FROM users WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && password_verify($password, $user['password_hash'])) {
+                // Check if the user has the 'admin' role
+                if ($user['role'] === 'admin') {
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['name'] = $user['name'];
+                    $_SESSION['role'] = $user['role'];
+                    $_SESSION['loggedin'] = true;
+                    header("Location: admin/dashboard.php");
+                    exit();
+                } else {
+                    $error = "Access denied. You do not have administrator privileges.";
+                }
+            } else {
+                $error = "Invalid email or password.";
+            }
+        } catch (PDOException $e) {
+            error_log("Admin Login error: " . $e->getMessage());
+            $error = "An error occurred during login. Please try again later.";
+        }
     }
 }
 ?>
@@ -37,13 +63,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h2 class="text-center">Admin Login</h2>
                     </div>
                     <div class="card-body">
-                        <?php if(isset($error)) { ?>
+                        <?php if(!empty($error)) { ?>
                             <div class="alert alert-danger"><?php echo $error; ?></div>
                         <?php } ?>
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <div class="form-group">
-                                <label for="username">Username:</label>
-                                <input type="text" name="username" id="username" class="form-control" required>
+                                <label for="email">Email:</label>
+                                <input type="email" name="email" id="email" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password:</label>

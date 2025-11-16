@@ -1,56 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php require_once 'includes/header.php'; ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donate</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/banner.css">
-    <link rel="stylesheet" href="./css/donate.css">
-</head>
 
-<body>
-    <div>
-        <header class="header-section">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light nav">
-                <a class="navbar-brand" href="index.php">
-                    <img src="./images/logo-dark-bold.png" alt="Jyotidham Logo" class="header-logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://www.youtube.com/live/QCCh6J9TWDw?si=6vgJNra2bprx9AxJ">Live
-                                Satsang</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="donate.html">Donate</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="calender.php">Calendar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
-                        </li>
-                    </ul>
-                    <!--<div class="ml-lg-3 mt-2 mt-lg-0 d-flex gap-2">-->
-                    <!--    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMi6k8G3gwt9l_k_3hIszOxRj3B7goqKhXKr8znDD5RCRuIg/viewform?pli=1" target="_blank" class="btn btn-dark text-white mr-2">Volunteer</a>-->
-                    <!--    <a href="https://docs.google.com/forms/d/e/1FAIpQLScRNrcIXlCW3Sc0x4pOi3d-3s-OEczNAEjNhuhBcfKS6YVghQ/viewform" target="_blank" class="btn btn-dark text-white">Matha Tek Reg</a>-->
-                    <!--</div>-->
-                </div>
-            </nav>
-        </header>
-
-        <!-- Banner Section -->
-    </div>
 
     <div class="et_pb_section et_pb_section_0 et_pb_with_background et_section_regular">
 
@@ -229,73 +179,7 @@
     </div>
 
 
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <!-- Left Side: Logos -->
-                <div class="col-lg-4 col-md-12 logos">
-                    <div class="logo">
-                        <img src="./images/logo-jd-light.png" alt="Jyotidham Logo" />
-                    </div>
-                    <div class="logo">
-                        <img src="./images/logo-round-white.png" alt="logo-round-white" />
-                    </div>
-                </div>
-
-                <!-- Right Side: Content and Links -->
-                <div class="col-lg-8 col-md-12 content">
-                    <div class="row">
-                        <!-- Text Section -->
-                        <div class="col-12 text-section">
-                            <p>After deep prayer and meditation, a devotee is in touch with his divine
-                                consciousness; there is no greater power than that inward protection.</p>
-                        </div>
-
-                        <!-- Two Columns -->
-                        <div class="col-lg-6 col-md-12 links">
-                            <h5>Find Us Here</h5>
-                            <p>Shri Param Hans Advait Mat Ontario</p>
-                            <p class="address">
-                                <img class="map-pin" src="./images/location.png"
-                                    alt="Map Pin" />
-                                236 Ingleton Blvd, Scarborough,<br>
-                                ON M1V 3R1, Canada
-                            </p>
-                        </div>
-                        <div class="col-lg-6 col-md-12 quick-links">
-                            <h5>Quick Links</h5>
-                            <p><a href="donate.html">Donate</a></p>
-                            <p><a href="terms.html">Refund &amp; Privacy Policy</a>
-                            </p>
-                            <p>We accept</p>
-                            <img src="./images/payment-cards-updated.png" alt="Payment Cards">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // JavaScript function to handle button click and redirect to a URL
-        function redirectToUrl() {
-            // Replace the URL with your dedicated URL
-            const url = 'https://web.na.bambora.com/scripts/payment/payment.asp?merchant_id=376297730&hashValue=88e88f7b24c0f342125257b2e20f10b87ee19268';
-
-            // Set dimensions and other options for the popup window
-            const width = 500;
-            const height = 600;
-            const left = (screen.width - width) / 2;
-            const top = (screen.height - height) / 2;
-
-            // Open the new window with the URL in a small popup
-            window.open(url, 'popupWindow', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
-        }
-
-    </script>
+    <?php include 'includes/footer.php'; ?>
 </body>
 
 </html>
