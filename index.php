@@ -28,8 +28,7 @@ try {
         <p>Experience divine spirituality with us</p>
         <a href="#" class="btn btn-primary">Learn More</a> -->
     </div>
-
-
+</section>
     <section id="upcoming-events">
         <div class="container">
             <h1 class="text-left text">Upcoming Events</h1>

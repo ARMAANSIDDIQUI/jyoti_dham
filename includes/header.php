@@ -10,11 +10,17 @@ require_once __DIR__ . '/../config/db_connect.php';
     <title>Jyotidham</title> <!-- Title will be dynamic or set by individual pages -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
+    <?php
+    $page_name = basename($_SERVER['PHP_SELF'], ".php");
+    $css_file = "./css/{$page_name}.css";
+    if (file_exists($css_file)) {
+        echo "<link rel='stylesheet' href='{$css_file}'>";
+    }
+    ?>
 </head>
 <body>
     <!-- Header Section -->
-    <div>
-        <header class="header-section">
+    <header class="header-section">
             <nav class="navbar navbar-expand-lg navbar-light bg-light nav">
                 <a class="navbar-brand" href="index.php">
                     <img src="./images/logo-dark-bold.png" alt="Jyotidham Logo" class="header-logo">
@@ -64,5 +70,4 @@ require_once __DIR__ . '/../config/db_connect.php';
                 </div>
             </nav>
         </header>
-    </div>
     <!-- End Header Section -->

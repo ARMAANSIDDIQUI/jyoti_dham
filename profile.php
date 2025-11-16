@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/includes/header.php'; // Include the header component
 ?>
-</div> <!-- Close the div opened in header.php -->
-<main>
+<?php
+require_once __DIR__ . '/includes/header.php'; // Include the header component
 
 // Protection: Redirect to login.php if user is not logged in
 if (!isset($_SESSION['user_id'])) {
@@ -58,6 +58,7 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message_type']);
 }
 ?>
+<main>
 
 
     <div class="container">

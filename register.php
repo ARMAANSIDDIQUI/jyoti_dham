@@ -1,12 +1,14 @@
 <?php
 require_once __DIR__ . '/includes/header.php'; // Include the header component
 ?>
-</div> <!-- Close the div opened in header.php -->
-<main>
+<?php
+require_once __DIR__ . '/includes/header.php'; // Include the header component
+
 $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']); // Clear form data after retrieving
 // No direct database connection here, form will submit to register_action.php
 ?>
+<main>
 
 
     <div class="container">

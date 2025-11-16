@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/includes/header.php'; // Include the header component
 ?>
-</div> <!-- Close the div opened in header.php -->
-<main>
+<?php
+require_once __DIR__ . '/includes/header.php'; // Include the header component
 
 $message = '';
 $formData = $_SESSION['form_data'] ?? [];
@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<main>
 
 
     <div class="container">
