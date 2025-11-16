@@ -58,7 +58,7 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message_type']);
 }
 ?>
-<main>
+<main class="form-main">
 
 
     <div class="container">

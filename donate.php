@@ -16,7 +16,7 @@
 
 
                     <div class="et_pb_text_inner">
-                        <h1>Donate</h1>
+                        <center><h1>Donate</h1></center>
                     </div>
                 </div> <!-- .et_pb_text -->
             </div> <!-- .et_pb_column -->

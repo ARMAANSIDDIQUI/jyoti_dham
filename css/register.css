@@ -1,18 +1,13 @@
 /* css/register.css */
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
+.form-main {
+    padding: 5rem 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    box-sizing: border-box;
 }
 
-.container {
+main .container {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
@@ -22,31 +17,31 @@ body {
     box-sizing: border-box;
 }
 
-h2 {
+main .container h2 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
 }
 
-.form-group {
+main .container .form-group {
     margin-bottom: 15px;
 }
 
-.form-group label {
+main .container .form-group label {
     display: block;
     margin-bottom: 5px;
     color: #555;
     font-weight: bold;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="date"],
-.form-group input[type="tel"],
-.form-group input[type="number"],
-.form-group select,
-.form-group textarea {
+main .container .form-group input[type="text"],
+main .container .form-group input[type="email"],
+main .container .form-group input[type="password"],
+main .container .form-group input[type="date"],
+main .container .form-group input[type="tel"],
+main .container .form-group input[type="number"],
+main .container .form-group select,
+main .container .form-group textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -54,11 +49,11 @@ h2 {
     box-sizing: border-box;
 }
 
-.form-group input[type="file"] {
+main .container .form-group input[type="file"] {
     padding: 5px;
 }
 
-.form-group select {
+main .container .form-group select {
     appearance: none; /* Remove default arrow in some browsers */
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -69,7 +64,7 @@ h2 {
     padding-right: 30px;
 }
 
-button {
+main .container button {
     background-color: #007bff;
     color: white;
     padding: 10px 15px;
@@ -80,44 +75,44 @@ button {
     width: 100%;
 }
 
-button:hover {
+main .container button:hover {
     background-color: #0056b3;
 }
 
-.message {
+main .container .message {
     text-align: center;
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 4px;
 }
 
-.message.success {
+main .container .message.success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-.message.error {
+main .container .message.error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
 
-p {
+main .container p {
     text-align: center;
     margin-top: 20px;
 }
 
-p a {
+main .container p a {
     color: #007bff;
     text-decoration: none;
 }
 
-p a:hover {
+main .container p a:hover {
     text-decoration: underline;
 }
 
-.family-member-fields {
+main .container .family-member-fields {
     border: 1px solid #eee;
     padding: 15px;
     margin-top: 10px;
@@ -125,11 +120,11 @@ p a:hover {
     background-color: #f9f9f9;
 }
 
-.family-member-fields h4 {
+main .container .family-member-fields h4 {
     margin-top: 0;
     color: #333;
 }
 
-.family-member-fields .form-group {
+main .container .family-member-fields .form-group {
     margin-bottom: 10px;
 }

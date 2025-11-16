@@ -8,7 +8,7 @@ $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']); // Clear form data after retrieving
 // No direct database connection here, form will submit to register_action.php
 ?>
-<main>
+<main class="form-main">
 
 
     <div class="container">
