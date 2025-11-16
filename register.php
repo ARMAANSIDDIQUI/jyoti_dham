@@ -1,16 +1,11 @@
 <?php
 require_once __DIR__ . '/includes/header.php'; // Include the header component
-?>
-<?php
-require_once __DIR__ . '/includes/header.php'; // Include the header component
 
 $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']); // Clear form data after retrieving
 // No direct database connection here, form will submit to register_action.php
 ?>
 <main class="form-main">
-
-
     <div class="container">
         <h2>Register for Jyotidham</h2>
         <?php
@@ -24,15 +19,15 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
             <h3>Your Details</h3>
             <div class="form-group">
                 <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($formData['name'] ?? ''); ?>" required>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" value="<?php echo htmlspecialchars($formData['name'] ?? ''); ?>" required>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" required>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" minlength="6" value="<?php echo htmlspecialchars($formData['password'] ?? ''); ?>" required>
+                <label for="password">Password: <small>(min. 6 characters)</small></label>
+                <input type="password" id="password" name="password" placeholder="6+ characters" minlength="6" value="<?php echo htmlspecialchars($formData['password'] ?? ''); ?>" required>
             </div>
             <div class="form-group">
                 <label for="gender">Gender:</label>
@@ -50,15 +45,15 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
             </div>
             <div class="form-group">
                 <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" placeholder="e.g., +15551234567" value="<?php echo htmlspecialchars($formData['phone'] ?? ''); ?>" pattern="^\+?[0-9\s\-()]{7,20}$" title="Phone number must be 7-20 digits, optionally starting with +, and can include spaces, hyphens, or parentheses.">
+                <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($formData['phone'] ?? ''); ?>">
             </div>
             <div class="form-group">
                 <label for="address">Address:</label>
-                <textarea id="address" name="address" rows="3"><?php echo htmlspecialchars($formData['address'] ?? ''); ?></textarea>
+                <textarea id="address" name="address" placeholder="e.g., 123 Main St, Toronto" rows="3"><?php echo htmlspecialchars($formData['address'] ?? ''); ?></textarea>
             </div>
             <div class="form-group">
                 <label for="vehicle_number">Vehicle Number (Optional):</label>
-                <input type="text" id="vehicle_number" name="vehicle_number" value="<?php echo htmlspecialchars($formData['vehicle_number'] ?? ''); ?>">
+                <input type="text" id="vehicle_number" name="vehicle_number" placeholder="e.g., A1B 2C3" value="<?php echo htmlspecialchars($formData['vehicle_number'] ?? ''); ?>">
             </div>
             <div class="form-group">
                 <label for="profile_image">Profile Image (Optional):</label>
@@ -84,6 +79,28 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
         const phpFormData = <?php echo json_encode($formData); ?>;
     </script>
     <script>
+        // Initialize intl-tel-input
+        var phoneInputField = document.querySelector("#phone");
+        var iti = window.intlTelInput(phoneInputField, {
+            initialCountry: "auto",
+            geoIpLookup: function(callback) {
+                fetch('https://ipinfo.io/json')
+                    .then(function(response) { return response.json(); })
+                    .then(function(data) { callback(data.country); })
+                    .catch(function() { callback("ca"); });
+            },
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
+        });
+
+        // Handle form submission
+        document.querySelector("form").addEventListener("submit", function(event) {
+            // Update the phone input's value to the full international number
+            if (iti.isValidNumber()) {
+                phoneInputField.value = iti.getNumber();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const familySizeInput = document.getElementById('family_size');
             const familyMembersContainer = document.getElementById('family-members-container');

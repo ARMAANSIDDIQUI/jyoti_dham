@@ -9,6 +9,8 @@ require_once __DIR__ . '/../config/db_connect.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jyotidham</title> <!-- Title will be dynamic or set by individual pages -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
     <link rel="stylesheet" href="./css/style.css">
     <?php
     $page_name = basename($_SERVER['PHP_SELF'], ".php");
