@@ -51,6 +51,7 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
                 <label for="address">Address:</label>
                 <textarea id="address" name="address" placeholder="e.g., 123 Main St, Toronto" rows="3"><?php echo htmlspecialchars($formData['address'] ?? ''); ?></textarea>
             </div>
+
             <div class="form-group">
                 <label for="vehicle_number">Vehicle Number (Optional):</label>
                 <input type="text" id="vehicle_number" name="vehicle_number" placeholder="e.g., A1B 2C3" value="<?php echo htmlspecialchars($formData['vehicle_number'] ?? ''); ?>">

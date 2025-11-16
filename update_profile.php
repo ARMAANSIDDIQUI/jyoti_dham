@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dob = htmlspecialchars(trim($_POST['dob']));
         $phone = htmlspecialchars(trim($_POST['phone']));
         $address = htmlspecialchars(trim($_POST['address']));
+
         $vehicle_number = htmlspecialchars(trim($_POST['vehicle_number']));
 
         // Basic validation

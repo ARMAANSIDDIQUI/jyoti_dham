@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/header.php'; // Include the header component
-?>
-<?php
-require_once __DIR__ . '/includes/header.php'; // Include the header component
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/config/db_connect.php';
+
+$conn = DB::getInstance()->getConnection();
 
 $message = '';
 $formData = $_SESSION['form_data'] ?? [];

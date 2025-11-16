@@ -1,6 +1,6 @@
 <?php require_once 'includes/header.php'; ?>
 
-
+<link rel="stylesheet" href="./css/banner.css">
 
     <div class="et_pb_section et_pb_section_0 et_pb_with_background et_section_regular">
 
@@ -16,7 +16,7 @@
 
 
                     <div class="et_pb_text_inner">
-                        <center><h1>Donate</h1></center>
+                        <h1>Donate</h1>
                     </div>
                 </div> <!-- .et_pb_text -->
             </div> <!-- .et_pb_column -->
@@ -180,6 +180,23 @@
 
 
     <?php include 'includes/footer.php'; ?>
+
+    <script>
+        // JavaScript function to handle button click and redirect to a URL
+        function redirectToUrl() {
+            // Replace the URL with your dedicated URL
+            const url = 'https://web.na.bambora.com/scripts/payment/payment.asp?merchant_id=376297730&hashValue=88e88f7b24c0f342125257b2e20f10b87ee19268';
+
+            // Set dimensions and other options for the popup window
+            const width = 500;
+            const height = 600;
+            const left = (screen.width - width) / 2;
+            const top = (screen.height - height) / 2;
+
+            // Open the new window with the URL in a small popup
+            window.open(url, 'popupWindow', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
+        }
+    </script>
 </body>
 
 </html>

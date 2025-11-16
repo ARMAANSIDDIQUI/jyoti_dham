@@ -72,9 +72,10 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
             <div class="sidebar-heading">Admin Panel</div>
             <div class="list-group list-group-flush">
                 <a href="dashboard.php" class="list-group-item list-group-item-action">Dashboard</a>
-                <a href="../add-user.php" class="list-group-item list-group-item-action">Add User</a>
+                <a href="manage_users.php" class="list-group-item list-group-item-action">Manage Users</a>
                 <a href="../add-event.php" class="list-group-item list-group-item-action">Add Event</a>
                 <a href="../event-list.php" class="list-group-item list-group-item-action">Manage Events</a>
+                <a href="manage_satsang.php" class="list-group-item list-group-item-action">Manage Satsang</a>
                 <!-- <a href="#" class="list-group-item list-group-item-action">Manage News</a> -->
                 <a href="../index.php" class="list-group-item list-group-item-action">View Homepage</a>
                 <a href="../logout.php" class="list-group-item list-group-item-action">Logout</a>

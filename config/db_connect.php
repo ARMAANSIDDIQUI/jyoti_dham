@@ -38,12 +38,106 @@ class DB {
     public static function getInstance() {
         if (self::$instance == null) {
             self::$instance = new DB();
+            self::$instance->checkAndCreateTables();
         }
         return self::$instance;
     }
 
     public function getConnection() {
         return $this->conn;
+    }
+
+    private function checkAndCreateTables() {
+        $tables = [
+            'users' => "
+                CREATE TABLE IF NOT EXISTS users (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL UNIQUE,
+                    password_hash VARCHAR(255) NOT NULL,
+                    gender ENUM('male', 'female', 'other', 'prefer_not_to_say'),
+                    dob DATE NULL,
+                    phone VARCHAR(20) NULL,
+                    address TEXT NULL,
+                    family_size INT NULL DEFAULT 0,
+                    vehicle_number VARCHAR(50) NULL,
+                    profile_image_url VARCHAR(255) NULL,
+                    profile_image_public_id VARCHAR(255) NULL,
+                    nationality VARCHAR(100) NULL,
+                    role VARCHAR(50) NOT NULL DEFAULT 'user',
+
+                    /* Google Calendar OAuth Tokens */
+                    google_access_token TEXT NULL,
+                    google_refresh_token TEXT NULL,
+                    google_token_expires_at TIMESTAMP NULL,
+
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            ",
+            'family_members' => "
+                CREATE TABLE IF NOT EXISTS family_members (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    name VARCHAR(255) NOT NULL,
+                    gender ENUM('male', 'female', 'other') NOT NULL,
+                    age INT NOT NULL,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                );
+            ",
+            'events' => "
+                CREATE TABLE IF NOT EXISTS events (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    day VARCHAR(20) NOT NULL,
+                    event_date DATE NOT NULL,
+                    event_time TIME NOT NULL,
+                    event_end_time TIME NOT NULL,
+                    time_zone VARCHAR(10) NOT NULL,
+                    event_name VARCHAR(255) NOT NULL,
+                    event_description TEXT NOT NULL,
+                    organizer VARCHAR(255) NOT NULL,
+                    event_venue VARCHAR(255) NOT NULL,
+                    latitude DECIMAL(10, 8) NOT NULL,
+                    longitude DECIMAL(11, 8) NOT NULL,
+                    is_featured TINYINT(1) DEFAULT 0,
+                    google_event_id VARCHAR(255) NULL,
+                    created_by INT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+                );
+            ",
+            'user_events' => "
+                CREATE TABLE IF NOT EXISTS user_events (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    event_id INT NOT NULL,
+                    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+                    UNIQUE KEY unique_user_event (user_id, event_id)
+                );
+            ",
+            'satsang' => "
+                CREATE TABLE IF NOT EXISTS satsang (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    satsang_date DATE NOT NULL,
+                    start_time TIME NOT NULL,
+                    end_time TIME NOT NULL,
+                    time_zone VARCHAR(10) NOT NULL DEFAULT 'EST',
+                    yt_link VARCHAR(500) NOT NULL,
+                    is_active TINYINT(1) DEFAULT 1,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            "
+        ];
+
+        foreach ($tables as $tableName => $createSQL) {
+            try {
+                $this->conn->exec($createSQL);
+            } catch (PDOException $e) {
+                error_log("Error creating table $tableName: " . $e->getMessage());
+                // Continue with other tables
+            }
+        }
     }
 }
 

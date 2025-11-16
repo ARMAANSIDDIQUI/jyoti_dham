@@ -1,6 +1,9 @@
 <?php
 // Include your database connection file
-require 'db.php';
+require_once 'config/db_connect.php';
+require_once 'vendor/autoload.php';
+
+$conn = DB::getInstance()->getConnection();
 
 // Get the event ID from the URL
 if (isset($_GET['id'])) {
@@ -26,12 +29,6 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,31 +43,7 @@ if (isset($_GET['id'])) {
 
 <body>
 
-    <!-- Header Section -->
-    <header class="header-section">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light nav">
-            <a class="navbar-brand" href="index.php">
-                <img src="./images/logo-dark-bold.png" alt="Jyotidham Logo" class="header-logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://www.youtube.com/live/QCCh6J9TWDw?si=6vgJNra2bprx9AxJ">Live Satsang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="donate.html">Donate</a></li>
-                    <li class="nav-item"><a class="nav-link" href="calendar.php">Calendar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                </ul>
-            <!--    <div class="ml-lg-3 mt-2 mt-lg-0 d-flex gap-2">-->
-            <!--    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMi6k8G3gwt9l_k_3hIszOxRj3B7goqKhXKr8znDD5RCRuIg/viewform?pli=1" target="_blank" class="btn btn-dark text-white mr-2">Volunteer</a>-->
-            <!--    <a href="https://docs.google.com/forms/d/e/1FAIpQLScRNrcIXlCW3Sc0x4pOi3d-3s-OEczNAEjNhuhBcfKS6YVghQ/viewform" target="_blank" class="btn btn-dark text-white">Matha Tek Reg</a>-->
-            <!--</div>-->
-            </div>
-        </nav>
-    </header>
+    <?php require_once 'includes/header.php'; ?>
 
     <!-- Event Details Section -->
     <div class="container px-6">
@@ -128,42 +101,7 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 
-    <!-- Footer Section -->
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-12 logos">
-                    <div class="logo"><img src="./images/logo-jd-light.png" alt="Jyotidham Logo" /></div>
-                    <div class="logo"><img src="./images/logo-round-white.png" alt="logo-round-white" /></div>
-                </div>
-
-                <div class="col-lg-8 col-md-12 content">
-                    <div class="row">
-                        <div class="col-12 text-section">
-                            <p>After deep prayer and meditation, a devotee is in touch with his divine consciousness; there is no greater power than that inward protection.</p>
-                        </div>
-
-                        <div class="col-lg-6 col-md-12 links">
-                            <h5>Find Us Here</h5>
-                            <p>Shri Param Hans Advait Mat Ontario</p>
-                            <p class="address">
-                                <img class="map-pin" src="./images/location.png" alt="Map Pin" />
-                                236 Ingleton Blvd, Scarborough,<br>ON M1V 3R1, Canada
-                            </p>
-                        </div>
-                        <div class="col-lg-6 col-md-12 quick-links">
-                            <h5>Quick Links</h5>
-                            <p><a href="donate.html">Donate</a></p>
-                            <p><a href="terms.html">Refund &amp; Privacy Policy</a></p>
-                            <p><a href="./admin-login.php">Admin Login</a></p>
-                            <p>We accept</p>
-                            <img src="./images/payment-cards-updated.png" alt="Payment Cards">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

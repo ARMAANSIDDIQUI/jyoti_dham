@@ -1,4 +1,7 @@
 <?php
+// Admin check
+require_once __DIR__ . '/admin/auth_check.php';
+
 // Database connection
 require_once __DIR__ . '/config/db_connect.php';
 require_once __DIR__ . '/vendor/autoload.php';
@@ -18,14 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
+    $created_by = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
     // Insert event into database using a prepared statement
-    $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, organizer, event_venue, latitude, longitude, is_featured) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
+    $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, organizer, event_venue, latitude, longitude, is_featured, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     $stmt = $conn->prepare($sql);
-    
-    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $is_featured])) {
+
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $is_featured, $created_by])) {
         echo "<div class='alert alert-success'>New event created successfully</div>";
     } else {
         echo "<div class='alert alert-danger'>Error: " . $stmt->errorInfo()[2] . "</div>";

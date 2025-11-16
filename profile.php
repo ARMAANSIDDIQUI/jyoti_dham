@@ -113,10 +113,11 @@ if (isset($_SESSION['message'])) {
                                 <label for="address">Address:</label>
                                 <textarea id="address" name="address" rows="3"><?php echo htmlspecialchars($profileFormData['address'] ?? $user['address'] ?? ''); ?></textarea>
                             </div>
+
                             <div class="form-group">
                                 <label for="vehicle_number">Vehicle Number (Optional):</label>
                                 <input type="text" id="vehicle_number" name="vehicle_number" value="<?php echo htmlspecialchars($profileFormData['vehicle_number'] ?? $user['vehicle_number'] ?? ''); ?>">
-                            </div>            <button type="submit">Update Profile</button>
+                            </div>
         </form>
 
         <!-- Part 3: Family Management -->

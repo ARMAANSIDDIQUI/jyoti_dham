@@ -1,4 +1,7 @@
 <?php
+// Admin check
+require_once __DIR__ . '/admin/auth_check.php';
+
 // Include database connection
 require_once __DIR__ . '/config/db_connect.php';
 require_once __DIR__ . '/vendor/autoload.php';

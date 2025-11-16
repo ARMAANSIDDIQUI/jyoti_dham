@@ -8,7 +8,10 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // Database connection details
-include 'db.php';
+require_once 'config/db_connect.php';
+require_once 'vendor/autoload.php';
+
+$conn = DB::getInstance()->getConnection();
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
