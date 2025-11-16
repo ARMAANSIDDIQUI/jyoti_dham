@@ -1,18 +1,26 @@
 <?php
-$servername = "localhost";  // Replace with your server name
-$username = "root";         // Replace with your database username
-$password = "";             // Replace with your database password
-$dbname = "jyotidham";  // Replace with your database name
 
-// $servername = "localhost";  // Replace with your server name
-// $username = "gozoomte_jyoti";         // Replace with your database username
-// $password = "Mohit@12345";             // Replace with your database password
-// $dbname = "gozoomte_jyotidham";  // Replace with your database name
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once __DIR__ . '/vendor/autoload.php';
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$host = $_ENV['DB_HOST'];
+$db = $_ENV['DB_DATABASE'];
+$user = $_ENV['DB_USERNAME'];
+$pass = $_ENV['DB_PASSWORD'];
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
-?>
+
