@@ -52,7 +52,7 @@ try {
                 <?php endforeach; ?>
             </div>
             <div class="view-div">
-                <a href="calender.php" class="view-link">View All</a>
+                <a href="all-events.php" class="view-link">View All</a>
             </div>
         </div>
     </section>

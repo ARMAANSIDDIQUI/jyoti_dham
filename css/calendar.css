@@ -1,0 +1,22 @@
+#calendar {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.fc-event {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.fc-event-main {
+    color: #fff;
+}
+
+.fc-daygrid-day-number {
+    color: #343a40;
+}
+
+.fc-col-header-cell-cushion {
+    color: #343a40;
+}

@@ -59,28 +59,14 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     exit;
 }
 
-// No need to close PDO connection explicitly
+require_once 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/calender.css">
-</head>
-
-<body>
-    <?php require_once 'includes/header.php'; ?>
-
     <div class="container">
+        <h1 class="text-center mb-4">All Events</h1>
         <!-- Event container to dynamically update -->
         <div id="event-container">
-            <!-- This will be dynamically populated -->
+            <p class="text-center">Loading events...</p>
         </div>
 
         <!-- Pagination Links -->
@@ -90,25 +76,22 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
         </div>
     </div>
 
-    <?php include 'includes/footer.php'; ?>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let currentPage = 1;
+            const prevButton = document.getElementById("prev-page");
+            const nextButton = document.getElementById("next-page");
 
             // Function to fetch events and update the DOM
             function fetchEvents(page) {
-                fetch(`calender.php?page=${page}&ajax=1`)
+                fetch(`all-events.php?page=${page}&ajax=1`)
                     .then(response => response.json())
                     .then(data => {
                         const eventContainer = document.getElementById("event-container");
                         eventContainer.innerHTML = ""; // Clear existing events
 
                         if (data.events.length === 0) {
-                            eventContainer.innerHTML = "<p>No more events available.</p>";
+                            eventContainer.innerHTML = "<p class='text-center'>No more upcoming events available at the moment. Please check back later.</p>";
                         } else {
                             data.events.forEach(event => {
                                 const eventHTML = `
@@ -146,18 +129,22 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
                         prevButton.style.display = data.has_prev ? "inline-block" : "none";
                         nextButton.style.display = data.has_next ? "inline-block" : "none";
                     })
-                    .catch(error => console.error("Error fetching events:", error));
+                    .catch(error => {
+                        console.error("Error fetching events:", error);
+                        const eventContainer = document.getElementById("event-container");
+                        eventContainer.innerHTML = "<p class='text-center'>There was an error loading the events. Please try again later.</p>";
+                    });
             }
 
             // Event listeners for pagination
-            document.getElementById("prev-page").addEventListener("click", function () {
+            prevButton.addEventListener("click", function () {
                 if (currentPage > 1) {
                     currentPage--;
                     fetchEvents(currentPage);
                 }
             });
 
-            document.getElementById("next-page").addEventListener("click", function () {
+            nextButton.addEventListener("click", function () {
                 currentPage++;
                 fetchEvents(currentPage);
             });
@@ -166,6 +153,5 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
             fetchEvents(currentPage);
         });
     </script>
-</body>
 
-</html>
+<?php include 'includes/footer.php'; ?>

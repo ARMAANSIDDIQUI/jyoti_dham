@@ -34,6 +34,9 @@ try {
     <link rel="stylesheet" href="./css/style.css">
     <?php
     $page_name = basename($_SERVER['PHP_SELF'], ".php");
+    if ($page_name === 'all-events') {
+        echo '<link rel="stylesheet" href="./css/all-events.css">';
+    }
     $css_file = "./css/{$page_name}.css";
     if (file_exists($css_file)) {
         echo "<link rel='stylesheet' href='{$css_file}'>";
