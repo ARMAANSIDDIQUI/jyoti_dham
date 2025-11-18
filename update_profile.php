@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
             // Delete old image from Cloudinary if it exists and is not the default image
             if ($old_profile_image_public_id && $old_profile_image_url !== ($_ENV['DEFAULT_PROFILE_IMAGE_URL'] ?? null)) {
-                (new AdminApi())->destroy($old_profile_image_public_id);
+                (new UploadApi())->destroy($old_profile_image_public_id);
             }
             // Upload new image
             $uploadResult = (new UploadApi())->upload($_FILES['profile_image']['tmp_name']);

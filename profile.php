@@ -61,7 +61,7 @@ if (isset($_SESSION['message'])) {
             <div class="col-md-4">
                 <div class="profile-sidebar">
                     <div class="profile-picture-section text-center">
-                        <?php if ($user['profile_image_url']): ?>
+                        <?php if ($user['profile_image_url'] && $user['profile_image_public_id']): ?>
                             <img src="<?php echo htmlspecialchars($user['profile_image_url']); ?>" alt="Profile Picture" class="profile-img">
                         <?php else: ?>
                             <img src="<?php echo htmlspecialchars($_ENV['DEFAULT_PROFILE_IMAGE_URL'] ?? 'images/default-profile.png'); ?>" alt="Default Profile Picture" class="profile-img">
@@ -75,6 +75,9 @@ if (isset($_SESSION['message'])) {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="family-tab" data-toggle="tab" href="#family" role="tab" aria-controls="family" aria-selected="false"><i class="fas fa-users"></i> Family Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="password-tab" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false"><i class="fas fa-key"></i> Change Password</a>
                         </li>
                     </ul>
                 </div>
@@ -90,8 +93,13 @@ if (isset($_SESSION['message'])) {
                         <h3 class="mb-4">Your Details</h3>
                         <form action="update_profile.php" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="profile_image">Update Profile Image (Optional):</label>
-                                <input type="file" id="profile_image" name="profile_image" class="form-control-file" accept="image/*">
+                                <label>Profile Image:</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="file" id="profile_image" name="profile_image" class="form-control-file" accept="image/*">
+                                    <?php if ($user['profile_image_public_id']): ?>
+                                        <a href="remove_profile_photo.php" class="btn btn-sm btn-outline-danger ml-3" onclick="return confirm('Are you sure you want to remove your profile photo?');">Remove</a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-group">
@@ -159,9 +167,17 @@ if (isset($_SESSION['message'])) {
                                                 <td><?php echo htmlspecialchars($member['age']); ?></td>
                                                 <td><?php echo htmlspecialchars(ucfirst($member['gender'])); ?></td>
                                                 <td>
-                                                    <form action="delete_family_member.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this family member?');">
+                                                    <button type="button" class="btn btn-info btn-sm edit-member-btn" data-toggle="modal" data-target="#editFamilyMemberModal"
+                                                        title="Edit"
+                                                        data-id="<?php echo $member['id']; ?>"
+                                                        data-name="<?php echo htmlspecialchars($member['name']); ?>"
+                                                        data-age="<?php echo htmlspecialchars($member['age']); ?>"
+                                                        data-gender="<?php echo htmlspecialchars($member['gender']); ?>">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <form action="delete_family_member.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this family member?');" style="display: inline;">
                                                         <input type="hidden" name="member_id" value="<?php echo $member['id']; ?>">
-                                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -174,6 +190,26 @@ if (isset($_SESSION['message'])) {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+
+                    <!-- Change Password Tab -->
+                    <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                        <h3 class="mb-4">Change Password</h3>
+                        <form action="change_password.php" method="POST">
+                            <div class="form-group">
+                                <label for="current_password">Current Password:</label>
+                                <input type="password" id="current_password" name="current_password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_password">New Password:</label>
+                                <input type="password" id="new_password" name="new_password" class="form-control" required minlength="8">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password">Confirm New Password:</label>
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="8">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -219,5 +255,63 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
+
+<!-- Edit Family Member Modal -->
+<div class="modal fade" id="editFamilyMemberModal" tabindex="-1" role="dialog" aria-labelledby="editFamilyMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editFamilyMemberModalLabel">Edit Family Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="edit_family_member.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" id="edit_member_id" name="member_id">
+                    <div class="form-group">
+                        <label for="edit_member_name">Name:</label>
+                        <input type="text" id="edit_member_name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_member_age">Age:</label>
+                        <input type="number" id="edit_member_age" name="age" class="form-control" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_member_gender">Gender:</label>
+                        <select id="edit_member_gender" name="gender" class="form-control" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('#editFamilyMemberModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var memberId = button.data('id');
+        var name = button.data('name');
+        var age = button.data('age');
+        var gender = button.data('gender');
+
+        var modal = $(this);
+        modal.find('.modal-body #edit_member_id').val(memberId);
+        modal.find('.modal-body #edit_member_name').val(name);
+        modal.find('.modal-body #edit_member_age').val(age);
+        modal.find('.modal-body #edit_member_gender').val(gender);
+    });
+});
+</script>
 
 <?php include 'includes/footer.php'; ?>
