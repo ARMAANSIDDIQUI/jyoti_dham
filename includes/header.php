@@ -96,3 +96,4 @@ try {
             </nav>
         </header>
     <!-- End Header Section -->
+<main class="main-content">

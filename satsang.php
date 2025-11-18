@@ -26,7 +26,7 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card h-100">
+                <div class="card">
                         <div class="card-body">
                             <?php if (!empty($live_satsang['video_url'])): ?>
                                 <h5 class="card-title"><a href="<?php echo htmlspecialchars($live_satsang['video_url']); ?>" target="_blank" style="color: inherit; text-decoration: none;"><?php echo htmlspecialchars($live_satsang['title']); ?></a></h5>
@@ -53,7 +53,7 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php if (empty($satsangs)): ?>
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card h-100">
+                <div class="card">
                     <img src="images/Live-Satsang-Thumbnail-2.png" class="card-img-top" alt="No Satsang Thumbnail">
                     <div class="card-body">
                         <h5 class="card-title">No Satsang Currently Scheduled</h5>
@@ -66,7 +66,7 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="row">
             <?php foreach ($satsangs as $satsang): ?>
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100">
+                    <div class="card">
                         <img src="images/Live-Satsang-Thumbnail-2.png" class="card-img-top" alt="Satsang Thumbnail">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($satsang['title']); ?></h5>
@@ -74,7 +74,8 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="card-text">
                                 <small class="text-muted">
                                     Start: <?php echo date('M j, Y g:i A', strtotime($satsang['start_time'])); ?><br>
-                                    End: <?php echo date('M j, Y g:i A', strtotime($satsang['end_time'])); ?><br>
+                                    End: <?php echo date('M j, Y g
+:i A', strtotime($satsang['end_time'])); ?><br>
                                     Time Zone: <?php echo htmlspecialchars($satsang['time_zone']); ?>
                                 </small>
                             </p>

@@ -61,11 +61,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
 
 require_once 'includes/header.php';
 ?>
+<link rel="stylesheet" href="css/all-events.css">
 
     <div class="container">
         <h1 class="text-center mb-4">All Events</h1>
         <!-- Event container to dynamically update -->
-        <div id="event-container">
+        <div id="event-container" class="card-view">
             <p class="text-center">Loading events...</p>
         </div>
 
@@ -81,13 +82,13 @@ require_once 'includes/header.php';
             let currentPage = 1;
             const prevButton = document.getElementById("prev-page");
             const nextButton = document.getElementById("next-page");
+            const eventContainer = document.getElementById("event-container");
 
             // Function to fetch events and update the DOM
             function fetchEvents(page) {
                 fetch(`all-events.php?page=${page}&ajax=1`)
                     .then(response => response.json())
                     .then(data => {
-                        const eventContainer = document.getElementById("event-container");
                         eventContainer.innerHTML = ""; // Clear existing events
 
                         if (data.events.length === 0) {
@@ -95,7 +96,7 @@ require_once 'includes/header.php';
                         } else {
                             data.events.forEach(event => {
                                 const eventHTML = `
-                                    <div class="event-container">
+                                    <div class="event-item">
                                         <div class="event-date">
                                             <span class="day">${event.day.substring(0, 3).toUpperCase()}</span>
                                             <span class="date">${new Date(event.event_date).getDate()}</span>
@@ -131,7 +132,6 @@ require_once 'includes/header.php';
                     })
                     .catch(error => {
                         console.error("Error fetching events:", error);
-                        const eventContainer = document.getElementById("event-container");
                         eventContainer.innerHTML = "<p class='text-center'>There was an error loading the events. Please try again later.</p>";
                     });
             }
