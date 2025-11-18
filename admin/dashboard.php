@@ -15,13 +15,13 @@ require_once __DIR__ . '/admin_header.php';
                                 <i class="fas fa-users mr-2"></i>Manage Users
                             </a>
                         </div>
-                        <div class="col-md-6 col-sm-12 mb-3">
+                        <!-- <div class="col-md-6 col-sm-12 mb-3">
                             <a href="../add-event.php" class="btn btn-success btn-block d-flex align-items-center justify-content-center">
                                 <i class="fas fa-calendar-plus mr-2"></i>Add Event
                             </a>
-                        </div>
+                        </div> -->
                         <div class="col-md-6 col-sm-12 mb-3">
-                            <a href="../event-list.php" class="btn btn-info btn-block d-flex align-items-center justify-content-center">
+                            <a href="../admin/manage-events.php" class="btn btn-info btn-block d-flex align-items-center justify-content-center">
                                 <i class="fas fa-calendar-alt mr-2"></i>Manage Events
                             </a>
                         </div>

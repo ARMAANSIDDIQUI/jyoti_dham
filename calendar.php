@@ -23,7 +23,38 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        events: 'api/get_events.php'
+        events: 'api/get_events.php',
+        eventClick: function(info) {
+            window.location.href = 'event.php?id=' + info.event.id;
+        },
+        eventMouseEnter: function(info) {
+            // Show tooltip with details
+            var tooltip = document.createElement('div');
+            tooltip.className = 'fc-tooltip';
+            tooltip.innerHTML = '<strong>' + info.event.title + '</strong><br>' +
+                                'Venue: ' + (info.event.extendedProps.venue || 'N/A') + '<br>' +
+                                'Description: ' + (info.event.extendedProps.description || 'N/A');
+            tooltip.style.position = 'absolute';
+            tooltip.style.zIndex = '9999';
+            tooltip.style.background = '#fff';
+            tooltip.style.border = '1px solid #ccc';
+            tooltip.style.padding = '5px';
+            tooltip.style.borderRadius = '3px';
+            tooltip.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+            document.body.appendChild(tooltip);
+
+            var rect = info.el.getBoundingClientRect();
+            tooltip.style.left = rect.left + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 5) + 'px';
+
+            info.el.tooltip = tooltip;
+        },
+        eventMouseLeave: function(info) {
+            if (info.el.tooltip) {
+                document.body.removeChild(info.el.tooltip);
+                info.el.tooltip = null;
+            }
+        }
     });
     calendar.render();
 });

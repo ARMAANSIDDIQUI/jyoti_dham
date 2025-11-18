@@ -38,7 +38,7 @@ try {
                         <div class="card event-card" style="height: 100%; width: 100%;">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="event-details.php?id=<?= $event['id']; ?>">
+                                    <a href="event.php?id=<?= $event['id']; ?>">
                                         <?= strlen($event['event_name']) > 50 ? substr($event['event_name'], 0, 47) . '...' : $event['event_name']; ?>
                                     </a>
                                 </h5>

@@ -59,39 +59,39 @@ if (isset($_GET['id'])) {
         </div>
 
         <div class="container">
-            <div class="row">
-                <!-- Details Column -->
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <h2 class="t-head">Details</h2>
-                    <h3 class="t-head">Date:</h3>
-                    <p><?= date('F d, Y', strtotime($event['event_date'])); ?></p>
-                    <h3 class="t-head">Time:</h3>
-                    <p><span><?= date('g:i A', strtotime($event['event_time'])); ?> to <?= date('g:i A', strtotime($event['event_end_time'])); ?></span> <span><?= $event['time_zone']; ?></span></p>
-                </div>
+            <details>
+                <summary>Add to Calendar</summary>
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?= urlencode($event['event_name']); ?>&dates=<?= date('Ymd\THis\Z', strtotime($event['event_date'] . ' ' . $event['event_time'])); ?>/<?= date('Ymd\THis\Z', strtotime($event['event_date'] . ' ' . $event['event_end_time'])); ?>&details=<?= urlencode($event['event_description']); ?>&location=<?= urlencode($event['event_venue']); ?>" target="_blank">Google Calendar</a><br>
+                <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?= urlencode($event['event_name']); ?>&startdt=<?= date('Y-m-d\TH:i:s\Z', strtotime($event['event_date'] . ' ' . $event['event_time'])); ?>&enddt=<?= date('Y-m-d\TH:i:s\Z', strtotime($event['event_date'] . ' ' . $event['event_end_time'])); ?>&body=<?= urlencode($event['event_description']); ?>&location=<?= urlencode($event['event_venue']); ?>" target="_blank">Outlook.com</a><br>
+                <a href="export_ics.php?id=<?= $event['id']; ?>" target="_blank">Apple / Outlook App / Samsung</a>
+            </details>
+        </div>
 
+        <div class="container">
+            <div class="row">
                 <!-- Organizer Column -->
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <h3 class="t-head">Organizer</h3>
                     <p><?= $event['organizer']; ?></p>
                 </div>
 
                 <!-- Venue Column -->
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <h3 class="t-head">Venue</h3>
                     <p><?= $event['event_venue']; ?></p>
                 </div>
 
                 <!-- Map Column -->
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <h3 class="t-head">Map Location</h3>
-                    <iframe 
+                    <iframe
                         id="googleMap"
-                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDP4YgDI3gOakb5Y-kqrCCtCT4M8pj9Mzk&q=<?= $event['latitude']; ?>,<?= $event['longitude']; ?>" 
-                        width="100%" 
-                        height="250" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDP4YgDI3gOakb5Y-kqrCCtCT4M8pj9Mzk&q=<?= $event['latitude']; ?>,<?= $event['longitude']; ?>"
+                        width="100%"
+                        height="250"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>

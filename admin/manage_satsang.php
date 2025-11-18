@@ -6,11 +6,12 @@ $conn = DB::getInstance()->getConnection();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $satsang_date = $_POST['satsang_date'];
+    $title = $_POST['title'];
+    $description = $_POST['description'];
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
     $time_zone = $_POST['time_zone'];
-    $yt_link = $_POST['yt_link'];
+    $video_url = $_POST['video_url'];
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
     // Check if satsang entry exists
@@ -19,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($existing) {
         // Update existing
-        $stmt = $conn->prepare("UPDATE satsang SET satsang_date = ?, start_time = ?, end_time = ?, time_zone = ?, yt_link = ?, is_active = ? WHERE id = ?");
-        $stmt->execute([$satsang_date, $start_time, $end_time, $time_zone, $yt_link, $is_active, $existing['id']]);
+        $stmt = $conn->prepare("UPDATE satsang SET title = ?, description = ?, start_time = ?, end_time = ?, time_zone = ?, video_url = ?, is_active = ? WHERE id = ?");
+        $stmt->execute([$title, $description, $start_time, $end_time, $time_zone, $video_url, $is_active, $existing['id']]);
     } else {
         // Insert new
-        $stmt = $conn->prepare("INSERT INTO satsang (satsang_date, start_time, end_time, time_zone, yt_link, is_active) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$satsang_date, $start_time, $end_time, $time_zone, $yt_link, $is_active]);
+        $stmt = $conn->prepare("INSERT INTO satsang (title, description, start_time, end_time, time_zone, video_url, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$title, $description, $start_time, $end_time, $time_zone, $video_url, $is_active]);
     }
 
     echo "<div class='alert alert-success'>Satsang settings updated successfully!</div>";
@@ -37,12 +38,18 @@ $satsang = $stmt->fetch(PDO::FETCH_ASSOC);
 // Default values if no record exists
 if (!$satsang) {
     $satsang = [
-        'start_time' => '19:00:00',
-        'end_time' => '20:00:00',
+        'title' => 'Weekly Satsang',
+        'description' => 'Join us for our weekly satsang session.',
+        'start_time' => date('Y-m-d\TH:i:s'),
+        'end_time' => date('Y-m-d\TH:i:s', strtotime('+1 hour')),
         'time_zone' => 'EST',
-        'yt_link' => '',
+        'video_url' => '',
         'is_active' => 1
     ];
+} else {
+    // Convert DATETIME to datetime-local format for input
+    $satsang['start_time'] = date('Y-m-d\TH:i:s', strtotime($satsang['start_time']));
+    $satsang['end_time'] = date('Y-m-d\TH:i:s', strtotime($satsang['end_time']));
 }
 ?>
 <div class="container-fluid" style="padding-top: 30px; margin-top: 20px;">
@@ -54,41 +61,39 @@ if (!$satsang) {
                 </div>
                 <div class="card-body">
                     <form method="post">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="satsang_date"><i class="fas fa-calendar-day"></i> Satsang Date</label>
-                                    <input type="date" class="form-control" id="satsang_date" name="satsang_date" value="<?= htmlspecialchars($satsang['satsang_date'] ?? date('Y-m-d')) ?>" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="time_zone"><i class="fas fa-globe"></i> Time Zone</label>
-                                    <select class="form-control" id="time_zone" name="time_zone" required>
-                                        <option value="EST" <?= $satsang['time_zone'] == 'EST' ? 'selected' : '' ?>>EST (Eastern Standard Time)</option>
-                                        <option value="EDT" <?= $satsang['time_zone'] == 'EDT' ? 'selected' : '' ?>>EDT (Eastern Daylight Time)</option>
-                                        <option value="PST" <?= $satsang['time_zone'] == 'PST' ? 'selected' : '' ?>>PST (Pacific Standard Time)</option>
-                                    </select>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="title"><i class="fas fa-heading"></i> Title</label>
+                            <input type="text" class="form-control" id="title" name="title" value="<?= htmlspecialchars($satsang['title']) ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description"><i class="fas fa-align-left"></i> Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required><?= htmlspecialchars($satsang['description']) ?></textarea>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="start_time"><i class="fas fa-clock"></i> Start Time (Canada Time)</label>
-                                    <input type="time" class="form-control" id="start_time" name="start_time" value="<?= htmlspecialchars($satsang['start_time']) ?>" required>
+                                    <label for="start_time"><i class="fas fa-clock"></i> Start Date & Time (Canada Time)</label>
+                                    <input type="datetime-local" class="form-control" id="start_time" name="start_time" value="<?= htmlspecialchars($satsang['start_time']) ?>" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="end_time"><i class="fas fa-clock"></i> End Time (Canada Time)</label>
-                                    <input type="time" class="form-control" id="end_time" name="end_time" value="<?= htmlspecialchars($satsang['end_time']) ?>" required>
+                                    <label for="end_time"><i class="fas fa-clock"></i> End Date & Time (Canada Time)</label>
+                                    <input type="datetime-local" class="form-control" id="end_time" name="end_time" value="<?= htmlspecialchars($satsang['end_time']) ?>" required>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="yt_link"><i class="fab fa-youtube"></i> YouTube Live Link</label>
-                            <input type="url" class="form-control" id="yt_link" name="yt_link" value="<?= htmlspecialchars($satsang['yt_link']) ?>" placeholder="https://youtube.com/live/..." required>
+                            <label for="time_zone"><i class="fas fa-globe"></i> Time Zone</label>
+                            <select class="form-control" id="time_zone" name="time_zone" required>
+                                <option value="EST" <?= $satsang['time_zone'] == 'EST' ? 'selected' : '' ?>>EST (Eastern Standard Time)</option>
+                                <option value="EDT" <?= $satsang['time_zone'] == 'EDT' ? 'selected' : '' ?>>EDT (Eastern Daylight Time)</option>
+                                <option value="PST" <?= $satsang['time_zone'] == 'PST' ? 'selected' : '' ?>>PST (Pacific Standard Time)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="video_url"><i class="fab fa-youtube"></i> Video URL</label>
+                            <input type="url" class="form-control" id="video_url" name="video_url" value="<?= htmlspecialchars($satsang['video_url']) ?>" placeholder="https://youtube.com/live/..." required>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" <?= $satsang['is_active'] ? 'checked' : '' ?>>

@@ -120,7 +120,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                             <p><a href="donate.html">Donate</a></p>
                             <p><a href="terms.html">Refund &amp; Privacy Policy</a>
                             </p>
-                            <p><a href="./admin-login.php">Admin Login</a>
+                            <p><a href="./login.php">Admin Login</a>
                             </p>
                             <p>We accept</p>
                             <img src="./images/payment-cards-updated.png" alt="Payment Cards">

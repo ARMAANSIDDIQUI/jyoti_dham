@@ -148,8 +148,8 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
             <div class="list-group list-group-flush">
                 <a href="dashboard.php" class="list-group-item list-group-item-action"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 <a href="manage_users.php" class="list-group-item list-group-item-action"><i class="fas fa-users"></i>Manage Users</a>
-                <a href="../add-event.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-plus"></i>Add Event</a>
-                <a href="../event-list.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-alt"></i>Manage Events</a>
+                <!-- <a href="../add-event.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-plus"></i>Add Event</a> -->
+                <a href="manage-events.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-alt"></i>Manage Events</a>
                 <a href="manage_satsangs.php" class="list-group-item list-group-item-action"><i class="fas fa-video"></i>Manage Satsangs</a>
                 <!-- <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-newspaper"></i>Manage News</a> -->
                 <a href="../index.php" class="list-group-item list-group-item-action"><i class="fas fa-home"></i>View Homepage</a>

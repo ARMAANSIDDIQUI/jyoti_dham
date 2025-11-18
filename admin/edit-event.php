@@ -1,10 +1,12 @@
 <?php
+require_once __DIR__ . '/admin_header.php';
+
 // Admin check
-require_once __DIR__ . '/admin/auth_check.php';
+require_once __DIR__ . '/auth_check.php';
 
 // Include database connection
-require_once __DIR__ . '/config/db_connect.php';
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../config/db_connect.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 $conn = DB::getInstance()->getConnection();
 
 // Get event ID
@@ -37,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $event_venue = $_POST['event_venue'];
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
-    $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
     $update_sql = "UPDATE events SET 
         day=?,
@@ -50,13 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         organizer=?,
         event_venue=?,
         latitude=?,
-        longitude=?,
-        is_featured=?
+        longitude=?
         WHERE id = ?";
 
     $stmt = $conn->prepare($update_sql);
 
-    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $is_featured, $event_id])) {
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $event_id])) {
         echo "<div class='alert alert-success'>Event updated successfully</div>";
         // Refresh form with updated data by re-fetching from the database
         $sql = "SELECT * FROM events WHERE id = ?";
@@ -69,18 +69,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Event</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBM1nAywoajfBnPLSqZn0z5wvUNj2ZYhF0&libraries=places"></script>
-</head>
-<body>
-<div class="container mt-5" style="max-width: 500px; border: 3px solid blue; border-radius:15px">
-    <h2>Edit Event</h2>
-    <form method="post" style="margin-top:2rem; margin-bottom:2rem;">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5 mb-5">
+                <div class="card-header">
+                    <h2>Edit Event</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
 
         <!-- Day -->
         <div class="form-group">
@@ -184,24 +181,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <!-- Map -->
         <div class="form-group">
-            <label>Event Location (Select on Map)</label>
-            <div id="map" style="height: 400px;"></div>
-            <input type="hidden" id="latitude" name="latitude" value="<?= $event['latitude'] ?>">
-            <input type="hidden" id="longitude" name="longitude" value="<?= $event['longitude'] ?>">
+            <label>Event Location</label>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d46054.15022816234!2d-79.2661927!3d43.8271272!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6c80f26b0c5%3A0x30051dd9308eae70!2sShri%20Param%20Hans%20Advait%20Mat%20(Jyoti%20Dham)%20Ontario!5e0!3m2!1sen!2sin!4v1763492598758!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <input type="hidden" id="latitude" name="latitude" value="43.8271272">
+            <input type="hidden" id="longitude" name="longitude" value="-79.26619269999999">
         </div>
 
-        <!-- Featured -->
-        <div class="form-group">
-            <label for="is_featured">Is Featured?</label>
-            <select class="form-control" name="is_featured">
-                <option value="0" <?= $event['is_featured'] == 0 ? 'selected' : '' ?>>No</option>
-                <option value="1" <?= $event['is_featured'] == 1 ? 'selected' : '' ?>>Yes</option>
-            </select>
+                        <button type="submit" class="btn btn-success">Update Event</button>
+                        <a href="manage-events.php" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-success">Update Event</button>
-        <a href="event-list.php" class="btn btn-secondary">Cancel</a>
-    </form>
+    </div>
 </div>
 
 <!-- JS scripts for Google Maps -->
@@ -249,6 +243,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     window.onload = initMap;
 </script>
 
-
+<?php
+require_once __DIR__ . '/admin_footer.php';
+?>
 </body>
 </html>
