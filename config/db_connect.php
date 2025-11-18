@@ -138,6 +138,23 @@ class DB {
                 // Continue with other tables
             }
         }
+
+        // Alter satsang table to add new fields and modify existing ones
+        $alterSQLs = [
+            "ALTER TABLE satsang ADD COLUMN IF NOT EXISTS title VARCHAR(255) NOT NULL AFTER id",
+            "ALTER TABLE satsang ADD COLUMN IF NOT EXISTS description TEXT AFTER title",
+            "ALTER TABLE satsang MODIFY COLUMN start_time DATETIME NOT NULL",
+            "ALTER TABLE satsang MODIFY COLUMN end_time DATETIME NOT NULL",
+            "ALTER TABLE satsang RENAME COLUMN yt_link TO video_url"
+        ];
+
+        foreach ($alterSQLs as $alterSQL) {
+            try {
+                $this->conn->exec($alterSQL);
+            } catch (PDOException $e) {
+                error_log("Error altering satsang table: " . $e->getMessage());
+            }
+        }
     }
 }
 

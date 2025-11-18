@@ -46,7 +46,8 @@ $has_more_events_sql = "
     ORDER BY event_date ASC
     LIMIT 1 OFFSET " . ($offset + $events_per_page);
 
-$has_more_events = $conn->query($has_more_events_sql)->num_rows > 0;
+$has_more_events_result = $conn->query($has_more_events_sql);
+$has_more_events = $has_more_events_result->rowCount() > 0;
 
 // Return JSON response if it's an AJAX request
 if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
@@ -58,8 +59,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     exit;
 }
 
-// Close the connection
-$conn->close();
+// No need to close PDO connection explicitly
 ?>
 
 <!DOCTYPE html>

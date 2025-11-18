@@ -61,7 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('Error saving data: " . $stmt->error . "'); window.history.back();</script>";
     }
 
-    // Close the connection
-    $conn->close();
+    # No need to close PDO connection explicitly
 }
 ?>

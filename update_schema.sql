@@ -19,14 +19,23 @@ ADD COLUMN `google_token_expires_at` DATETIME NULL AFTER `google_refresh_token`;
 -- Create satsang table if not exists
 CREATE TABLE IF NOT EXISTS `satsang` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `satsang_date` DATE NOT NULL,
-    `start_time` TIME NOT NULL,
-    `end_time` TIME NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `description` TEXT,
+    `start_time` DATETIME NOT NULL,
+    `end_time` DATETIME NOT NULL,
     `time_zone` VARCHAR(10) NOT NULL DEFAULT 'EST',
-    `yt_link` VARCHAR(500) NOT NULL,
+    `video_url` VARCHAR(500) NOT NULL,
     `is_active` TINYINT(1) DEFAULT 1,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Alter existing satsang table to match new structure (if it exists with old structure)
+ALTER TABLE `satsang`
+ADD COLUMN `title` VARCHAR(255) NOT NULL DEFAULT '',
+ADD COLUMN `description` TEXT,
+MODIFY COLUMN `start_time` DATETIME,
+MODIFY COLUMN `end_time` DATETIME,
+CHANGE `yt_link` `video_url` VARCHAR(500);
 
 -- Add google_event_id to events table if not exists
 ALTER TABLE `events`

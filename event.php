@@ -12,14 +12,12 @@ if (isset($_GET['id'])) {
     // Prepare and execute the SQL query to fetch event data
     $sql = "SELECT * FROM events WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $event_id);
+    $stmt->bindParam(1, $event_id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
 
     // Check if event data is found
-    if ($result->num_rows > 0) {
-        $event = $result->fetch_assoc();
-    } else {
+    $event = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$event) {
         echo "Event not found.";
         exit;
     }
@@ -48,7 +46,7 @@ if (isset($_GET['id'])) {
     <!-- Event Details Section -->
     <div class="container px-6">
         <div class="container all-events">
-            <a href="calender.php"><< All Events</a>
+            <a href="event_list.php"><< All Events</a>
         </div>
         <div class="container">
             <h1 class="event-heading"><?= $event['event_name']; ?></h1>

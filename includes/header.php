@@ -4,6 +4,23 @@ require_once __DIR__ . '/../config/db_connect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $conn = DB::getInstance()->getConnection();
+
+$satsang_link = 'satsang.php'; // Default satsang page
+$satsang_status_text = 'Satsang';
+try {
+    // Check for a LIVE satsang
+    $stmt = $conn->prepare("SELECT video_url FROM satsang
+        WHERE NOW() BETWEEN start_time AND end_time
+        ORDER BY start_time DESC LIMIT 1");
+    $stmt->execute();
+    $live_satsang = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($live_satsang && !empty($live_satsang['video_url'])) {
+        $satsang_link = $live_satsang['video_url'];
+        $satsang_status_text = 'Satsang (LIVE!)';
+    }
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +57,13 @@ $conn = DB::getInstance()->getConnection();
                             <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="live-satsang.php">Live Satsang</a>
+                            <a class="nav-link" href="<?php echo htmlspecialchars($satsang_link); ?>"><?php echo htmlspecialchars($satsang_status_text); ?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="donate.php">Donate</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="calender.php">Calendar</a>
+                            <a class="nav-link" href="calendar.php">Calendar</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.php">Contact</a>

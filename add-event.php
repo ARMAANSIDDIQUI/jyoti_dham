@@ -9,34 +9,32 @@ $conn = DB::getInstance()->getConnection();
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $day = $_POST['day'];
     $event_date = $_POST['event_date'];
     $event_time = $_POST['event_time'];
-    $event_end_time = $_POST['event_end_time']; // New field for event end time
-    $time_zone = $_POST['time_zone'];
+    $event_end_time = $_POST['event_end_time'];
     $event_name = $_POST['event_name'];
     $event_description = $_POST['event_description'];
-    $organizer = $_POST['organizer'];
-    $event_venue = $_POST['event_venue'];
-    $latitude = $_POST['latitude'];
-    $longitude = $_POST['longitude'];
-    $is_featured = isset($_POST['is_featured']) ? 1 : 0;
+
+    // Calculate day from date
+    $day = date('l', strtotime($event_date)); // e.g., 'Monday'
+    $time_zone = 'EST'; // Default to Toronto time (EST)
+
     $created_by = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
     // Insert event into database using a prepared statement
-    $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, organizer, event_venue, latitude, longitude, is_featured, created_by)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
 
-    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $is_featured, $created_by])) {
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $created_by])) {
         echo "<div class='alert alert-success'>New event created successfully</div>";
     } else {
         echo "<div class='alert alert-danger'>Error: " . $stmt->errorInfo()[2] . "</div>";
     }
 }
 
-$conn->close();
+# No need to close PDO connection explicitly
 ?>
 
 <!DOCTYPE html>
@@ -54,42 +52,24 @@ $conn->close();
 <div class="container mt-5" style="margin-top:4rem !important; margin-bottom:4rem !important; max-width: 500px !important; border: 3px solid blue;border-radius:15px">
     <h2>Add Event</h2>
     <form action="add-event.php" method="post" style="margin-top:2rem !important; margin-bottom:2rem !important;">
-        <!-- Day Dropdown -->
-        <div class="form-group">
-            <label for="day">Day</label>
-            <select class="form-control" id="day" name="day" required>
-                <option value="">Select Day</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-            </select>
-        </div>
-
         <!-- Date Picker -->
         <div class="form-group">
             <label for="date">Date</label>
-            <input type="date" class="form-control" id="date" name="event_date" required>
+            <input type="date" class="form-control" id="date" name="event_date" min="<?php echo date('Y-m-d'); ?>" required>
         </div>
 
         <!-- Event Time Dropdown -->
         <div class="form-group">
-            <label for="event_time">Event Start Time</label>
+            <label for="event_time">Start Time</label>
             <select class="form-control" id="event_time" name="event_time" required>
                 <option value="">Select Start Time</option>
                 <?php
-                // Start from 10:00 AM (i.e., 10) to 11:30 PM (i.e., 23:30)
                 for ($hour = 8; $hour <= 20; $hour++) {
                     foreach ([0, 30] as $minute) {
-                        // Convert to 12-hour format
                         $displayHour = $hour % 12 === 0 ? 12 : $hour % 12;
                         $ampm = $hour < 12 ? 'AM' : 'PM';
                         $minuteFormatted = str_pad($minute, 2, '0', STR_PAD_LEFT);
                         $value = str_pad($hour, 2, '0', STR_PAD_LEFT) . ":$minuteFormatted:00";
-
                         echo "<option value='$value'>$displayHour:$minuteFormatted $ampm</option>";
                     }
                 }
@@ -97,81 +77,35 @@ $conn->close();
             </select>
         </div>
 
-
-
-        <!-- New Event End Time Field -->
-       <div class="form-group">
-        <label for="event_end_time">Event End Time</label>
-        <select class="form-control" id="event_end_time" name="event_end_time" required>
-            <option value="">Select End Time</option>
-            <?php
-            for ($hour = 8; $hour <= 20; $hour++) {
-                foreach ([0, 30] as $minute) {
-                        // Convert to 12-hour format
+        <!-- Event End Time Field -->
+        <div class="form-group">
+            <label for="event_end_time">End Time</label>
+            <select class="form-control" id="event_end_time" name="event_end_time" required>
+                <option value="">Select End Time</option>
+                <?php
+                for ($hour = 8; $hour <= 20; $hour++) {
+                    foreach ([0, 30] as $minute) {
                         $displayHour = $hour % 12 === 0 ? 12 : $hour % 12;
                         $ampm = $hour < 12 ? 'AM' : 'PM';
                         $minuteFormatted = str_pad($minute, 2, '0', STR_PAD_LEFT);
                         $value = str_pad($hour, 2, '0', STR_PAD_LEFT) . ":$minuteFormatted:00";
-
                         echo "<option value='$value'>$displayHour:$minuteFormatted $ampm</option>";
                     }
-            }
-            ?>
-        </select>
-    </div>
-
-        <!-- Time Zone Dropdown -->
-        <div class="form-group">
-            <label for="time_zone">Time Zone</label>
-            <select class="form-control" id="time_zone" name="time_zone" required>
-                <option value="IST">IST (Indian Standard Time)</option>
-                <option value="EST">EST (Eastern Standard Time)</option>
-                <option value="EDT">EDT (Eastern Daylight Time)</option>
-                <option value="PST">PST (Pacific Standard Time)</option>
-                <option value="GMT">GMT (Greenwich Mean Time)</option>
-                <!-- Add other time zones as necessary -->
+                }
+                ?>
             </select>
         </div>
 
         <!-- Event Name -->
         <div class="form-group">
-            <label for="event_name">Event Name</label>
-            <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Enter event name" required>
+            <label for="event_name">Title</label>
+            <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Enter event title" required>
         </div>
 
         <!-- Event Description -->
         <div class="form-group">
-            <label for="event_description">Event Description</label>
+            <label for="event_description">Description</label>
             <textarea class="form-control" id="event_description" name="event_description" rows="3" placeholder="Enter event description" required></textarea>
-        </div>
-
-        <!-- Organizer -->
-        <div class="form-group">
-            <label for="organizer">Organizer</label>
-            <input type="text" class="form-control" id="organizer" name="organizer" placeholder="Enter organizer name" required>
-        </div>
-
-        <!-- Venue with Autocomplete (Canada) -->
-        <div class="form-group">
-            <label for="event_venue">Event Venue</label>
-            <input type="text" class="form-control" id="event_venue" name="event_venue" placeholder="Enter venue address" required>
-        </div>
-
-        <!-- Google Map for Latitude and Longitude -->
-        <div class="form-group">
-            <label>Event Location (Select on Map)</label>
-            <div id="map" style="height: 400px;"></div>
-            <input type="hidden" id="latitude" name="latitude">
-            <input type="hidden" id="longitude" name="longitude">
-        </div>
-
-        <!-- Is Featured Dropdown -->
-        <div class="form-group">
-            <label for="is_featured">Is Featured</label>
-            <select class="form-control" id="is_featured" name="is_featured" required>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-            </select>
         </div>
 
         <!-- Submit Button -->
@@ -185,63 +119,7 @@ $conn->close();
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- Google Maps and Address Autocomplete -->
-<script>
-    let map;
-    let marker;
-    let autocomplete;
 
-    function initMap() {
-        // Default location (Canada)
-        const defaultLocation = { lat: 56.1304, lng: -106.3468 };
-
-        // Initialize the map
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: defaultLocation,
-            zoom: 5
-        });
-
-        // Initialize the marker
-        marker = new google.maps.Marker({
-            position: defaultLocation,
-            map: map,
-            draggable: true // Enable dragging
-        });
-
-        // Update latitude and longitude fields when the marker is dragged
-        marker.addListener('dragend', function () {
-            const lat = marker.getPosition().lat();
-            const lng = marker.getPosition().lng();
-            document.getElementById('latitude').value = lat;
-            document.getElementById('longitude').value = lng;
-        });
-
-        // Initialize autocomplete for the venue input field
-        autocomplete = new google.maps.places.Autocomplete(document.getElementById('event_venue'), {
-            types: ['geocode'],
-            componentRestrictions: { country: 'ca' } // Restrict to Canada
-        });
-
-        // Event listener for place selection from autocomplete
-        autocomplete.addListener('place_changed', function () {
-            const place = autocomplete.getPlace();
-            if (place.geometry) {
-                const location = place.geometry.location;
-
-                // Update the map and marker position
-                map.setCenter(location);
-                map.setZoom(15);
-                marker.setPosition(location);
-
-                // Update latitude and longitude fields
-                document.getElementById('latitude').value = location.lat();
-                document.getElementById('longitude').value = location.lng();
-            }
-        });
-    }
-
-    window.onload = initMap;
-</script>
 
 </body>
 </html>
