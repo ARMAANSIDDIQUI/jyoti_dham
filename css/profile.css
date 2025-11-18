@@ -1,156 +1,85 @@
-/* css/profile.css */
-
-.form-main {
-    padding: 5rem 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+    background-color: #f4f7f6;
 }
 
-main .container {
+.profile-card {
     background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 900px; /* Increased max-width for more content */
-    box-sizing: border-box;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-main .container h2, main .container h3 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+.profile-sidebar {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-right: 1px solid #e9ecef;
+    height: 100%;
 }
 
-main .container .form-group {
-    margin-bottom: 15px;
-}
-
-main .container .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-    font-weight: bold;
-}
-
-main .container .form-group input[type="text"],
-main .container .form-group input[type="email"],
-main .container .form-group input[type="date"],
-main .container .form-group input[type="tel"],
-main .container .form-group input[type="number"],
-main .container .form-group select,
-main .container .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-main .container .form-group input[type="file"] {
-    padding: 5px;
-}
-
-main .container .form-group select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.2-5.4H18.6c-5%200-9.3%201.8-13.2%205.4A17.6%2017.6%200%200%200%200%2082.2c0%204.8%201.8%209.3%205.4%2013.2l128%20128c3.9%203.9%208.4%205.4%2013.2%205.4s9.3-1.8%2013.2-5.4l128-128c3.9-3.9%205.4-8.4%205.4-13.2%200-4.8-1.8-9.3-5.4-13.2z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 10px top 50%;
-    background-size: 12px;
-    padding-right: 30px;
-}
-
-main .container button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-main .container button:hover {
-    background-color: #0056b3;
-}
-
-main .container .message {
-    text-align: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-main .container .message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-main .container .message.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-main .container .profile-picture-section {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-main .container .profile-picture-section img {
-    width: 150px;
-    height: 150px;
+.profile-img {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ddd;
-    margin-bottom: 10px;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-main .container .family-members-list {
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
+.profile-sidebar h4 {
+    font-weight: bold;
+    color: #343a40;
 }
 
-main .container .family-members-list table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+.profile-sidebar .nav-pills .nav-link {
+    color: #495057;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 8px;
 }
 
-main .container .family-members-list th, main .container .family-members-list td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+.profile-sidebar .nav-pills .nav-link.active,
+.profile-sidebar .nav-pills .nav-link:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
-main .container .family-members-list th {
-    background-color: #f2f2f2;
+.profile-sidebar .nav-pills .nav-link i {
+    margin-right: 10px;
 }
 
-main .container .family-members-list .delete-btn {
-    background-color: #dc3545;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    width: auto;
+.tab-content {
+    padding: 2rem;
 }
 
-main .container .family-members-list .delete-btn:hover {
-    background-color: #c82333;
+.form-control, .btn {
+    border-radius: 8px;
 }
 
-main .container .add-family-member-form {
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
 }
+
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+@media (max-width: 767.98px) {
+    .profile-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .tab-content {
+        padding: 1.5rem;
+    }
+}
+
