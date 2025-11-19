@@ -72,11 +72,23 @@ require_once 'includes/header.php';
                 </svg>
                 <span class="btn-text">Subscribe to Calendar</span>
             </summary>
-            <div class="dropdown-content">
-                <a href="feed.php">Sync to Mobile</a>
-                <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
-                <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
-            </div>
+                        <!-- <div class="dropdown-content">
+                            <a href="feed.php">Sync to Mobile</a>
+                            <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
+                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
+                        </div> -->
+                        <div class="dropdown-content">
+                            <a href="https://calendar.google.com/calendar/render?cid=http://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                                Subscribe on Android / Google
+                            </a>
+                            <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">
+                                Subscribe on iPhone / Apple
+                            </a>
+                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                                Subscribe on Outlook
+                            </a>
+                            <a href="feed.php">Sync to Mobile</a>
+                        </div>
         </details>
         <!-- Event container to dynamically update -->
         <div id="event-container" class="card-view">
