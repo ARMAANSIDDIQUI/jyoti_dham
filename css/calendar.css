@@ -21,21 +21,21 @@ body {
 }
 
 .fc .fc-button {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #333;
+    border-color: #333;
     color: #fff;
     transition: all 0.3s ease;
 }
 
 .fc .fc-button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #000;
+    border-color: #000;
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active, 
 .fc .fc-button-primary:not(:disabled):active {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #000;
+    border-color: #000;
 }
 
 /* Views */
@@ -53,8 +53,8 @@ body {
 /* Events */
 .fc-event {
     border: none !important;
-    background-color: #e7f3ff !important;
-    color: #0056b3 !important;
+    background-color: #eee !important;
+    color: #333 !important;
     border-radius: 4px;
     padding: 5px;
     cursor: pointer;

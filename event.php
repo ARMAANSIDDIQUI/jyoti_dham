@@ -33,7 +33,7 @@ require_once 'includes/header.php';
 <!-- Event Details Section -->
 <div class="container event-page my-5">
     <div class="text-left mb-4">
-        <a href="all-events.php" class="btn btn-outline-primary">&larr; View All Events</a>
+        <a href="all-events.php" class="btn btn-outline-dark">&larr; View All Events</a>
     </div>
 
     <div class="card event-details-card">

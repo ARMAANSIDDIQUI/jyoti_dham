@@ -85,8 +85,8 @@ require_once 'includes/header.php';
 
         <!-- Pagination Links -->
         <div id="pagination" class="text-center">
-            <button id="prev-page" class="btn btn-primary" style="display: none;">Previous</button>
-            <button id="next-page" class="btn btn-primary" style="display: none;">Next</button>
+            <button id="prev-page" class="btn btn-dark" style="display: none;">Previous</button>
+            <button id="next-page" class="btn btn-dark" style="display: none;">Next</button>
         </div>
     </div>
 
