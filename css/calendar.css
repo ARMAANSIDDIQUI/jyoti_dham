@@ -64,6 +64,14 @@ body {
     font-weight: 600;
 }
 
+.fc-event-title {
+    color: #000 !important;
+}
+
+.fc-event-time {
+    color: #000 !important;
+}
+
 /* Modal styles */
 .modal {
     display: none; 
