@@ -28,17 +28,19 @@ if (!$event) {
 
 // Handle update submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $day = $_POST['day'];
     $event_date = $_POST['event_date'];
     $event_time = $_POST['event_time'];
     $event_end_time = $_POST['event_end_time'];
-    $time_zone = $_POST['time_zone'];
     $event_name = $_POST['event_name'];
     $event_description = $_POST['event_description'];
-    $organizer = $_POST['organizer'];
-    $event_venue = $_POST['event_venue'];
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
+
+    // Calculate day from date
+    $day = date('l', strtotime($event_date)); // e.g., 'Monday'
+    $time_zone = 'EST'; // Default to Toronto time (EST)
+    $organizer = 'jyotidham';
+    $event_venue = 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
 
     $update_sql = "UPDATE events SET 
         day=?,
@@ -78,19 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="card-body">
                     <form method="post">
-
-        <!-- Day -->
-        <div class="form-group">
-            <label for="day">Day</label>
-            <select class="form-control" name="day" required>
-                <?php
-                foreach (["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] as $dayOption) {
-                    $selected = $event['day'] == $dayOption ? 'selected' : '';
-                    echo "<option value='$dayOption' $selected>$dayOption</option>";
-                }
-                ?>
-            </select>
-        </div>
 
         <!-- Date -->
         <div class="form-group">
@@ -141,20 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
 
-        <!-- Time Zone -->
-        <div class="form-group">
-            <label for="time_zone">Time Zone</label>
-            <select class="form-control" name="time_zone" required>
-                <?php
-                $zones = ["IST", "EST", "EDT", "PST", "GMT"];
-                foreach ($zones as $zone) {
-                    $selected = $event['time_zone'] == $zone ? 'selected' : '';
-                    echo "<option value='$zone' $selected>$zone</option>";
-                }
-                ?>
-            </select>
-        </div>
-
         <!-- Event Name -->
         <div class="form-group">
             <label for="event_name">Event Name</label>
@@ -167,17 +142,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <textarea class="form-control" name="event_description" rows="3" required><?= htmlspecialchars($event['event_description']) ?></textarea>
         </div>
 
-        <!-- Organizer -->
-        <div class="form-group">
-            <label for="organizer">Organizer</label>
-            <input type="text" class="form-control" name="organizer" value="<?= htmlspecialchars($event['organizer']) ?>" required>
-        </div>
+        <!-- Organizer (hidden) -->
+        <input type="hidden" name="organizer" value="jyotidham">
 
-        <!-- Venue -->
-        <div class="form-group">
-            <label for="event_venue">Venue</label>
-            <input type="text" class="form-control" id="event_venue" name="event_venue" value="<?= htmlspecialchars($event['event_venue']) ?>" required>
-        </div>
+        <!-- Venue (hidden) -->
+        <input type="hidden" id="event_venue" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
 
         <!-- Map -->
         <div class="form-group">
@@ -224,20 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $('#longitude').val(lng);
         });
 
-        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('event_venue'), {
-            types: ['geocode'],
-            componentRestrictions: { country: 'ca' }
-        });
-
-        autocomplete.addListener('place_changed', function () {
-            const place = autocomplete.getPlace();
-            if (place.geometry) {
-                map.setCenter(place.geometry.location);
-                marker.setPosition(place.geometry.location);
-                $('#latitude').val(place.geometry.location.lat());
-                $('#longitude').val(place.geometry.location.lng());
-            }
-        });
     }
 
     window.onload = initMap;
