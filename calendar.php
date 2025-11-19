@@ -24,7 +24,7 @@ require_once 'includes/header.php';
 
     /* Remove existing hover styles to replace with new ones */
     .fc-daygrid-day:hover {
-        background: #f8f9fa !important; /* Light gray background on hover */
+        background: white !important; /* Light gray background on hover */
         transition: background 0.15s ease-in-out; /* Smooth background transition */
         transform: scale(1.02);
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Subtle shadow on hover */
@@ -75,7 +75,7 @@ require_once 'includes/header.php';
 
     /* Modal Styling */
     #eventModal.modal {
-        background-color: transparent; /* Make modal background transparent to show card shadow */
+        background-color: #ffffff; /* Make modal background transparent to show card shadow */
         box-shadow: none; /* Remove default modal shadow */
         padding: 0;
         border-radius: 0.5rem; /* Match Bootstrap card border-radius */
