@@ -192,7 +192,6 @@ body {
 .event-card {
     border: 1px solid #ddd;
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
 }
