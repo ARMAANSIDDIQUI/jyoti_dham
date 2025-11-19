@@ -22,7 +22,10 @@ require_once 'includes/header.php';
         cursor: pointer; /* Indicate interactivity */
     }
 
+    /* Remove existing hover styles to replace with new ones */
     .fc-daygrid-day:hover {
+        background: #f8f9fa !important; /* Light gray background on hover */
+        transition: background 0.15s ease-in-out; /* Smooth background transition */
         transform: scale(1.02);
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Subtle shadow on hover */
         z-index: 1; /* Ensure hover effect is on top */
@@ -34,42 +37,98 @@ require_once 'includes/header.php';
         color: inherit; /* Maintain original color or adjust if needed */
     }
 
-    /* Adjust FullCalendar's default border for a cleaner look */
-    .fc-theme-standard td, .fc-theme-standard th {
-        border: none; /* Remove default FullCalendar borders */
-    }
+    /* FullCalendar specific overrides for borders */
     .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
         min-height: 30px; /* Ensure some space for events */
+    }
+    /* Ensure borders are visible for all cells */
+    .fc-daygrid-day {
+        border: 1px solid #dee2e6; /* Explicitly set border for all day cells */
+    }
+    /* Remove the line between date number and event list */
+    .fc-daygrid-day-top {
+        border-bottom: none !important;
+        display: flex; /* Keep flex for alignment */
+        justify-content: flex-end;
+        padding: 5px;
+    }
+    .fc-daygrid-event-harness {
+        border-top: none !important;
+    }
+
+    .fc-daygrid-day-frame {
+        border-right: 1px solid #dee2e6; /* Add border to the right of the cell frame */
+    }
+    .fc-daygrid-day:last-child .fc-daygrid-day-frame {
+        border-right: none; /* Remove right border for the last cell in a row */
+    }
+    .fc-daygrid-day-number {
+        font-weight: bold;
+    }
+
+    /* Event Hover Popover Styling */
+    .fc-popover {
+        background: #ffffff !important;
+        border: 1px solid #dee2e6 !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+    }
+
+    /* Modal Styling */
+    #eventModal.modal {
+        background-color: transparent; /* Make modal background transparent to show card shadow */
+        box-shadow: none; /* Remove default modal shadow */
+        padding: 0;
+        border-radius: 0.5rem; /* Match Bootstrap card border-radius */
+        overflow: visible; /* Allow shadow to be visible */
+    }
+    #eventModal .card-body {
+        padding: 1rem;
+    }
+    #eventModal .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+    #eventModal .card-text {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 0.25rem;
     }
 </style>
 
 <div class="container mt-5 mb-5 fade-in">
-    <h1 class="text-center mb-4">Satsang Calendar</h1>
-
-    <div class="d-grid gap-2 d-md-block mb-4">
-        <details class="calendar-dropdown-wrapper">
-            <summary class="btn-calendar-action">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
-                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                </svg>
-                <span class="btn-text">Subscribe to Calendar</span>
-            </summary>
-            <div class="dropdown-content">
-                <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">Sync to Mobile</a>
-                <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
-                <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
+        <div class="card shadow-sm p-4 mb-4 bg-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+                <h1 class="display-5 fw-bold text-dark mb-3 mb-md-0">Satsang Calendar</h1>
+                <div class="d-grid gap-2 d-md-block">
+                    <details class="calendar-dropdown-wrapper">
+                        <summary class="btn-calendar-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                            </svg>
+                            <span class="btn-text">Subscribe to Calendar</span>
+                        </summary>
+                        <div class="dropdown-content">
+                            <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">Sync to Mobile</a>
+                            <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
+                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
+                        </div>
+                    </details>
+                </div>
             </div>
-        </details>
+        </div>
+    
+        <div class="card shadow-sm p-4 bg-white">
+        <div id="calendar"></div>
     </div>
-
-    <div id="calendar"></div>
 </div>
 
-<div id="eventModal" class="modal">
-    <div class="modal-content">
-        <h2 id="modalTitle"></h2>
-        <div id="modalVenue"></div>
-        <div id="modalDescription"></div>
+<div id="eventModal" class="modal card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title" id="modalTitle"></h5>
+        <p class="card-text" id="modalVenue"></p>
+        <p class="card-text" id="modalDescription"></p>
     </div>
 </div>
 
