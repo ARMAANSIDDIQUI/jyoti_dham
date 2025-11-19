@@ -48,6 +48,12 @@ body {
     color: #495057;
 }
 
+@media (min-width: 992px) {
+    .event-description {
+        border-right: 1px solid #e9ecef;
+    }
+}
+
 .event-sidebar {
     padding: 2rem;
     background-color: #f8f9fa;
@@ -57,7 +63,7 @@ body {
 .event-sidebar .sidebar-section {
     background-color: transparent;
     padding: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* Adjusted for better spacing */
 }
 
 .event-sidebar .sidebar-title {
@@ -139,12 +145,10 @@ body {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    padding: 0 2rem;
 }
 
 .map-section {
-    padding: 2rem;
-    padding-top: 0;
+    padding: 2rem; /* Consistent padding for the entire section */
 }
 
 .btn-outline-primary {

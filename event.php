@@ -64,20 +64,30 @@ require_once 'includes/header.php';
                             <p><?= htmlspecialchars($event['event_venue']); ?></p>
                         </div>
                         <div class="sidebar-section">
-                            <details>
-                            <summary>Add to Calendar</summary>
-                            <ul>
-                                <?php
-                                    $start_time = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time'])));
-                                    $end_time = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time'])));
-                                    $title = urlencode($event['event_name']);
-                                    $description = urlencode($event['event_description']);
-                                ?>
-                                <li><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?php echo $title; ?>&dates=<?php echo $start_time; ?>/<?php echo $end_time; ?>&details=<?php echo $description; ?>" target="_blank">Google</a></li>
-                                <li><a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?php echo $title; ?>&startdt=<?php echo $start_time; ?>&enddt=<?php echo $end_time; ?>&body=<?php echo $description; ?>" target="_blank">Outlook</a></li>
-                                <li><a href="export_ics.php?id=<?php echo $event['id']; ?>">Apple / Samsung / File</a></li>
-                            </ul>
-                        </details>
+                            <details class="calendar-dropdown-wrapper">
+                                <summary class="btn-calendar-action">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                    </svg>
+                                    <span class="btn-text">Add to Calendar</span>
+                                </summary>
+                                <div class="dropdown-content">
+                                    <?php
+                                        $start_time_google = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time'])));
+                                        $end_time_google = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time'])));
+                                        $title_google = urlencode($event['event_name']);
+                                        $description_google = urlencode($event['event_description']);
+
+                                        $start_time_outlook = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time'])));
+                                        $end_time_outlook = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time'])));
+                                        $title_outlook = urlencode($event['event_name']);
+                                        $description_outlook = urlencode($event['event_description']);
+                                    ?>
+                                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?php echo $title_google; ?>&dates=<?php echo $start_time_google; ?>/<?php echo $end_time_google; ?>&details=<?php echo $description_google; ?>" target="_blank">Google Calendar</a>
+                                    <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?php echo $title_outlook; ?>&startdt=<?php echo $start_time_outlook; ?>&enddt=<?php echo $end_time_outlook; ?>&body=<?php echo $description_outlook; ?>" target="_blank">Outlook</a>
+                                    <a href="export_ics.php?id=<?php echo $event['id']; ?>">Apple / Samsung / File</a>
+                                </div>
+                            </details>
                         </div>
                     </div>
                 </div>
@@ -86,7 +96,7 @@ require_once 'includes/header.php';
             <?php if (!empty($event['latitude']) && !empty($event['longitude'])): ?>
             <div class="map-section mt-4">
                 <h3 class="section-title">Map Location</h3>
-                <div style="padding: 0 2rem 2rem 2rem;">
+                <div>
                     <iframe
                         id="googleMap"
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDP4YgDI3gOakb5Y-kqrCCtCT4M8pj9Mzk&q=<?= $event['latitude']; ?>,<?= $event['longitude']; ?>"
