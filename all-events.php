@@ -65,6 +65,19 @@ require_once 'includes/header.php';
 
     <div class="container">
         <h1 class="text-center mb-4">All Events</h1>
+        <details class="calendar-dropdown-wrapper">
+            <summary class="btn-calendar-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+                <span class="btn-text">Subscribe to Calendar</span>
+            </summary>
+            <div class="dropdown-content">
+                <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">Sync to Mobile</a>
+                <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
+                <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
+            </div>
+        </details>
         <!-- Event container to dynamically update -->
         <div id="event-container" class="card-view">
             <p class="text-center">Loading events...</p>
@@ -119,6 +132,19 @@ require_once 'includes/header.php';
                                             <div class="event-description">
                                                 <p>${event.event_description.substring(0, 200)}${event.event_description.length > 200 ? "..." : ""}</p>
                                             </div>
+                                            <details class="calendar-dropdown-wrapper">
+                                                <summary class="btn-calendar-action">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
+                                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                                    </svg>
+                                                    <span class="btn-text">Add to Calendar</span>
+                                                </summary>
+                                                <div class="dropdown-content">
+                                                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.event_name)}&dates=${encodeURIComponent(event.event_date + 'T' + event.event_time)}/${encodeURIComponent(event.event_date + 'T' + event.event_end_time)}&details=${encodeURIComponent(event.event_description)}" target="_blank">Google Calendar</a>
+                                                    <a href="export_ics.php?id=${event.id}">Apple / Mobile</a>
+                                                    <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(event.event_name)}&startdt=${encodeURIComponent(event.event_date + 'T' + event.event_time)}&enddt=${encodeURIComponent(event.event_date + 'T' + event.event_end_time)}&body=${encodeURIComponent(event.event_description)}" target="_blank">Outlook</a>
+                                                </div>
+                                            </details>
                                         </div>
                                     </div>
                                 `;

@@ -1,35 +1,37 @@
 <?php
-require 'includes/db_connect.php';
+require_once 'config/db_connect.php';
 
 header('Content-Type: text/calendar; charset=utf-8');
-header('Content-Disposition: inline; filename="satsang_feed.ics"');
+header('Content-Disposition: inline; filename="calendar_feed.ics"');
 
-$conn = DB::getInstance()->getConnection();
+$db = DB::getInstance();
+$conn = $db->getConnection();
 
-$stmt = $conn->prepare("SELECT * FROM satsang WHERE start_time > NOW() AND is_active = 1 ORDER BY start_time ASC");
+// Fetch all future events
+$stmt = $conn->prepare("SELECT * FROM events WHERE event_date >= CURDATE() ORDER BY event_date, event_time");
 $stmt->execute();
-$satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$ics = "BEGIN:VCALENDAR\r\n";
-$ics .= "VERSION:2.0\r\n";
-$ics .= "PRODID:-//Jyoti Dham//Satsang Calendar//EN\r\n";
+echo "BEGIN:VCALENDAR\r\n";
+echo "VERSION:2.0\r\n";
+echo "PRODID:-//JyotiDham//NONSGML v1.0//EN\r\n";
+echo "X-WR-CALNAME:Jyoti Dham Events\r\n";
+echo "CALSCALE:GREGORIAN\r\n";
 
-foreach ($satsangs as $satsang) {
-    $start = date('Ymd\THis', strtotime($satsang['start_time']));
-    $end = date('Ymd\THis', strtotime($satsang['end_time']));
+foreach ($events as $event) {
+    $dtstart = date('Ymd\THis', strtotime($event['event_date'] . ' ' . $event['event_time']));
+    $dtend = date('Ymd\THis', strtotime($event['event_date'] . ' ' . $event['event_end_time']));
 
-    $ics .= "BEGIN:VEVENT\r\n";
-    $ics .= "UID:" . uniqid() . "@jyotidham.com\r\n";
-    $ics .= "DTSTAMP:" . gmdate('Ymd\THis') . "\r\n";
-    $ics .= "DTSTART:" . $start . "\r\n";
-    $ics .= "DTEND:" . $end . "\r\n";
-    $ics .= "SUMMARY:" . $satsang['title'] . "\r\n";
-    $ics .= "DESCRIPTION:" . $satsang['description'] . "\r\n";
-    $ics .= "LOCATION:" . $satsang['video_url'] . "\r\n";
-    $ics .= "END:VEVENT\r\n";
+    echo "BEGIN:VEVENT\r\n";
+    echo "UID:" . $event['id'] . "@" . $_SERVER['HTTP_HOST'] . "\r\n";
+    echo "DTSTAMP:" . gmdate('Ymd\THis\Z') . "\r\n";
+    echo "DTSTART:" . $dtstart . "\r\n";
+    echo "DTEND:" . $dtend . "\r\n";
+    echo "SUMMARY:" . $event['event_name'] . "\r\n";
+    echo "DESCRIPTION:" . str_replace("\n", "\\n", $event['event_description']) . "\r\n";
+    echo "LOCATION:" . $event['event_venue'] . "\r\n";
+    echo "END:VEVENT\r\n";
 }
 
-$ics .= "END:VCALENDAR\r\n";
-
-echo $ics;
+echo "END:VCALENDAR\r\n";
 ?>

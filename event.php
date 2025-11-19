@@ -64,14 +64,20 @@ require_once 'includes/header.php';
                             <p><?= htmlspecialchars($event['event_venue']); ?></p>
                         </div>
                         <div class="sidebar-section">
-                            <details class="add-to-calendar-details">
-                                <summary class="btn btn-primary">Add to Calendar</summary>
-                                <div class="calendar-links">
-                                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?= urlencode($event['event_name']); ?>&dates=<?= date('Ymd\THis\Z', strtotime($event['event_date'] . ' ' . $event['event_time'])); ?>/<?= date('Ymd\THis\Z', strtotime($event['event_date'] . ' ' . $event['event_end_time'])); ?>&details=<?= urlencode($event['event_description']); ?>&location=<?= urlencode($event['event_venue']); ?>" target="_blank">Google Calendar</a>
-                                    <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?= urlencode($event['event_name']); ?>&startdt=<?= date('Y-m-d\TH:i:s\Z', strtotime($event['event_date'] . ' ' . $event['event_time'])); ?>&enddt=<?= date('Y-m-d\TH:i:s\Z', strtotime($event['event_date'] . ' ' . $event['event_end_time'])); ?>&body=<?= urlencode($event['event_description']); ?>&location=<?= urlencode($event['event_venue']); ?>" target="_blank">Outlook.com</a>
-                                    <a href="export_ics.php?id=<?= $event['id']; ?>" target="_blank">Apple / Outlook App</a>
-                                </div>
-                            </details>
+                            <details>
+                            <summary>Add to Calendar</summary>
+                            <ul>
+                                <?php
+                                    $start_time = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time'])));
+                                    $end_time = urlencode(date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time'])));
+                                    $title = urlencode($event['event_name']);
+                                    $description = urlencode($event['event_description']);
+                                ?>
+                                <li><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?php echo $title; ?>&dates=<?php echo $start_time; ?>/<?php echo $end_time; ?>&details=<?php echo $description; ?>" target="_blank">Google</a></li>
+                                <li><a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?php echo $title; ?>&startdt=<?php echo $start_time; ?>&enddt=<?php echo $end_time; ?>&body=<?php echo $description; ?>" target="_blank">Outlook</a></li>
+                                <li><a href="export_ics.php?id=<?php echo $event['id']; ?>">Apple / Samsung / File</a></li>
+                            </ul>
+                        </details>
                         </div>
                     </div>
                 </div>
