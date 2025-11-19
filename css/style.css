@@ -194,16 +194,27 @@ body {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
-
-    /* transition: transform 0.3s ease; */
+    transition: transform 0.3s ease;
 }
 
-/* .event-card:hover {
-    transform: scale(1.05);
-} */
+.event-card:hover {
+    transform: scale(1.02);
+}
 
 .event-card .card-body {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.card-actions {
+    margin-top: 15px;
+}
+
+.card-actions > div {
+    margin-bottom: 10px;
 }
 
 .event-card .card-title a {
