@@ -130,6 +130,15 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
             border: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
+        .admin-btn {
+            background-color: #cad1f1;
+            color: #2e2e2e; /* Adjust text color for readability */
+            border: none;
+        }
+        .admin-btn:hover {
+            background-color: #a9b9ea;
+            color: #2e2e2e; /* Adjust text color for readability */
+        }
         @media (max-width: 767.98px) {
             .container-fluid {
                 padding-left: 15px;
