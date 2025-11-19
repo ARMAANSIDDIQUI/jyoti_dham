@@ -73,7 +73,7 @@ require_once 'includes/header.php';
                 <span class="btn-text">Subscribe to Calendar</span>
             </summary>
             <div class="dropdown-content">
-                <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">Sync to Mobile</a>
+                <a href="feed.php">Sync to Mobile</a>
                 <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
                 <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
             </div>
