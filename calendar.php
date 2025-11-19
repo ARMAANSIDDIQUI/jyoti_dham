@@ -95,6 +95,29 @@ require_once 'includes/header.php';
         color: #555;
         margin-bottom: 0.25rem;
     }
+
+    @media (max-width: 768px) {
+        .display-5 {
+            font-size: 2rem;
+            text-align: center;
+        }
+        .fc-header-toolbar {
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+        .fc-header-toolbar .fc-toolbar-chunk {
+            margin-bottom: 10px;
+        }
+        .container.mt-5 {
+            margin-top: 2rem !important;
+        }
+        .container.mb-5 {
+            margin-bottom: 2rem !important;
+        }
+        .card.p-4 {
+            padding: 1rem !important;
+        }
+    }
 </style>
 
 <div class="container mt-5 mb-5 fade-in">
@@ -149,33 +172,52 @@ require_once 'includes/header.php';
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var modal = document.getElementById('eventModal');
-    var span = document.getElementsByClassName("close-button")[0];
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
+    function getCalendarView() {
+        return 'dayGridMonth';
+    }
+
+    function getHeaderToolbar() {
+        return {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
+        };
+    }
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: getCalendarView(),
+        headerToolbar: getHeaderToolbar(),
+        height: 'auto',
         events: 'api/get_events.php',
         eventClick: function(info) {
             window.location.href = 'event.php?id=' + info.event.id;
         },
         eventMouseEnter: function(info) {
-            // Populate and show the modal
-            document.getElementById('modalTitle').innerText = info.event.title;
-            document.getElementById('modalVenue').innerText = 'Venue: ' + (info.event.extendedProps.venue || 'N/A');
-            document.getElementById('modalDescription').innerText = 'Description: ' + (info.event.extendedProps.description || 'N/A');
-            
-            // Position the modal
-            modal.style.left = info.jsEvent.pageX + 'px';
-            modal.style.top = info.jsEvent.pageY + 'px';
-            
-            modal.style.display = "block";
+            if (window.innerWidth >= 768) { // Only show modal on desktop
+                // Populate and show the modal
+                document.getElementById('modalTitle').innerText = info.event.title;
+                document.getElementById('modalVenue').innerText = 'Venue: ' + (info.event.extendedProps.venue || 'N/A');
+                document.getElementById('modalDescription').innerText = 'Description: ' + (info.event.extendedProps.description || 'N/A');
+                
+                // Position the modal
+                modal.style.left = info.jsEvent.pageX + 'px';
+                modal.style.top = info.jsEvent.pageY + 'px';
+                
+                modal.style.display = "block";
+            }
         },
         eventMouseLeave: function(info) {
-            modal.style.display = "none";
+            if (window.innerWidth >= 768) { // Only hide modal on desktop
+                modal.style.display = "none";
+            }
+        },
+        windowResize: function(arg) {
+            var newView = getCalendarView();
+            if (newView !== calendar.view.type) {
+                calendar.changeView(newView);
+            }
+            calendar.setOption('headerToolbar', getHeaderToolbar());
         }
     });
 
