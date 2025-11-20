@@ -62,10 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $mail->send();
         } catch (Exception $e) {
-            // Log the error instead of echoing directly to the user
+            // Log the error and provide a specific error message to the user for debugging
             error_log("Email sending failed: " . $mail->ErrorInfo);
-            // Provide a generic error message to the user
-            echo "<script>alert('There was an issue sending your message. Please try again later.');</script>";
+            echo "<script>alert('Email Error: " . addslashes($mail->ErrorInfo) . "'); window.history.back();</script>";
+            exit; // Stop execution to prevent redirect
         }
 
         // Redirect to homepage on success

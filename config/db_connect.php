@@ -38,7 +38,7 @@ class DB {
     public static function getInstance() {
         if (self::$instance == null) {
             self::$instance = new DB();
-            self::$instance->checkAndCreateTables();
+            // self::$instance->checkAndCreateTables(); 
         }
         return self::$instance;
     }
