@@ -117,11 +117,20 @@ require_once 'includes/header.php';
                         eventContainer.innerHTML = ""; // Clear existing events
 
                         if (data.events.length === 0) {
-                            eventContainer.innerHTML = "<p class='text-center'>No more upcoming events available at the moment. Please check back later.</p>";
+                            eventContainer.innerHTML = `
+                                <div class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-calendar-x" viewBox="0 0 16 16">
+                                        <path d="M8.982 8.982a.5.5 0 0 1-.707 0L6 6.707 3.707 9.000a.5.5 0 0 1-.707-.707L5.293 6 3.000 3.707a.5.5 0 0 1 .707-.707L6 5.293 8.293 3.000a.5.5 0 0 1 .707.707L6.707 6l2.275 2.275a.5.5 0 0 1 0 .707z"/>
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                    </svg>
+                                    <p class="mt-3">No more upcoming events available at the moment. Please check back later.</p>
+                                    <button class="btn btn-primary" onclick="location.reload()">Refresh</button>
+                                </div>
+                            `;
                         } else {
                             data.events.forEach(event => {
                                 const eventHTML = `
-                                    <div class="event-item">
+                                    <article class="event-item" role="article" aria-labelledby="event-title-${event.id}" aria-describedby="event-description-${event.id}">
                                         <div class="event-date">
                                             <span class="day">${event.day.substring(0, 3).toUpperCase()}</span>
                                             <span class="date">${new Date(event.event_date).getDate()}</span>
@@ -137,11 +146,11 @@ require_once 'includes/header.php';
                                                 </span>` : ''}
                                                 <span class="event-time">${event.event_date} @ ${event.event_time} - ${event.event_end_time} ${event.time_zone}</span>
                                             </div>
-                                            <h3 class="event-title">
+                                            <h3 class="event-title" id="event-title-${event.id}">
                                                 <a href="event.php?id=${event.id}" class="event-link">${event.event_name}</a>
                                             </h3>
                                             <address class="event-venue">${event.event_venue}</address>
-                                            <div class="event-description">
+                                            <div class="event-description" id="event-description-${event.id}">
                                                 <p>${event.event_description.substring(0, 200)}${event.event_description.length > 200 ? "..." : ""}</p>
                                             </div>
                                             <details class="calendar-dropdown-wrapper">
