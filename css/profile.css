@@ -30,6 +30,10 @@ body {
     color: #343a40;
 }
 
+.profile-sidebar .nav-pills .nav-item {
+    margin-bottom: 10px; /* Add margin between nav items */
+}
+
 .profile-sidebar .nav-pills .nav-link {
     color: #495057;
     font-weight: 500;
@@ -39,12 +43,51 @@ body {
 
 .profile-sidebar .nav-pills .nav-link.active,
 .profile-sidebar .nav-pills .nav-link:hover {
-    background-color: #007bff;
+    background-color: #000; /* Changed to black */
     color: #fff;
 }
 
 .profile-sidebar .nav-pills .nav-link i {
     margin-right: 10px;
+}
+
+/* Override Bootstrap primary button styles for a black theme */
+.btn-primary {
+    color: #fff;
+    background-color: #000; /* Black background */
+    border-color: #000; /* Black border */
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #333; /* Slightly lighter black on hover */
+    border-color: #333;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5); /* Black focus shadow */
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #333;
+    border-color: #333;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5);
 }
 
 .tab-content {
