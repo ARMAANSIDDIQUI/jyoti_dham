@@ -201,12 +201,12 @@ if (isset($_SESSION['message'])) {
                                 <input type="password" id="current_password" name="current_password" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="new_password">New Password:</label>
-                                <input type="password" id="new_password" name="new_password" class="form-control" required minlength="8">
+                                <label for="new_password">New Password: <small>(min. 6 characters, 1 uppercase, 1 special character)</small></label>
+                                <input type="password" id="new_password" name="new_password" class="form-control" required minlength="6" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}" title="Password must be at least 6 characters long and contain at least one uppercase letter and one special character.">
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password">Confirm New Password:</label>
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="8">
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="6">
                             </div>
                             <button type="submit" class="btn btn-primary">Update Password</button>
                         </form>

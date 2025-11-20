@@ -69,6 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strlen($password) < 6) {
             throw new Exception("Password must be at least 6 characters long.");
         }
+        if (!preg_match('/[A-Z]/', $password)) {
+            throw new Exception("Password must contain at least one uppercase letter.");
+        }
+        if (!preg_match('/[!@#$%^&*]/', $password)) {
+            throw new Exception("Password must contain at least one special character.");
+        }
 
         // Check if email already exists
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = :email");

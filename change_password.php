@@ -36,9 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("New passwords do not match.");
         }
 
-        // Check new password length
-        if (strlen($new_password) < 8) {
-            throw new Exception("New password must be at least 8 characters long.");
+        // Check new password length and complexity
+        if (strlen($new_password) < 6) {
+            throw new Exception("New password must be at least 6 characters long.");
+        }
+        if (!preg_match('/[A-Z]/', $new_password)) {
+            throw new Exception("Password must contain at least one uppercase letter.");
+        }
+        if (!preg_match('/[!@#$%^&*]/', $new_password)) {
+            throw new Exception("Password must contain at least one special character.");
         }
 
         // Hash new password

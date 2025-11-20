@@ -26,8 +26,8 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
                 <input type="email" id="email" name="email" placeholder="Enter your email address" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label for="password">Password: <small>(min. 6 characters)</small></label>
-                <input type="password" id="password" name="password" placeholder="6+ characters" minlength="6" value="<?php echo htmlspecialchars($formData['password'] ?? ''); ?>" required>
+                <label for="password">Password: <small>(min. 6 characters, 1 uppercase, 1 special character)</small></label>
+                <input type="password" id="password" name="password" placeholder="6+ characters" minlength="6" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}" title="Password must be at least 6 characters long and contain at least one uppercase letter and one special character." value="<?php echo htmlspecialchars($formData['password'] ?? ''); ?>" required>
             </div>
             <div class="form-group">
                 <label for="gender">Gender:</label>
