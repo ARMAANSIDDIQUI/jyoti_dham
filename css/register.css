@@ -65,7 +65,7 @@ main .container .form-group select {
 }
 
 main .container button {
-    background-color: #007bff;
+    background-color: #000000;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -76,7 +76,7 @@ main .container button {
 }
 
 main .container button:hover {
-    background-color: #0056b3;
+    background-color: #333333;
 }
 
 main .container .message {
