@@ -190,10 +190,15 @@ body {
 }
 
 .event-card {
+    position: relative;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
+}
+
+.event-card:has(.calendar-dropdown-wrapper[open]) {
+    z-index: 10;
 }
 
 .event-card:hover {
@@ -405,7 +410,7 @@ body {
     position: absolute;
     background: white;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 100;
+    z-index: 1001;
     padding: 10px;
     border-radius: 5px;
     display: none;
