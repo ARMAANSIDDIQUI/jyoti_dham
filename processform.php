@@ -46,15 +46,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host = getenv('SMTP_HOST');
+            $mail->Host = $_ENV['SMTP_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = getenv('SMTP_USERNAME');
-            $mail->Password = getenv('SMTP_PASSWORD');
-            $mail->SMTPSecure = getenv('SMTP_SECURE');
-            $mail->Port = getenv('SMTP_PORT');
+            $mail->Username = $_ENV['SMTP_USERNAME'];
+            $mail->Password = $_ENV['SMTP_PASSWORD'];
+            $mail->SMTPSecure = $_ENV['SMTP_SECURE'];
+            $mail->Port = $_ENV['SMTP_PORT'];
 
-            $mail->setFrom(getenv('SMTP_USERNAME'), 'Contact Form');
-            $mail->addAddress(getenv('SMTP_USERNAME')); // Send to the same email or a designated recipient
+            $mail->setFrom($_ENV['SMTP_USERNAME'], 'Contact Form');
+            $mail->addAddress($_ENV['SMTP_USERNAME']); // Send to the same email or a designated recipient
 
             $mail->isHTML(false);
             $mail->Subject = 'New Contact Form Submission';
@@ -62,9 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $mail->send();
         } catch (Exception $e) {
-            // Log the error and provide a specific error message to the user for debugging
+            // Log the error and provide a generic error message to the user
             error_log("Email sending failed: " . $mail->ErrorInfo);
-            echo "<script>alert('Email Error: " . addslashes($mail->ErrorInfo) . "'); window.history.back();</script>";
+            echo "<script>alert('There was an issue sending your message. Please try again later.'); window.history.back();</script>";
             exit; // Stop execution to prevent redirect
         }
 
