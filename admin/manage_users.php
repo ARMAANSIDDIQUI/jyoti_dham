@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/admin_header.php';
 require_once __DIR__ . '/../config/db_connect.php';
 require_once __DIR__ . '/../vendor/autoload.php';

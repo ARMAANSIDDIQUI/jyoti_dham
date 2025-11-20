@@ -1,4 +1,5 @@
 <?php
+ob_start();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -6,6 +7,7 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_S
     header("Location: ../admin-login.php"); // Redirect to admin login page if not authorized
     exit();
 }
+// If execution reaches here, the user is logged in and is an admin, so we can safely output HTML.
 ?>
 <!DOCTYPE html>
 <html lang="en">
