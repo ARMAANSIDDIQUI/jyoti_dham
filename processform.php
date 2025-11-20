@@ -15,33 +15,46 @@ $conn = DB::getInstance()->getConnection();
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $conn->real_escape_string($_POST["name"]);
-    $email = $conn->real_escape_string($_POST["email"]);
-    $phone = $conn->real_escape_string($_POST["phone"]);
-    $message = $conn->real_escape_string($_POST["message"]);
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $phone = $_POST["phone"];
+    $message = $_POST["message"];
+
+    // Create table if not exists
+    $conn->exec("CREATE TABLE IF NOT EXISTS ContactFormSubmissions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(20),
+        message TEXT,
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );");
 
     // Prepare and execute the database query
     $stmt = $conn->prepare("INSERT INTO ContactFormSubmissions(name, email, phone, message) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $name, $email, $phone, $message);
+    $stmt->bindParam(1, $name);
+    $stmt->bindParam(2, $email);
+    $stmt->bindParam(3, $phone);
+    $stmt->bindParam(4, $message);
 
     if ($stmt->execute()) {
-        // Close the statement
-        $stmt->close();
 
-        // Optionally send email here (commented out for now)
-        /*
+        // Load environment variables
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
+
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host = 'mail.gozoomtech.com';
+            $mail->Host = getenv('SMTP_HOST');
             $mail->SMTPAuth = true;
-            $mail->Username = 'info@gozoomtech.com';
-            $mail->Password = 'Gozoom@123';
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
+            $mail->Username = getenv('SMTP_USERNAME');
+            $mail->Password = getenv('SMTP_PASSWORD');
+            $mail->SMTPSecure = getenv('SMTP_SECURE');
+            $mail->Port = getenv('SMTP_PORT');
 
-            $mail->setFrom('info@gozoomtech.com', 'Contact Form');
-            $mail->addAddress('info@gozoomtech.com');
+            $mail->setFrom(getenv('SMTP_USERNAME'), 'Contact Form');
+            $mail->addAddress(getenv('SMTP_USERNAME')); // Send to the same email or a designated recipient
 
             $mail->isHTML(false);
             $mail->Subject = 'New Contact Form Submission';
@@ -49,16 +62,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $mail->send();
         } catch (Exception $e) {
-            echo "<script>alert('Email sending failed: " . $mail->ErrorInfo . "');</script>";
+            // Log the error instead of echoing directly to the user
+            error_log("Email sending failed: " . $mail->ErrorInfo);
+            // Provide a generic error message to the user
+            echo "<script>alert('There was an issue sending your message. Please try again later.');</script>";
         }
-        */
 
         // Redirect to homepage on success
         header("Location: success.html");
         exit;
     } else {
         // Show alert if database insertion fails
-        echo "<script>alert('Error saving data: " . $stmt->error . "'); window.history.back();</script>";
+        $errorInfo = $stmt->errorInfo();
+        echo "<script>alert('Error saving data: " . $errorInfo[2] . "'); window.history.back();</script>";
     }
 
     # No need to close PDO connection explicitly
