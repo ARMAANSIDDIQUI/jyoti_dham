@@ -1,30 +1,18 @@
 <?php require_once 'includes/header.php'; ?>
 
-
-
-
-
-
-            <div class="et_pb_row et_pb_row_0">
+        <div class="et_pb_section et_pb_with_background et_section_regular contact-banner"
+            style="background-image: url(./images/contact-page-banner-1.jpg) !important;">
+            <div class="et_pb_row">
                 <div
                     class="et_pb_column et_pb_column_4_4 et_pb_column_0  et_pb_css_mix_blend_mode_passthrough et-last-child">
-
-
                     <div class="et_pb_module et_pb_text et_pb_text_0  et_pb_text_align_left et_pb_bg_layout_light">
-
-
                         <div class="et_pb_text_inner">
-                            <!-- <h1>Contact Us</h1> -->
+                            <h1>Contact Us</h1>
                         </div>
                     </div> <!-- .et_pb_text -->
                 </div> <!-- .et_pb_column -->
-
-
             </div> <!-- .et_pb_row -->
-
-
         </div>
-    </div>
 
     <div class="et_pb_section et_pb_section_1 et_section_regular">
         <div class="container"> <!-- Bootstrap container for responsive design -->
@@ -122,7 +110,65 @@
         </div> <!-- .container -->
     </div> <!-- .et_pb_section -->
 
+    <script>
+        document.getElementById("phoneNumber").addEventListener("input", function () {
+            const phoneInput = this;
+            const phoneError = document.getElementById("phoneError");
+        
+            // Allow only numeric input
+            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        
+            // Check if the phone number is exactly 10 digits
+            if (phoneInput.value.length !== 10) {
+                phoneError.style.display = 'block';
+                phoneInput.classList.add('is-invalid');
+            } else {
+                phoneError.style.display = 'none';
+                phoneInput.classList.remove('is-invalid');
+            }
+        });
+        
+        document.getElementById("et_pb_contact_email_0").addEventListener("input", function () {
+            const emailInput = this;
+            const emailError = document.getElementById("emailError");
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+            // Check if the email is valid
+            if (!emailPattern.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                emailInput.classList.add('is-invalid');
+            } else {
+                emailError.style.display = 'none';
+                emailInput.classList.remove('is-invalid');
+            }
+        });
+        
+        // Prevent form submission if phone number or email is invalid
+        document.getElementById("contactForm").addEventListener("submit", function (event) {
+            const phoneInput = document.getElementById("phoneNumber");
+            const emailInput = document.getElementById("et_pb_contact_email_0");
+        
+            let valid = true;
+        
+            // Check phone number validity
+            if (phoneInput.value.length !== 10) {
+                phoneInput.classList.add('is-invalid');
+                document.getElementById("phoneError").style.display = 'block';
+                valid = false;
+            }
+        
+            // Check email validity
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailInput.value)) {
+                emailInput.classList.add('is-invalid');
+                document.getElementById("emailError").style.display = 'block';
+                valid = false;
+            }
+        
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+        </script>
 
-    <?php include 'includes/footer.php'; ?>
-
-</html>
+<?php include 'includes/footer.php'; ?>
