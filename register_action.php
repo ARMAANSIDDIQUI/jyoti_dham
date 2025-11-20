@@ -47,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phone = htmlspecialchars(trim($_POST['phone']));
         $address = htmlspecialchars(trim($_POST['address']));
         $vehicle_number = htmlspecialchars(trim($_POST['vehicle_number']));
-        $family_size = (int)$_POST['family_size'];
+        $additional_family_members = (int)$_POST['family_size'];
+        $family_size = $additional_family_members + 1;
 
         // Basic validation
         if (empty($name)) {
@@ -102,18 +103,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $conn->lastInsertId();
 
         // 5. Loop through family member arrays and INSERT each one
-        if ($family_size > 0 && isset($_POST['family_name']) && is_array($_POST['family_name'])) {
+        if ($additional_family_members > 0 && isset($_POST['family_name']) && is_array($_POST['family_name'])) {
             $family_names = $_POST['family_name'];
             $family_ages = $_POST['family_age'];
             $family_genders = $_POST['family_gender'];
 
-            if (count($family_names) !== $family_size || count($family_ages) !== $family_size || count($family_genders) !== $family_size) {
+            if (count($family_names) !== $additional_family_members || count($family_ages) !== $additional_family_members || count($family_genders) !== $additional_family_members) {
                 throw new Exception("Mismatch in family member data provided. Please ensure all family member fields are filled correctly.");
             }
 
             $stmt = $conn->prepare("INSERT INTO family_members (user_id, name, age, gender) VALUES (:user_id, :name, :age, :gender)");
 
-            for ($i = 0; $i < $family_size; $i++) {
+            for ($i = 0; $i < $additional_family_members; $i++) {
                 $member_name = htmlspecialchars(trim($family_names[$i]));
                 $member_age = (int)$family_ages[$i];
                 $member_gender = htmlspecialchars(trim($family_genders[$i]));
