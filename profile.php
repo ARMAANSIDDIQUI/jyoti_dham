@@ -167,7 +167,7 @@ if (isset($_SESSION['message'])) {
                                                 <td><?php echo htmlspecialchars($member['age']); ?></td>
                                                 <td><?php echo htmlspecialchars(ucfirst($member['gender'])); ?></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-info btn-sm edit-member-btn" data-toggle="modal" data-target="#editFamilyMemberModal"
+                                                    <button type="button" class="btn btn-info edit-member-btn" data-toggle="modal" data-target="#editFamilyMemberModal"
                                                         title="Edit"
                                                         data-id="<?php echo $member['id']; ?>"
                                                         data-name="<?php echo htmlspecialchars($member['name']); ?>"
@@ -177,7 +177,7 @@ if (isset($_SESSION['message'])) {
                                                     </button>
                                                     <form action="delete_family_member.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this family member?');" style="display: inline;">
                                                         <input type="hidden" name="member_id" value="<?php echo $member['id']; ?>">
-                                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
+                                                        <button type="submit" class="btn btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
