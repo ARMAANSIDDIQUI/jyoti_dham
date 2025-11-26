@@ -1,41 +1,180 @@
-.all-events {
-    margin: 10px;
-    padding: auto;   
+
+body {
+    background-color: #f4f7f6;
+    font-family: 'Inter', sans-serif;
 }
 
-@media (max-width: 1200px){
-    .event-heading {
-        font-size: 32px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@700&display=swap');
+
+.event-page {
+    font-family: 'Inter', sans-serif;
+}
+
+.event-details-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.event-header {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 0;
+}
+
+.event-name {
+    font-family: 'Lora', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #212529;
+}
+
+.event-time-info {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+.event-description {
+    padding: 2rem;
+}
+
+.event-description p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #495057;
+}
+
+@media (min-width: 992px) {
+    .event-description {
+        border-right: 1px solid #e9ecef;
     }
 }
 
-@media (max-width: 968px) {
-    .event-heading {
-        font-size: 28px;
+.event-sidebar {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    height: 100%;
+}
+
+.event-sidebar .sidebar-section {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 1.5rem; /* Adjusted for better spacing */
+}
+
+.event-sidebar .sidebar-title {
+    font-family: 'Lora', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #343a40;
+}
+
+.add-to-calendar-details {
+    position: relative;
+}
+
+.add-to-calendar-details summary {
+    cursor: pointer;
+    width: 100%;
+    list-style: none; /* Hide the default marker */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-to-calendar-details summary::-webkit-details-marker {
+    display: none; /* Hide the default marker in Chrome */
+}
+
+.add-to-calendar-details summary::after {
+    content: ' ▼';
+    font-size: 0.8em;
+}
+
+.add-to-calendar-details[open] summary::after {
+    content: ' ▲';
+}
+
+.calendar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+
+.add-to-calendar-details[open] .calendar-links {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.calendar-links a {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-links a:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+.section-title {
+    font-family: 'Lora', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.map-section {
+    padding: 2rem; /* Consistent padding for the entire section */
+}
+
+.btn-outline-primary {
+    color: #333;
+    border-color: #333;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #333;
+    border-color: #333;
+}
+
+@media (max-width: 992px) {
+    .event-name {
+        font-size: 2.5rem;
     }
-    
+    .event-sidebar {
+        margin-top: 0;
+        border-top: 1px solid #e9ecef;
+    }
 }
 
 @media (max-width: 768px) {
-    .event-heading {
-        font-size: 26px;
+    .event-name {
+        font-size: 2rem;
     }
-}
-
-
-@media (max-width: 576px) {
-    .event-heading {
-        font-size: 26px;
-    }
-}
-
-.event-description h3 {
-    font-size: 20px;
-    color: #666;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-
-.t-head{
-    font-size: 20px;
 }

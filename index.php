@@ -1,83 +1,18 @@
 <?php
-include 'db.php';
+require_once __DIR__ . '/includes/header.php'; // Include the header component
 
 try {
     // Fetch the upcoming 6 events
-    $sql = "SELECT id, event_name, event_description FROM events WHERE event_date >= CURDATE() ORDER BY event_date ASC LIMIT 6";
-    $result = $conn->query($sql);
-
-    // Check if the query returned results
-    if ($result->num_rows > 0) {
-        $events = $result->fetch_all(MYSQLI_ASSOC);
-    } else {
-        $events = []; // No upcoming events
-    }
-} catch (Exception $e) {
-    echo "Error: " . $e->getMessage();
-    die();
+    $sql = "SELECT id, event_name, event_description, event_date, event_time, event_end_time FROM events WHERE event_date >= CURDATE() ORDER BY event_date ASC LIMIT 6";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log("Error fetching events: " . $e->getMessage());
+    $events = []; // No upcoming events or an error occurred
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jyotidham | Homepage</title>
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jyotidham | Homepage</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body>
-
-    <!-- Header Section -->
-    <div>
-    <header class="header-section">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light nav">
-        <a class="navbar-brand" href="index.php">
-            <img src="./images/logo-dark-bold.png" alt="Jyotidham Logo" class="header-logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://www.youtube.com/live/QCCh6J9TWDw?si=6vgJNra2bprx9AxJ">Live Satsang</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="donate.html">Donate</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="calender.php">Calendar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
-                </li>
-            </ul>
-            <!-- New Buttons Start -->
-            <!--<div class="ml-lg-3 mt-2 mt-lg-0 d-flex gap-2">-->
-            <!--    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMi6k8G3gwt9l_k_3hIszOxRj3B7goqKhXKr8znDD5RCRuIg/viewform?pli=1" target="_blank" class="btn btn-dark text-white mr-2">Volunteer</a>-->
-            <!--    <a href="https://docs.google.com/forms/d/e/1FAIpQLScRNrcIXlCW3Sc0x4pOi3d-3s-OEczNAEjNhuhBcfKS6YVghQ/viewform" target="_blank" class="btn btn-dark text-white">Matha Tek Reg</a>-->
-            <!--</div>-->
-            <!-- New Buttons End -->
-        </div>
-    </nav>
-</header>
 
 
         <!-- Banner Section -->
@@ -93,8 +28,7 @@ try {
         <p>Experience divine spirituality with us</p>
         <a href="#" class="btn btn-primary">Learn More</a> -->
     </div>
-
-
+</section>
     <section id="upcoming-events">
         <div class="container">
             <h1 class="text-left text">Upcoming Events</h1>
@@ -104,77 +38,62 @@ try {
                         <div class="card event-card" style="height: 100%; width: 100%;">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="event-details.php?id=<?= $event['id']; ?>">
+                                    <a href="event.php?id=<?= $event['id']; ?>">
                                         <?= strlen($event['event_name']) > 50 ? substr($event['event_name'], 0, 47) . '...' : $event['event_name']; ?>
                                     </a>
                                 </h5>
                                 <p class="card-text">
                                     <?= strlen($event['event_description']) > 100 ? substr($event['event_description'], 0, 97) . '...' : $event['event_description']; ?>
                                 </p>
-                                <a href="event.php?id=<?= $event['id']; ?>" class="read">Read More</a>
+                                <div class="card-actions">
+                                    <div>
+                                        <a href="event.php?id=<?= $event['id']; ?>" class="read">Read More</a>
+                                    </div>
+                                    <div>
+                                        <details class="calendar-dropdown-wrapper">
+                                            <summary class="btn-calendar-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
+                                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                                </svg>
+                                                <span class="btn-text">Add to Calendar</span>
+                                            </summary>
+                                            <div class="dropdown-content">
+                                                <?php
+                                                    $start_time_iso = date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time']));
+                                                    $end_time_iso = date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time']));
+                                                    $title = urlencode($event['event_name']);
+                                                    $description = urlencode($event['event_description']);
+                                                ?>
+                                                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?php echo $title; ?>&dates=<?php echo gmdate('Ymd\THis\Z', strtotime($start_time_iso)); ?>/<?php echo gmdate('Ymd\THis\Z', strtotime($end_time_iso)); ?>&details=<?php echo $description; ?>" target="_blank">Google Calendar</a>
+                                                <a href="export_ics.php?id=<?php echo $event['id']; ?>">Apple / Mobile</a>
+                                                <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?php echo $title; ?>&startdt=<?php echo $start_time_iso; ?>&enddt=<?php echo $end_time_iso; ?>&body=<?php echo $description; ?>" target="_blank">Outlook</a>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
             <div class="view-div">
-                <a href="calender.php" class="view-link">View All</a>
+                <a href="all-events.php" class="view-link">View All</a>
             </div>
         </div>
     </section>
 
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <!-- Left Side: Logos -->
-                <div class="col-lg-4 col-md-12 logos">
-                    <div class="logo">
-                        <img src="./images/logo-jd-light.png" alt="Jyotidham Logo" />
-                    </div>
-                    <div class="logo">
-                        <img src="./images/logo-round-white.png" alt="logo-round-white" />
-                    </div>
-                </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let zIndexCounter = 10;
+            const eventCards = document.querySelectorAll('.event-card');
 
-                <!-- Right Side: Content and Links -->
-                <div class="col-lg-8 col-md-12 content">
-                    <div class="row">
-                        <!-- Text Section -->
-                        <div class="col-12 text-section">
-                            <p>After deep prayer and meditation, a devotee is in touch with his divine
-                                consciousness; there is no greater power than that inward protection.</p>
-                        </div>
+            eventCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.zIndex = zIndexCounter++;
+                });
+            });
+        });
+    </script>
 
-                        <!-- Two Columns -->
-                        <div class="col-lg-6 col-md-12 links">
-                            <h5>Find Us Here</h5>
-                            <p>Shri Param Hans Advait Mat Ontario</p>
-                            <p class="address">
-                                <img class="map-pin" src="./images/location.png"
-                                    alt="Map Pin" />
-                                260 Ingleton Blvd, Scarborough,<br>
-                                ON M1V 3R1, Canada
-                            </p>
-                        </div>
-                        <div class="col-lg-6 col-md-12 quick-links">
-                            <h5>Quick Links</h5>
-                            <p><a href="donate.html">Donate</a></p>
-                            <p><a href="terms.html">Refund &amp; Privacy Policy</a>
-                            </p>
-                            <p><a href="./admin-login.php">Admin Login</a>
-                            </p>
-                            <p>We accept</p>
-                            <img src="./images/payment-cards-updated.png" alt="Payment Cards">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
+    <?php include 'includes/footer.php'; ?>
 </html>

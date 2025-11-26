@@ -1,0 +1,116 @@
+body {
+    background-color: #f4f7f6;
+}
+
+#calendar {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Toolbar */
+.fc-header-toolbar {
+    margin-bottom: 1.5rem !important;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.fc .fc-button {
+    background-color: #333;
+    border-color: #333;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.fc .fc-button:hover {
+    background-color: #000;
+    border-color: #000;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #000;
+    border-color: #000;
+}
+
+/* Views */
+.fc-daygrid-day-number {
+    color: #343a40;
+    padding: 0.5em;
+}
+
+.fc-col-header-cell-cushion {
+    color: #6c757d;
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+/* Events */
+.fc-event {
+    border: none !important;
+    background-color: #eee !important;
+    color: #333 !important;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.fc-event-main {
+    font-weight: 600;
+}
+
+.fc-event-title {
+    color: #000 !important;
+}
+
+.fc-event-time {
+    color: #000 !important;
+}
+
+/* Modal styles */
+.modal {
+    display: none; 
+    position: absolute; 
+    z-index: 1000; 
+    background-color: #fff;
+    color: #333;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 300px;
+    max-height: 250px; /* Added max-height */
+    overflow-y: auto; /* Added overflow-y */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.modal-content {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+#modalTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word; /* Added word-wrap */
+}
+
+#modalVenue, #modalDescription {
+    font-size: 0.95rem;
+    color: #555;
+    word-wrap: break-word; /* Added word-wrap */
+}
+
+
+@media (max-width: 768px) {
+    #calendar {
+        padding: 1rem;
+    }
+}

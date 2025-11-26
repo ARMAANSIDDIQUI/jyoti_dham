@@ -159,3 +159,32 @@ p.et_pb_contact_field {
     padding-left: 38px !important;
     margin-top: 10px !important;
 }
+.contact-banner {
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    margin: 30px 25px 0; /* top right bottom left */
+    padding: 0; /* Reset padding to avoid interference */
+}
+
+.contact-banner .et_pb_row {
+    width: 100%; /* Allow row to fill the banner */
+}
+
+.contact-banner .et_pb_text_inner h1 {
+    color: #ffffff;
+    text-align: center;
+    font-size: 54px; /* Match banner.css */
+    font-weight: 700; /* Match banner.css */
+    line-height: 1.2em; /* Adjust for vertical centering */
+}
+
+/* Remove default padding from the banner's inner row */
+.contact-banner .et_pb_row_0.et_pb_row {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}

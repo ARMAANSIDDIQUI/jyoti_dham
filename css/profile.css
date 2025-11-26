@@ -1,0 +1,128 @@
+body {
+    background-color: #f4f7f6;
+}
+
+.profile-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-sidebar {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-right: 1px solid #e9ecef;
+    height: 100%;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-sidebar h4 {
+    font-weight: bold;
+    color: #343a40;
+}
+
+.profile-sidebar .nav-pills .nav-item {
+    margin-bottom: 10px; /* Add margin between nav items */
+}
+
+.profile-sidebar .nav-pills .nav-link {
+    color: #495057;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.profile-sidebar .nav-pills .nav-link.active,
+.profile-sidebar .nav-pills .nav-link:hover {
+    background-color: #000; /* Changed to black */
+    color: #fff;
+}
+
+.profile-sidebar .nav-pills .nav-link i {
+    margin-right: 10px;
+}
+
+/* Override Bootstrap primary button styles for a black theme */
+.btn-primary {
+    color: #fff;
+    background-color: #000; /* Black background */
+    border-color: #000; /* Black border */
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #333; /* Slightly lighter black on hover */
+    border-color: #333;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5); /* Black focus shadow */
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #333;
+    border-color: #333;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5);
+}
+
+.tab-content {
+    padding: 2rem;
+}
+
+.form-control, .btn {
+    border-radius: 8px;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+@media (max-width: 767.98px) {
+    .profile-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .tab-content {
+        padding: 1.5rem;
+    }
+}
+
