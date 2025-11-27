@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/header.php'; // Include the header component
 
 try {
     // Fetch the upcoming 6 events
-    $sql = "SELECT id, event_name, event_description, event_date, event_time, event_end_time FROM events WHERE event_date >= CURDATE() ORDER BY event_date ASC LIMIT 6";
+    $sql = "SELECT id, event_name, event_description, event_date, event_time, event_end_time, image_url FROM events WHERE event_date >= CURDATE() ORDER BY event_date ASC LIMIT 6";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,45 +32,46 @@ try {
     <section id="upcoming-events">
         <div class="container">
             <h1 class="text-left text">Upcoming Events</h1>
-            <div class="row">
+            <div class="upcoming-events-grid">
                 <?php foreach ($events as $event): ?>
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card event-card" style="height: 100%; width: 100%;">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <a href="event.php?id=<?= $event['id']; ?>">
-                                        <?= strlen($event['event_name']) > 50 ? substr($event['event_name'], 0, 47) . '...' : $event['event_name']; ?>
-                                    </a>
-                                </h5>
-                                <p class="card-text">
-                                    <?= strlen($event['event_description']) > 100 ? substr($event['event_description'], 0, 97) . '...' : $event['event_description']; ?>
-                                </p>
-                                <div class="card-actions">
-                                    <div>
-                                        <a href="event.php?id=<?= $event['id']; ?>" class="read">Read More</a>
+                    <div class="event-card-index">
+                        <a href="event.php?id=<?= $event['id'] ?>" class="card-image-link">
+                            <img src="<?= !empty($event['image_url']) ? htmlspecialchars($event['image_url']) : 'images/Live-Satsang-Thumbnail-2.png' ?>" alt="<?= htmlspecialchars($event['event_name']); ?> Thumbnail" loading="lazy">
+                        </a>
+                        <div class="card-content">
+                            <span class="card-date"><?= date('M d, Y', strtotime($event['event_date'])) ?></span>
+                            <h3 class="card-title">
+                                <a href="event.php?id=<?= $event['id']; ?>">
+                                    <?= htmlspecialchars(strlen($event['event_name']) > 50 ? substr($event['event_name'], 0, 47) . '...' : $event['event_name']); ?>
+                                </a>
+                            </h3>
+                            <p class="card-desc">
+                                <?= htmlspecialchars(strlen($event['event_description']) > 100 ? substr($event['event_description'], 0, 97) . '...' : $event['event_description']); ?>
+                            </p>
+                            <div class="card-footer">
+                                <a href="event.php?id=<?= $event['id']; ?>" class="read-more-link">Read More</a>
+                                <details class="calendar-dropdown-wrapper">
+                                    <summary class="btn-add-cal-small">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        <span>Add to Cal</span>
+                                    </summary>
+                                    <div class="dropdown-content">
+                                        <?php
+                                            $start_time_iso = date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time']));
+                                            $end_time_iso = date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time']));
+                                            $title = urlencode($event['event_name']);
+                                            $description = urlencode($event['event_description']);
+                                        ?>
+                                        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?php echo $title; ?>&dates=<?php echo gmdate('Ymd\THis\Z', strtotime($start_time_iso)); ?>/<?php echo gmdate('Ymd\THis\Z', strtotime($end_time_iso)); ?>&details=<?php echo $description; ?>" target="_blank" rel="noopener noreferrer">Google Calendar</a>
+                                        <a href="export_ics.php?id=<?php echo $event['id']; ?>">Apple / Mobile</a>
+                                        <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?php echo $title; ?>&startdt=<?php echo $start_time_iso; ?>&enddt=<?php echo $end_time_iso; ?>&body=<?php echo $description; ?>" target="_blank" rel="noopener noreferrer">Outlook</a>
                                     </div>
-                                    <div>
-                                        <details class="calendar-dropdown-wrapper">
-                                            <summary class="btn-calendar-action">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
-                                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                                                </svg>
-                                                <span class="btn-text">Add to Calendar</span>
-                                            </summary>
-                                            <div class="dropdown-content">
-                                                <?php
-                                                    $start_time_iso = date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_time']));
-                                                    $end_time_iso = date('Y-m-d\TH:i:s', strtotime($event['event_date'] . ' ' . $event['event_end_time']));
-                                                    $title = urlencode($event['event_name']);
-                                                    $description = urlencode($event['event_description']);
-                                                ?>
-                                                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=<?php echo $title; ?>&dates=<?php echo gmdate('Ymd\THis\Z', strtotime($start_time_iso)); ?>/<?php echo gmdate('Ymd\THis\Z', strtotime($end_time_iso)); ?>&details=<?php echo $description; ?>" target="_blank">Google Calendar</a>
-                                                <a href="export_ics.php?id=<?php echo $event['id']; ?>">Apple / Mobile</a>
-                                                <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=<?php echo $title; ?>&startdt=<?php echo $start_time_iso; ?>&enddt=<?php echo $end_time_iso; ?>&body=<?php echo $description; ?>" target="_blank">Outlook</a>
-                                            </div>
-                                        </details>
-                                    </div>
-                                </div>
+                                </details>
                             </div>
                         </div>
                     </div>

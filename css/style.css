@@ -9,6 +9,7 @@ body {
 
 .main-content {
     flex: 1 0 auto;
+    padding: 20px 0;
 }
 
 .footer-section {
@@ -361,7 +362,10 @@ body {
     }
 }
 
-@media (max-width: 968px) {
+@media (max-width: 968px) {.main-content {
+    flex: 1 0 auto;
+    padding: 20px 0;
+}
     .footer-section .logo img {
         max-width: 60%;
     }

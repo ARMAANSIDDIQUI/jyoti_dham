@@ -114,3 +114,62 @@ body {
         padding: 1rem;
     }
 }
+
+/* The container holding the buttons */
+.view-switcher {
+    background-color: #f1f5f9; /* Light grey track */
+    padding: 4px;
+    border-radius: 8px; /* Smooth rounded corners */
+    display: inline-flex;
+    gap: 0; /* No space between hit-areas */
+    border: 1px solid #e2e8f0;
+}
+
+/* The individual buttons (Month, Week, Day) */
+.view-switcher button {
+    background: transparent;
+    border: none;
+    color: #64748b; /* Muted text */
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px; /* Slightly smaller radius than container */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover Effect */
+.view-switcher button:hover {
+    color: #0f172a; /* Darker text on hover */
+}
+
+/* The Active State (The one currently selected) */
+.view-switcher button.active {
+    background-color: white;
+    color: #0f172a; /* Black text */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle 3D pop */
+    font-weight: 600;
+}
+
+.btn-view-all {
+    /* 1. Add Margin Right */
+    margin-right: 16px;
+
+    /* 2. Add Color (Solid Brand Red) */
+    background-color: #901a1a; /* Deep Red */
+    color: white;              /* White Text */
+    border: none;
+    
+    /* Standard Polish */
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btn-view-all:hover {
+    opacity: 0.85;
+    color: white;
+    text-decoration: none;
+}

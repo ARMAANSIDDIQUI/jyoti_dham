@@ -1,0 +1,155 @@
+/* Grid Layout for the container */
+.upcoming-events-grid {
+    display: grid;
+    /* Creates 3 columns that auto-resize */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+/* The Card Itself */
+.event-card-index {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px; /* Smooth corners */
+    overflow: hidden;    /* Clips the image at corners */
+    display: flex;       /* key for alignment */
+    flex-direction: column; /* Stacks image -> text -> button */
+    height: 100%;        /* Forces full height in grid */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-card-index:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+/* The Image Styling */
+.card-image-link {
+    display: block;
+    height: 180px; /* FIXED HEIGHT is mandatory */
+    width: 100%;
+    background-color: #f3f4f6; /* Grey loading background */
+}
+
+.card-image-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crops image cleanly */
+    object-position: center;
+}
+
+/* Content Padding */
+.card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Fills remaining space */
+}
+
+.card-date {
+    color: #991b1b;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.card-title {
+    margin: 0 0 10px 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.card-desc {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    
+    /* Optional: Limit text to 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Footer Section */
+.card-footer {
+    margin-top: auto; /* MAGIC: Pushes this to the bottom */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+}
+
+/* Button & Link Styling */
+.read-more-link {
+    text-decoration: none;
+    color: #991b1b;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-add-cal-small {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.btn-add-cal-small:hover {
+    background: #333;
+}
+.calendar-dropdown-wrapper .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    padding: 5px 0;
+    right: 0; 
+    bottom: 100%;
+    margin-bottom: 5px;
+}
+
+.calendar-dropdown-wrapper .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+}
+
+.calendar-dropdown-wrapper .dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.calendar-dropdown-wrapper[open] .dropdown-content {
+    display: block;
+}
+
+.calendar-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-add-cal-small {
+    list-style: none;
+}
+.btn-add-cal-small::-webkit-details-marker {
+  display: none;
+}

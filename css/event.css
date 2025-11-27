@@ -1,180 +1,106 @@
-
-body {
-    background-color: #f4f7f6;
-    font-family: 'Inter', sans-serif;
+/* 1. The Main Page Layout */
+.event-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex; /* Creates the columns */
+    gap: 40px;     /* Space between Main Content and Sidebar */
+    padding: 0 20px;
+    align-items: flex-start; /* Keeps sidebar at top */
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@700&display=swap');
-
-.event-page {
-    font-family: 'Inter', sans-serif;
+/* 2. LEFT COLUMN: Main Content (Image & Description) */
+.main-content {
+    flex: 1; /* Takes up remaining space */
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Soft outer shadow */
 }
 
-.event-details-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    overflow: hidden;
-}
-
+/* The Header Section inside Main Content */
 .event-header {
-    padding: 2rem;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
 }
 
-.event-name {
-    font-family: 'Lora', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #212529;
+.event-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 10px;
 }
 
-.event-time-info {
+.event-date-large {
+    color: #991b1b; /* Brand Red */
     font-size: 1.1rem;
-    color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.event-description {
-    padding: 2rem;
-}
-
-.event-description p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #495057;
-}
-
-@media (min-width: 992px) {
-    .event-description {
-        border-right: 1px solid #e9ecef;
-    }
-}
-
-.event-sidebar {
-    padding: 2rem;
-    background-color: #f8f9fa;
-    height: 100%;
-}
-
-.event-sidebar .sidebar-section {
-    background-color: transparent;
-    padding: 0;
-    margin-bottom: 1.5rem; /* Adjusted for better spacing */
-}
-
-.event-sidebar .sidebar-title {
-    font-family: 'Lora', serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: #343a40;
-}
-
-.add-to-calendar-details {
-    position: relative;
-}
-
-.add-to-calendar-details summary {
-    cursor: pointer;
+/* The Image */
+.hero-image-container {
     width: 100%;
-    list-style: none; /* Hide the default marker */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    /* No border! */
 }
 
-.add-to-calendar-details summary::-webkit-details-marker {
-    display: none; /* Hide the default marker in Chrome */
+.hero-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-.add-to-calendar-details summary::after {
-    content: ' ▼';
-    font-size: 0.8em;
+/* Description Text */
+.event-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a4a4a;
 }
 
-.add-to-calendar-details[open] summary::after {
-    content: ' ▲';
-}
-
-.calendar-links {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 10;
+/* 3. RIGHT COLUMN: The Sidebar */
+.event-sidebar {
+    width: 350px; /* Fixed width */
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding: 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    pointer-events: none;
+    gap: 20px;
 }
 
-.add-to-calendar-details[open] .calendar-links {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+/* Sidebar Cards (Unified Look) */
+.sidebar-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
 }
 
-.calendar-links a {
-    text-decoration: none;
-    color: #333;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-}
-
-.calendar-links a:hover {
-    background-color: #f1f1f1;
-    text-decoration: none;
-}
-
-.section-title {
-    font-family: 'Lora', serif;
-    font-size: 1.8rem;
+.sidebar-heading {
+    font-size: 0.9rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    display: block;
 }
 
-.map-section {
-    padding: 2rem; /* Consistent padding for the entire section */
+/* 4. "Back" Button Styling */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: color 0.2s;
 }
 
-.btn-outline-primary {
-    color: #333;
-    border-color: #333;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-primary:hover {
-    color: #fff;
-    background-color: #333;
-    border-color: #333;
-}
-
-@media (max-width: 992px) {
-    .event-name {
-        font-size: 2.5rem;
-    }
-    .event-sidebar {
-        margin-top: 0;
-        border-top: 1px solid #e9ecef;
-    }
-}
-
-@media (max-width: 768px) {
-    .event-name {
-        font-size: 2rem;
-    }
+.back-link:hover {
+    color: #000;
 }

@@ -65,7 +65,8 @@ require_once 'includes/header.php';
 <link rel="stylesheet" href="css/all-events.css">
 
     <div class="container">
-        <h1 class="text-center mb-4">All Events</h1>
+    <div class="page-header">
+        <h1>All Events</h1>
         <details class="calendar-dropdown-wrapper">
             <summary class="btn-calendar-action">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
@@ -73,27 +74,23 @@ require_once 'includes/header.php';
                 </svg>
                 <span class="btn-text">Subscribe to Calendar</span>
             </summary>
-                        <!-- <div class="dropdown-content">
-                            <a href="feed.php">Sync to Mobile</a>
-                            <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Google Calendar</a>
-                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">Outlook</a>
-                        </div> -->
-                        <div class="dropdown-content">
-                            <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
-                                Subscribe on Android / Google
-                            </a>
-                            <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">
-                                Subscribe on iPhone / Apple
-                            </a>
-                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
-                                Subscribe on Outlook
-                            </a>
-                            <a href="feed.php">Sync to Mobile</a>
-                        </div>
+            <div class="dropdown-content">
+                <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                    Subscribe on Android / Google
+                </a>
+                <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">
+                    Subscribe on iPhone / Apple
+                </a>
+                <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                    Subscribe on Outlook
+                </a>
+                <a href="feed.php">Sync to Mobile</a>
+            </div>
         </details>
-        <!-- Event container to dynamically update -->
-        <div id="event-container" class="card-view">
-            <p class="text-center">Loading events...</p>
+    </div>
+</div>
+<div class="container">
+    <div id="event-container">            <p class="text-center">Loading events...</p>
         </div>
 
         <!-- Pagination Links -->
@@ -131,49 +128,44 @@ require_once 'includes/header.php';
                         } else {
                             data.events.forEach(event => {
                                 const eventHTML = `
-                                    <article class="event-item" role="article" aria-labelledby="event-title-${event.id}">
-                                        <a href="event.php?id=${event.id}" class="event-image-link">
-                                            <img src="${event.image_url}" alt="${event.event_name}" class="event-image">
-                                        </a>
-                                        <div class="event-content">
+                                    <div class="event-card">
+                                        <div class="event-card__image">
+                                            <a href="event.php?id=${event.id}">
+                                                <img src="${event.image_url || 'https://via.placeholder.com/400x300'}" alt="${event.event_name}">
+                                            </a>
+                                        </div>
+                                        <div class="event-card__content">
                                             <div class="event-date">
-                                                <span class="day">${event.day.substring(0, 3).toUpperCase()}</span>
-                                                <span class="date">${new Date(event.event_date).getDate()}</span>
+                                                <span>${new Date(event.event_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                                <span class="separator"></span>
+                                                <span class="event-day-name">${event.day}</span>
                                             </div>
-                                            <div class="event-details">
-                                                <div class="event-header">
-                                                    ${event.is_featured ? `
-                                                    <span class="featured-icon">
-                                                        <svg width="15px" height="15px" viewBox="0 0 8 10" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0h8v10L4.049 7.439 0 10V0z"></path>
-                                                        </svg>
-                                                        <span class="featured-text">Featured</span>
-                                                    </span>` : ''}
-                                                    <span class="event-time">${event.event_date} @ ${event.event_time} - ${event.event_end_time} ${event.time_zone}</span>
+                                            <h3 class="event-title">
+                                                <a href="event.php?id=${event.id}" class="event-title-link">${event.event_name}</a>
+                                            </h3>
+                                            <div class="event-meta">
+                                                <div class="meta-row">
+                                                    <svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                    <span>${event.event_time} - ${event.event_end_time} ${event.time_zone}</span>
                                                 </div>
-                                                <h3 class="event-title" id="event-title-${event.id}">
-                                                    <a href="event.php?id=${event.id}" class="event-link">${event.event_name}</a>
-                                                </h3>
-                                                <address class="event-venue">${event.event_venue}</address>
-                                                <div class="event-description" id="event-description-${event.id}">
-                                                    <p>${event.event_description.substring(0, 150)}${event.event_description.length > 150 ? "..." : ""}</p>
+                                                <div class="meta-row">
+                                                    <svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                                    <span>${event.event_venue}</span>
                                                 </div>
-                                                <details class="calendar-dropdown-wrapper">
-                                                    <summary class="btn-calendar-action">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="calendar-icon">
-                                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                                                        </svg>
-                                                        <span class="btn-text">Add to Calendar</span>
-                                                    </summary>
-                                                    <div class="dropdown-content">
-                                                        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.event_name)}&dates=${encodeURIComponent(event.event_date + 'T' + event.event_time)}/${encodeURIComponent(event.event_date + 'T' + event.event_end_time)}&details=${encodeURIComponent(event.event_description)}" target="_blank">Google Calendar</a>
-                                                        <a href="export_ics.php?id=${event.id}">Apple / Mobile</a>
-                                                        <a href="https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(event.event_name)}&startdt=${encodeURIComponent(event.event_date + 'T' + event.event_time)}&enddt=${encodeURIComponent(event.event_date + 'T' + event.event_end_time)}&body=${encodeURIComponent(event.event_description)}" target="_blank">Outlook</a>
-                                                    </div>
-                                                </details>
                                             </div>
                                         </div>
-                                    </article>
+                                        <div class="event-card__action">
+                                            <details class="calendar-dropdown-wrapper">
+                                                <summary class="btn-calendar-action">
+                                                    Add to Calendar
+                                                </summary>
+                                                <div class="dropdown-content">
+                                                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.event_name)}&dates=${encodeURIComponent(event.event_date.replace(/-/g, '') + 'T' + event.event_time.replace(/:/g, '') + '00')}/${encodeURIComponent(event.event_date.replace(/-/g, '') + 'T' + event.event_end_time.replace(/:/g, '') + '00')}&details=${encodeURIComponent(event.event_description)}&location=${encodeURIComponent(event.event_venue)}&ctz=${event.time_zone}" target="_blank">Google Calendar</a>
+                                                    <a href="export_ics.php?id=${event.id}">Apple / Mobile</a>
+                                                </div>
+                                            </details>
+                                        </div>
+                                    </div>
                                 `;
                                 eventContainer.insertAdjacentHTML("beforeend", eventHTML);
                             });
