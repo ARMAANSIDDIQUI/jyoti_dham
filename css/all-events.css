@@ -154,17 +154,6 @@ details[open] .dropdown-content {
     display: block;
 }
 
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
 details {
     list-style: none;
 }
@@ -175,4 +164,53 @@ summary {
 
 summary::-webkit-details-marker {
     display: none;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .event-card {
+        flex-direction: column;
+        width: 90%; /* Occupy most of the screen width */
+        max-width: 350px; /* Limit card width on slightly larger mobile devices */
+        min-height: 350px; /* Set a minimum height for consistent card length */
+        height: auto; /* Allow height to adjust */
+        margin: 0 auto 20px auto; /* Center the card horizontally with bottom margin */
+    }
+
+    .event-card__image {
+        width: 100%; /* Image takes full width of the card */
+        height: 120px; /* Fixed height for image in mobile view, reduced for visibility */
+    }
+
+    .event-card__content {
+        padding: 15px; /* Adjust padding for smaller screens */
+        text-align: center; /* Center content text */
+        justify-content: flex-start; /* Align content to the top */
+    }
+
+    .event-date, .meta-row {
+        justify-content: center; /* Center date and meta rows */
+    }
+
+    .event-title {
+        font-size: 1.1rem; /* Slightly smaller title for mobile */
+        margin-bottom: 10px;
+    }
+
+    .event-card__action {
+        width: 100%; /* Action button takes full width */
+        border-left: none; /* Remove left border */
+        border-top: 1px solid #f0f0f0; /* Add top border */
+        padding: 15px; /* Adjust padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .event-card {
+        width: 95%; /* Slightly more width for very small screens */
+    }
+
+    .event-title {
+        font-size: 1rem; /* Further reduce title size for very small screens */
+    }
 }

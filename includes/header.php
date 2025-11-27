@@ -30,19 +30,20 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jyotidham</title> <!-- Title will be dynamic or set by individual pages -->
-    <link rel="icon" href="./images/Logo.svg" type="image/svg+xml">
+    <link rel="icon" href="/images/Logo.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
     <?php
-    $page_name = basename($_SERVER['PHP_SELF'], ".php");
-    if ($page_name === 'all-events') {
-        echo '<link rel="stylesheet" href="./css/all-events.css">';
+    // Add cache busting to style.css
+    $style_css_path = __DIR__ . '/../css/style.css';
+    if (file_exists($style_css_path)) {
+        echo "<link rel='stylesheet' href='/css/style.css?v=" . filemtime($style_css_path) . "'>";
     }
-    $css_file = "./css/{$page_name}.css";
-    if (file_exists($css_file)) {
-        echo "<link rel='stylesheet' href='{$css_file}'>";
+
+    $page_name = basename($_SERVER['PHP_SELF'], ".php");
+    $dynamic_css_path = __DIR__ . "/../css/{$page_name}.css";
+    if (file_exists($dynamic_css_path)) {
+        echo "<link rel='stylesheet' href='/css/{$page_name}.css?v=" . filemtime($dynamic_css_path) . "'>";
     }
     ?>
 </head>

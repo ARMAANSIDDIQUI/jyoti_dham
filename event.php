@@ -28,9 +28,50 @@ if (isset($_GET['id'])) {
 
 require_once 'includes/header.php';
 ?>
-<link rel="stylesheet" href="css/event.css">
+<style>
+    @media (max-width: 768px) {
+        .event-sidebar {
+            width: 100%; /* Ensure sidebar takes full width on mobile */
+            margin-top: 20px; /* Add some space above the sidebar cards */
+        }
+        .sidebar-card {
+            width: 90%; /* Occupy most of the screen width */
+            max-width: 350px; /* Limit card width */
+            margin: 0 auto 20px auto; /* Center the card horizontally with bottom margin */
+            min-height: 150px; /* Set a minimum height for consistent card length */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top */
+            text-align: center; /* Center text within cards */
+        }
+        .sidebar-card .sidebar-heading {
+            width: 100%;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+        .sidebar-card p {
+            margin-bottom: 10px;
+        }
+        .sidebar-card iframe {
+            max-height: 150px; /* Limit map height in mobile */
+        }
+        .sidebar-card .calendar-dropdown-wrapper {
+            width: 100%; /* Make calendar button full width */
+        }
+        .sidebar-card .btn-calendar-action {
+            width: 100%;
+        }
+        .sidebar-card .dropdown-content {
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: unset;
+            width: 90%;
+        }
+    }
+</style>
 
-<div style="max-width: 1200px; margin: 20px auto; padding: 0 20px;">
+<div class="back-link-container">
     <a href="all-events.php" class="back-link">
         &larr; Back to All Events
     </a>

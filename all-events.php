@@ -62,7 +62,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
 
 require_once 'includes/header.php';
 ?>
-<link rel="stylesheet" href="css/all-events.css">
+
 
     <div class="container">
     <div class="page-header">

@@ -1,0 +1,50 @@
+.con{
+    padding: 3rem;
+}
+
+.payment-logo{
+    max-width: 100px;
+}
+
+.donate-img{
+    max-width: 70%;
+}
+
+
+@media (max-width: 1200px){
+    .donate-img{
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 968px) {
+    .donate-img{
+        max-width: 60%;
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .donate-img{
+        max-width: 100%;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .donate-img{
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    #additional-section-1 .container,
+    #additional-section-2 .container {
+        margin-left: 15px;
+        margin-right: 15px;
+        width: auto; /* To override bootstrap's width */
+    }
+    .container-fluid.con {
+        padding: 1.5rem; /* reduce padding for mobile */
+    }
+}
