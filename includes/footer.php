@@ -50,18 +50,22 @@
                             <div class="col-lg-6 col-md-12 links">
 
                                 <h5>Find Us Here</h5>
-
-                                <p>Shri Param Hans Advait Mat Ontario</p>
-
+                                <p class="address">
+                                    <i class="fa fa-envelope map-pin"></i>
+                                    <a href="mailto:jyotidhamca@gmail.com" style="text-decoration:none;color:white;">jyotidhamca@gmail.com</a>
+                                </p>
+                                <p class="address">
+                                    <i class="fa fa-phone map-pin"></i>
+                                    <a href="tel:+16479483729" style="text-decoration:none;color:white;">+1 (647) 948-3729</a>
+                                </p>
                                 <p class="address">
 
                                     <img class="map-pin" src="./images/location.png"
 
                                         alt="Map Pin" />
 
-                                    236 Ingleton Blvd, Scarborough,<br>
-
-                                    ON M1V 3R1, Canada
+                                    <a href="https://maps.app.goo.gl/jWJwTFFsgTzwMVB5A" style="text-decoration:none;color:white;">260 Ingleton Blvd, Scarborough,<br>
+                                    ON M1V 3R1, Canada</a>
 
                                 </p>
 
@@ -70,10 +74,10 @@
                             <div class="col-lg-6 col-md-12 quick-links">
 
                                 <h5>Quick Links</h5>
+                                <p><a href="contact.php" style="text-decoration:none;color:white;">Contact</a></p>
+                                <p><a href="donate.php" style="text-decoration:none;color:white;">Donate</a></p>
 
-                                <p><a href="donate.php">Donate</a></p>
-
-                                <p><a href="terms.html">Refund &amp; Privacy Policy</a>
+                                <p><a href="terms.html" style="text-decoration:none;color:white;">Refund &amp; Privacy Policy</a>
 
                                 </p>
 
