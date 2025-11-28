@@ -1,7 +1,7 @@
 /* 1. The Main Page Layout */
 .event-page-container {
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 10px auto;
     display: flex; /* Creates the columns */
     gap: 40px;     /* Space between Main Content and Sidebar */
     padding: 0 20px;
@@ -50,7 +50,7 @@
 
 .hero-image-container img {
     width: 100%;
-    height: 240px; /* Fixed height */
+    height: 400px; /* Increased height */
     object-fit: cover; /* Force aspect ratio */
     display: block;
 }
@@ -91,6 +91,12 @@
 }
 
 /* 4. "Back" Button Styling */
+.back-link-container {
+    max-width: 1200px;
+    margin: 50px auto 0 auto;
+    padding: 0 20px;
+}
+
 .back-link {
     display: inline-flex;
     align-items: center;

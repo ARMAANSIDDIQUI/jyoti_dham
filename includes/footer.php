@@ -1,4 +1,3 @@
-
     </main>
 
         <footer class="footer-section">
@@ -56,7 +55,7 @@
                                 </p>
                                 <p class="address">
                                     <i class="fa fa-phone map-pin"></i>
-                                    <a href="tel:+16479483729" style="text-decoration:none;color:white;">+1 (647) 321-0594</a>
+                                    <a href="tel:+14163210594" style="text-decoration:none;color:white;">+1 (416) 321-0594</a>
                                 </p>
                                 <p class="address">
 
