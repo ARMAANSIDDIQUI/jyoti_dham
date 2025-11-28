@@ -89,6 +89,7 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
     <script>
         const phpFormData = <?php echo json_encode($formData); ?>;
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
     <script>
         // Initialize intl-tel-input
         var phoneInputField = document.querySelector("#phone");

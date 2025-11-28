@@ -130,7 +130,7 @@ if (isset($_SESSION['message'])) {
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number:</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" value="<?php echo htmlspecialchars($profileFormData['phone'] ?? $user['phone'] ?? ''); ?>" pattern="^\+?[0-9\s\-()]{7,20}$" title="Phone number must be 7-20 digits, optionally starting with +, and can include spaces, hyphens, or parentheses.">
+                                <input type="tel" id="phone" name="phone" class="form-control" value="<?php echo htmlspecialchars($profileFormData['phone'] ?? $user['phone'] ?? ''); ?>">
                             </div>
                             <div class="form-group">
                                 <label for="address">Address:</label>
@@ -306,8 +306,31 @@ if (isset($_SESSION['message'])) {
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize intl-tel-input
+    var phoneInputField = document.querySelector("#phone");
+    var iti = window.intlTelInput(phoneInputField, {
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+            fetch('https://ipinfo.io/json')
+                .then(function(response) { return response.json(); })
+                .then(function(data) { callback(data.country); })
+                .catch(function() { callback("ca"); });
+        },
+        separateDialCode: true,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
+    });
+
+    // Handle form submission for profile update
+    document.querySelector("#details form").addEventListener("submit", function(event) {
+        // Update the phone input's value to the full international number
+        if (iti.isValidNumber()) {
+            phoneInputField.value = iti.getNumber();
+        }
+    });
+
     $('#editFamilyMemberModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var memberId = button.data('id');
