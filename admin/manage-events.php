@@ -118,19 +118,20 @@ $stmt->execute($params);
                     <div class="mb-3">
                         <button class="btn btn-primary" onclick="toggleForm()">Add New Event</button>
                     </div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Organizer</th>
-                                <th>Venue</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Organizer</th>
+                                    <th>Venue</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             <?php foreach ($stmt as $event_item): ?>
                                 <tr>
                                     <td><?= $event_item['id'] ?></td>

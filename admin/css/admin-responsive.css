@@ -1,0 +1,71 @@
+/* Responsive styles for admin pages */
+
+@media (max-width: 992px) {
+    .card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #wrapper {
+        flex-direction: column;
+    }
+
+    #sidebar-wrapper {
+        margin-left: 0;
+        width: 100%;
+        min-height: auto;
+        position: relative;
+    }
+
+    #page-content-wrapper {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -100%;
+    }
+
+    .navbar-nav {
+        margin: 0;
+    }
+
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .table-responsive {
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+
+    .card-header, .card-body, .card-footer {
+        padding: 1rem;
+    }
+
+    .modal-dialog {
+        max-width: 90%;
+        margin: 1.75rem auto;
+    }
+}

@@ -44,6 +44,10 @@ if (!empty($_GET['search_phone'])) {
     $conditions[] = "phone LIKE ?";
     $params[] = '%' . $_GET['search_phone'] . '%';
 }
+if (!empty($_GET['search_id'])) {
+    $conditions[] = "id = ?";
+    $params[] = $_GET['search_id'];
+}
 
 if (!empty($conditions)) {
     $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -73,8 +77,11 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="col-md-3">
                                 <input type="text" name="search_email" class="form-control" placeholder="Search by Email" value="<?= htmlspecialchars($_GET['search_email'] ?? '') ?>">
                             </div>
-                            <div class="col-md-3">
-                                <input type="text" name="search_phone" class="form-control" placeholder="Search by Phone Number" value="<?= htmlspecialchars($_GET['search_phone'] ?? '') ?>">
+                            <div class="col-md-2">
+                                <input type="text" name="search_phone" class="form-control" placeholder="Search by Phone" value="<?= htmlspecialchars($_GET['search_phone'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-1">
+                                <input type="text" name="search_id" class="form-control" placeholder="ID" value="<?= htmlspecialchars($_GET['search_id'] ?? '') ?>">
                             </div>
                             <div class="col-md-3 text-right"> <!-- Use text-end for right alignment in Bootstrap 5, text-right for Bootstrap 4 -->
                                 <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>

@@ -91,12 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<div class="container-fluid">
+<div class="container-fluid" style="padding-top: 30px; margin-top: 20px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card mt-5 mb-5">
-                <div class="card-header">
-                    <h2>Edit Event</h2>
+                <div class="card-header text-center" style="background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%); color: #2e2e2e;">
+                    <h2 class="mb-0"><i class="fas fa-edit"></i> Edit Event</h2>
                 </div>
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
@@ -233,5 +233,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php
 require_once __DIR__ . '/admin_footer.php';
 ?>
-</body>
-</html>

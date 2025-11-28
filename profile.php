@@ -68,6 +68,7 @@ if (isset($_SESSION['message'])) {
                         <?php endif; ?>
                         <h4 class="mt-3"><?php echo htmlspecialchars($user['name'] ?? ''); ?></h4>
                         <p class="text-muted"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
+                        <p class="text-muted">User ID: <?php echo htmlspecialchars($user['id'] ?? ''); ?></p>
                     </div>
                     <ul class="nav nav-pills flex-column" id="profile-tabs" role="tablist">
                         <li class="nav-item">
