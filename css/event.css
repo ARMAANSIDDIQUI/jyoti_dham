@@ -50,7 +50,8 @@
 
 .hero-image-container img {
     width: 100%;
-    height: auto;
+    height: 240px; /* Fixed height */
+    object-fit: cover; /* Force aspect ratio */
     display: block;
 }
 
@@ -104,3 +105,91 @@
 .back-link:hover {
     color: #000;
 }
+
+@media (max-width: 768px) {
+    .event-page-container {
+        flex-direction: column;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .main-content {
+        padding: 20px;
+        width: 95%; /* Occupy most of the screen width */
+        max-width: none; /* Remove fixed max-width on mobile */
+        margin: 0 auto 20px auto; /* Center the card horizontally with bottom margin */
+    }
+
+    .event-title {
+        font-size: 2rem;
+    }
+
+    .hero-image-container img {
+        width: 100%;
+        height: 240px; /* Fixed height */
+        object-fit: contain; /* Force aspect ratio to contain */
+        display: block;
+    }
+
+    .event-sidebar {
+        width: 100%; /* Ensure sidebar takes full width on mobile */
+        margin-top: 20px; /* Add some space above the sidebar cards */
+        display: block; /* Change to block to allow margin auto to center cards */
+    }
+
+    .sidebar-card {
+        width: 95%; /* Occupy most of the screen width */
+        max-width: none; /* Remove fixed max-width on mobile */
+        margin: 0 auto 20px auto; /* Center the card horizontally with bottom margin */
+        min-height: 150px; /* Set a minimum height for consistent card length */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Align content to the top */
+        text-align: center; /* Center text within cards */
+    }
+
+    .sidebar-card .sidebar-heading {
+        width: 100%;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+
+    .sidebar-card p {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-card iframe {
+        width: 100%;
+        height: 200px; /* Set fixed height for map responsiveness */
+    }
+
+    .sidebar-card .calendar-dropdown-wrapper {
+        width: 100%; /* Make calendar button full width */
+    }
+
+    .sidebar-card .btn-calendar-action {
+        width: 100%;
+    }
+
+    .sidebar-card .dropdown-content {
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: unset;
+        width: 90%;
+    }
+
+    .organizer-details-container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+  .event-page-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+}
+

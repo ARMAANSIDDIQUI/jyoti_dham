@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $event_venue = 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
     $latitude = 43.8271272;
     $longitude = -79.26619269999999;
-    $image_url = ''; // Default image
+    $image_url = 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg'; // Default image URL
 
     // Handle image upload
     if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] == 0) {

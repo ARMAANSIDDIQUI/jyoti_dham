@@ -28,48 +28,7 @@ if (isset($_GET['id'])) {
 
 require_once 'includes/header.php';
 ?>
-<style>
-    @media (max-width: 768px) {
-        .event-sidebar {
-            width: 100%; /* Ensure sidebar takes full width on mobile */
-            margin-top: 20px; /* Add some space above the sidebar cards */
-        }
-        .sidebar-card {
-            width: 90%; /* Occupy most of the screen width */
-            max-width: 350px; /* Limit card width */
-            margin: 0 auto 20px auto; /* Center the card horizontally with bottom margin */
-            min-height: 150px; /* Set a minimum height for consistent card length */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Align content to the top */
-            text-align: center; /* Center text within cards */
-        }
-        .sidebar-card .sidebar-heading {
-            width: 100%;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 10px;
-        }
-        .sidebar-card p {
-            margin-bottom: 10px;
-        }
-        .sidebar-card iframe {
-            max-height: 150px; /* Limit map height in mobile */
-        }
-        .sidebar-card .calendar-dropdown-wrapper {
-            width: 100%; /* Make calendar button full width */
-        }
-        .sidebar-card .btn-calendar-action {
-            width: 100%;
-        }
-        .sidebar-card .dropdown-content {
-            left: 50%;
-            transform: translateX(-50%);
-            min-width: unset;
-            width: 90%;
-        }
-    }
-</style>
+
 
 <div class="back-link-container">
     <a href="all-events.php" class="back-link">
@@ -84,7 +43,7 @@ require_once 'includes/header.php';
         <div class="event-header">
             <h1 class="event-title"><?= htmlspecialchars($event['event_name']); ?></h1>
             <div class="event-date-large">
-                <?= date('l, F j, Y • g:i A', strtotime($event['event_date'] . ' ' . $event['event_time'])); ?>
+                <?= date('l, F j, Y • g:i A', strtotime($event['event_date'] . ' ' . $event['event_time'])); ?> - <?= date('g:i A', strtotime($event['event_end_time'])); ?>
             </div>
         </div>
 
@@ -138,7 +97,7 @@ require_once 'includes/header.php';
             </p>
             
             <?php if (!empty($event['latitude']) && !empty($event['longitude'])): ?>
-            <div style="width: 100%; height: 200px; background: #eee; border-radius: 8px; overflow: hidden;">
+            <div style="width: 100%; background: #eee; border-radius: 8px; overflow: hidden;">
                 <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDP4YgDI3gOakb5Y-kqrCCtCT4M8pj9Mzk&q=<?= $event['latitude']; ?>,<?= $event['longitude']; ?>" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
             <?php endif; ?>
@@ -146,7 +105,7 @@ require_once 'includes/header.php';
 
         <div class="sidebar-card">
             <span class="sidebar-heading">Organizer</span>
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="organizer-details-container" style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 40px; height: 40px; background: #991b1b; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">JD</div>
                 <span><?= htmlspecialchars($event['organizer']); ?></span>
             </div>
