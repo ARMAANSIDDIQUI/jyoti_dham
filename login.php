@@ -3,6 +3,18 @@ require_once __DIR__ . '/includes/header.php'; // Include the header component
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config/db_connect.php';
 
+
+// Check if the user is already logged in and redirect accordingly
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    if ($_SESSION['role'] === 'admin') {
+        header("Location: admin/dashboard.php");
+    } else {
+        header("Location: profile.php");
+    }
+    exit();
+}
+
+
 $conn = DB::getInstance()->getConnection();
 
 $message = '';

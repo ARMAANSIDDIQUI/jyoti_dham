@@ -52,11 +52,11 @@
                                 <h5>Find Us Here</h5>
                                 <p class="address">
                                     <i class="fa fa-envelope map-pin"></i>
-                                    <a href="mailto:jyotidhamca@gmail.com" style="text-decoration:none;color:white;">jyotidhamca@gmail.com</a>
+                                    <a href="mailto:jyotidhamtoronto@gmail.com" style="text-decoration:none;color:white;">jyotidhamtoronto@gmail.com</a>
                                 </p>
                                 <p class="address">
                                     <i class="fa fa-phone map-pin"></i>
-                                    <a href="tel:+16479483729" style="text-decoration:none;color:white;">+1 (647) 948-3729</a>
+                                    <a href="tel:+16479483729" style="text-decoration:none;color:white;">+1 (647) 321-0594</a>
                                 </p>
                                 <p class="address">
 

@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="./css/banner.css">
 
-    <div class="et_pb_section et_pb_section_0 et_pb_with_background et_section_regular">
+    <div class="et_pb_section et_pb_section_0 et_pb_with_background et_section_regular" style="margin-top: 60px;">
 
 
 
