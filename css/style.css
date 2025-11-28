@@ -18,11 +18,12 @@ body {
 
 /* Header styling */
 .header-section {
-    background-color: #f8f9fa;
-    padding: 10px 0;
-    position: sticky;
+    background-color: transparent;
+    padding: 0; /* Removed top padding */
+    position: absolute;
     top: 0;
     z-index: 1000;
+    width: 100%;
 }
 
 .header-logo {
@@ -40,6 +41,7 @@ body {
     padding: 10px 20px;
     color: black;
     font-weight: 500;
+    
 }
 
 .navbar-nav .nav-item .nav-link:hover {
@@ -162,7 +164,7 @@ body {
         font-size: 1rem;
     }
     .banner-section{
-        height: 50vh;
+        height: 70vh; /* Increased height */
     }
     .nav {
         padding-left: 100px;
@@ -173,7 +175,7 @@ body {
 
 @media (max-width: 576px) {
     .banner-section{
-        height: 30vh;
+        height: 50vh; /* Increased height */
     }
     .nav {
         padding-left: 50px;

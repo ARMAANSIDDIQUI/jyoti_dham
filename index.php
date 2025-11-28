@@ -18,7 +18,7 @@ try {
         <!-- Banner Section -->
         <section class="banner-section">
             <div class="video-container">
-                <video autoplay muted loop class="banner-video" id="bannerVideo">
+                <video autoplay muted loop class="banner-video" id="bannerVideo" preload="metadata" poster="images/banner.png" loading="lazy">
                     <source src="./images/video.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -36,7 +36,7 @@ try {
                 <?php foreach ($events as $event): ?>
                     <div class="event-card-index">
                         <a href="event.php?id=<?= $event['id'] ?>" class="card-image-link">
-                            <img src="<?= !empty($event['image_url']) ? htmlspecialchars($event['image_url']) : 'images/Live-Satsang-Thumbnail-2.png' ?>" alt="<?= htmlspecialchars($event['event_name']); ?> Thumbnail" loading="lazy">
+                            <img src="<?= !empty($event['image_url']) ? htmlspecialchars($event['image_url']) : 'images/Logo.svg' ?>" alt="<?= htmlspecialchars($event['event_name']); ?> Thumbnail" loading="lazy">
                         </a>
                         <div class="card-content">
                             <span class="card-date"><?= date('M d, Y', strtotime($event['event_date'])) ?></span>
