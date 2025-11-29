@@ -56,7 +56,7 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card">
                     <img src="images/Live-Satsang-Thumbnail-2.png" class="card-img-top" alt="No Satsang Thumbnail">
                     <div class="card-body">
-                        <h5 class="card-title">No Satsang Currently Scheduled</h5>
+                        <h5 class="card-title">No Livestream Currently Scheduled</h5>
                         <p class="card-text">Check back later for upcoming sessions.</p>
                     </div>
                 </div>

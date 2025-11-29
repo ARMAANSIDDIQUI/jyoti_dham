@@ -23,7 +23,7 @@ unset($_SESSION['add_family_member_form_data']);
 
 // Fetch user data
 try {
-    $stmt = $conn->prepare("SELECT id, name, email, gender, dob, phone, address, family_size, vehicle_number, profile_image_url, profile_image_public_id FROM users WHERE id = :id");
+    $stmt = $conn->prepare("SELECT id, user_id, name, email, gender, dob, phone, address, family_size, vehicle_number, profile_image_url, profile_image_public_id FROM users WHERE id = :id");
     $stmt->bindParam(':id', $user_id);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -68,7 +68,7 @@ if (isset($_SESSION['message'])) {
                         <?php endif; ?>
                         <h4 class="mt-3"><?php echo htmlspecialchars($user['name'] ?? ''); ?></h4>
                         <p class="text-muted"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
-                        <p class="text-muted">User ID: <?php echo htmlspecialchars($user['id'] ?? ''); ?></p>
+                        <p class="text-muted">User ID: <?php echo htmlspecialchars($user['user_id'] ?? ''); ?></p>
                     </div>
                     <ul class="nav nav-pills flex-column" id="profile-tabs" role="tablist">
                         <li class="nav-item">

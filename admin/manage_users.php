@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_role'])) {
 }
 
 // Fetch all users
-$sql = "SELECT id, name, email, role, created_at, gender, dob, phone, address, family_size, vehicle_number FROM users";
+$sql = "SELECT id, user_id, name, email, role, created_at, gender, dob, phone, address, family_size, vehicle_number FROM users";
 $params = [];
 $conditions = [];
 
@@ -45,8 +45,8 @@ if (!empty($_GET['search_phone'])) {
     $params[] = '%' . $_GET['search_phone'] . '%';
 }
 if (!empty($_GET['search_id'])) {
-    $conditions[] = "id = ?";
-    $params[] = $_GET['search_id'];
+    $conditions[] = "user_id LIKE ?";
+    $params[] = '%' . $_GET['search_id'] . '%';
 }
 
 if (!empty($conditions)) {
@@ -81,7 +81,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <input type="text" name="search_phone" class="form-control" placeholder="Search by Phone" value="<?= htmlspecialchars($_GET['search_phone'] ?? '') ?>">
                             </div>
                             <div class="col-md-1">
-                                <input type="text" name="search_id" class="form-control" placeholder="ID" value="<?= htmlspecialchars($_GET['search_id'] ?? '') ?>">
+                                <input type="text" name="search_id" class="form-control" placeholder="ID (e.g., JD-0001)" value="<?= htmlspecialchars($_GET['search_id'] ?? '') ?>">
                             </div>
                             <div class="col-md-3 text-right"> <!-- Use text-end for right alignment in Bootstrap 5, text-right for Bootstrap 4 -->
                                 <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
@@ -105,7 +105,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <tbody>
                             <?php foreach ($users as $user): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($user['id']) ?></td>
+                                    <td><?= htmlspecialchars($user['user_id']) ?></td>
                                     <td><?= htmlspecialchars($user['name']) ?></td>
                                     <td><?= htmlspecialchars($user['email']) ?></td>
 
@@ -165,7 +165,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <p><strong>ID:</strong> ${user.id}</p>
+                                                <p><strong>ID:</strong> ${user.user_id}</p>
                                                 <p><strong>Name:</strong> ${user.name}</p>
                                                 <p><strong>Email:</strong> ${user.email}</p>
                                                 <p><strong>Role:</strong> ${user.role}</p>

@@ -109,10 +109,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->execute();
 
-        // 4. Get the LAST_INSERT_ID() for the new user_id
-        $user_id = $conn->lastInsertId();
+        // 4. Get the LAST_INSERT_ID() for the new user
+        $new_user_id = $conn->lastInsertId();
 
-        // 5. Loop through family member arrays and INSERT each one
+        // 5. Generate and update the formatted user_id
+        $formatted_user_id = 'JD-' . str_pad($new_user_id, 4, '0', STR_PAD_LEFT);
+        $update_stmt = $conn->prepare("UPDATE users SET user_id = :formatted_user_id WHERE id = :new_user_id");
+        $update_stmt->bindParam(':formatted_user_id', $formatted_user_id);
+        $update_stmt->bindParam(':new_user_id', $new_user_id);
+        $update_stmt->execute();
+
+        // 6. Loop through family member arrays and INSERT each one
         if ($additional_family_members > 0 && isset($_POST['family_name']) && is_array($_POST['family_name'])) {
             $family_names = $_POST['family_name'];
             $family_ages = $_POST['family_age'];
@@ -139,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     throw new Exception("Family member age cannot be negative.");
                 }
 
-                $stmt->bindParam(':user_id', $user_id);
+                $stmt->bindParam(':user_id', $new_user_id); // Note: Still using the auto-increment ID for the foreign key
                 $stmt->bindParam(':name', $member_name);
                 $stmt->bindParam(':age', $member_age);
                 $stmt->bindParam(':gender', $member_gender);
@@ -147,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // 6. COMMIT the transaction
+        // 7. COMMIT the transaction
         $conn->commit();
         unset($_SESSION['form_data']); // Clear form data on successful registration
         $_SESSION['message'] = "Registration successful! You can now login.";

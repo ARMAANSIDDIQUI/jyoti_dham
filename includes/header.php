@@ -8,7 +8,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $conn = DB::getInstance()->getConnection();
 
 $satsang_link = 'satsang.php'; // Default satsang page
-$satsang_status_text = 'Satsang';
+$satsang_status_text = 'Livestream';
 try {
     // Check for a LIVE satsang
     $stmt = $conn->prepare("SELECT video_url FROM satsang
@@ -18,7 +18,7 @@ try {
     $live_satsang = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($live_satsang && !empty($live_satsang['video_url'])) {
         $satsang_link = $live_satsang['video_url'];
-        $satsang_status_text = 'Satsang (LIVE!)';
+        $satsang_status_text = 'Livestream (LIVE!)';
     }
 } catch (PDOException $e) {
     error_log($e->getMessage());

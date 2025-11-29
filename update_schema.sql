@@ -56,3 +56,4 @@ CREATE TABLE IF NOT EXISTS `user_events` (
 -- Add image_url to events table
 ALTER TABLE `events`
 ADD COLUMN `image_url` VARCHAR(255) NOT NULL DEFAULT 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764163447/Copy_of_Logo_dxmrrx.svg' AFTER `google_event_id`;
+ALTER TABLE users ADD COLUMN user_id VARCHAR(10) NULL UNIQUE AFTER id;
