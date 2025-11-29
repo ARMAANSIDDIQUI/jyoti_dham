@@ -63,8 +63,16 @@
 
                                         alt="Map Pin" />
 
-                                    <a href="https://maps.app.goo.gl/jWJwTFFsgTzwMVB5A" style="text-decoration:none;color:white;">260 Ingleton Blvd, Scarborough,<br>
-                                    ON M1V 3R1, Canada</a>
+                                    <?php
+                                        $address = "Jyotidham, 8351 Torbram Road, Brampton, ON L6T 4M9, Canada";
+                                        $is_ios = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone") || stripos($_SERVER['HTTP_USER_AGENT'], "iPad") || stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
+                                        if ($is_ios) {
+                                            $map_url = "http://maps.apple.com/?q=" . urlencode($address);
+                                        } else {
+                                            $map_url = "https://maps.google.com/?q=" . urlencode($address);
+                                        }
+                                    ?>
+                                    <a href="<?php echo $map_url; ?>" style="text-decoration:none;color:white;">Jyotidham, 8351 Torbram Road, Brampton, ON L6T 4M9, Canada</a>
 
                                 </p>
 

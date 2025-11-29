@@ -74,12 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="login.php" method="POST">
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="text-input" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" required>
+                <input type="email" id="email" name="email" class="text-input" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" autocomplete="email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
                 <div class="password-container">
-                    <input type="password" id="password" name="password" class="text-input password-input" required>
+                    <input type="password" id="password" name="password" class="text-input password-input" autocomplete="current-password" required>
                     <i class="fas fa-eye toggle-password" data-target="password"></i>
                 </div>
             </div>

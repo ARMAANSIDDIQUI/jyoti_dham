@@ -28,14 +28,14 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
             <div class="form-group">
                 <label for="password">Password: <small>(min. 6 characters, 1 uppercase, 1 special character)</small></label>
                 <div class="password-container">
-                    <input type="password" id="password" name="password" class="text-input password-input" placeholder="6+ characters" minlength="6" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}" title="Password must be at least 6 characters long and contain at least one uppercase letter and one special character." value="<?php echo htmlspecialchars($formData['password'] ?? ''); ?>" required>
+                    <input type="password" id="password" name="password" class="text-input password-input" placeholder="6+ characters" minlength="6" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}" title="Password must be at least 6 characters long and contain at least one uppercase letter and one special character." value="<?php echo htmlspecialchars($formData['password'] ?? ''); ?>" autocomplete="new-password" required>
                     <i class="fas fa-eye toggle-password" data-target="password"></i>
                 </div>
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password:</label>
                 <div class="password-container">
-                    <input type="password" id="confirm_password" name="confirm_password" class="text-input password-input" placeholder="Confirm your password" required>
+                    <input type="password" id="confirm_password" name="confirm_password" class="text-input password-input" placeholder="Confirm your password" autocomplete="new-password" required>
                     <i class="fas fa-eye toggle-password" data-target="confirm_password"></i>
                 </div>
             </div>
@@ -45,7 +45,6 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
                     <option value="">Select Gender</option>
                     <option value="male" <?php echo (($formData['gender'] ?? '') == 'male') ? 'selected' : ''; ?>>Male</option>
                     <option value="female" <?php echo (($formData['gender'] ?? '') == 'female') ? 'selected' : ''; ?>>Female</option>
-                    <option value="other" <?php echo (($formData['gender'] ?? '') == 'other') ? 'selected' : ''; ?>>Other</option>
                     <option value="prefer_not_to_say" <?php echo (($formData['gender'] ?? '') == 'prefer_not_to_say') ? 'selected' : ''; ?>>Prefer not to say</option>
                 </select>
             </div>
@@ -140,7 +139,6 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
                                 <option value="">Select Gender</option>
                                 <option value="male" ${phpFormData['family_gender']?.[i] === 'male' ? 'selected' : ''}>Male</option>
                                 <option value="female" ${phpFormData['family_gender']?.[i] === 'female' ? 'selected' : ''}>Female</option>
-                                <option value="other" ${phpFormData['family_gender']?.[i] === 'other' ? 'selected' : ''}>Other</option>
                             </select>
                         </div>
                     `;
