@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Calculate day from date
     $day = date('l', strtotime($event_date)); // e.g., 'Monday'
     $time_zone = 'EST'; // Default to Toronto time (EST)
-    $organizer = 'jyotidham';
+    $organizer = $_POST['organizer'];
     $event_venue = 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
 
     $update_sql = "UPDATE events SET 
@@ -173,9 +173,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="file" class="form-control-file" id="event_image" name="event_image">
                         </div>
 
-
-                        <!-- Organizer (hidden) -->
-                        <input type="hidden" name="organizer" value="jyotidham">
+                        <!-- Organizer -->
+                        <div class="form-group">
+                            <label for="organizer">Organizer</label>
+                            <input type="text" class="form-control" id="organizer" name="organizer" value="<?= htmlspecialchars($event['organizer']) ?>" required>
+                        </div>
 
                         <!-- Venue (hidden) -->
                         <input type="hidden" id="event_venue" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">

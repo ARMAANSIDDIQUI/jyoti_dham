@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $created_by = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
     // Default values
-    $organizer = 'jyotidham';
+    $organizer = $_POST['organizer'];
     $event_venue = 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
     $latitude = 43.8271272;
     $longitude = -79.26619269999999;
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch all events
-$sql = "SELECT id, event_name, event_date, event_time, event_end_time FROM events";
+$sql = "SELECT id, event_name, event_date, event_time, event_end_time, organizer FROM events";
 $params = [];
 $conditions = [];
 
@@ -138,7 +138,7 @@ $stmt->execute($params);
                                     <td><?= htmlspecialchars($event_item['event_name']) ?></td>
                                     <td><?= date('M j, Y', strtotime($event_item['event_date'])) ?></td>
                                     <td><?= date('g:i A', strtotime($event_item['event_time'])) ?> - <?= $event_item['event_end_time'] ? date('g:i A', strtotime($event_item['event_end_time'])) : 'N/A' ?></td>
-                                    <td>jyotidham</td>
+                                    <td><?= htmlspecialchars($event_item['organizer']) ?></td>
                                     <td>Shri Param Hans Advait Mat (Jyoti Dham) Ontario</td>
                                     <td>
                                         <a href="../admin/edit-event.php?id=<?= $event_item['id'] ?>" class="btn btn-warning btn-sm me-2">Edit</a>
@@ -225,8 +225,11 @@ $stmt->execute($params);
                             <input type="file" class="form-control" id="event_image" name="event_image">
                         </div>
 
-                        <!-- Organizer (hidden) -->
-                        <input type="hidden" name="organizer" value="jyotidham">
+                        <!-- Organizer -->
+                        <div class="form-group">
+                            <label for="organizer">Organizer</label>
+                            <input type="text" class="form-control" id="organizer" name="organizer" placeholder="Enter organizer name" required>
+                        </div>
 
                         <!-- Venue (hidden) -->
                         <input type="hidden" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
