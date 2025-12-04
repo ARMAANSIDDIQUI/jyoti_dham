@@ -194,7 +194,8 @@ unset($_SESSION['form_data']); // Clear form data after retrieving
 </main>
 <!-- Google Maps API -->
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete" async defer></script> -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAInvDgYwKOXsI9h3moFBEP1wtWtipPOYc&libraries=places&callback=initAutocomplete" async defer></script>
-<!-- Your custom autocomplete script -->
 <script src="js/address-autocomplete.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAInvDgYwKOXsI9h3moFBEP1wtWtipPOYc&libraries=places&callback=initAutocomplete" async defer></script>
+<!--custom autocomplete script -->
+
 <?php include 'includes/footer.php'; ?>

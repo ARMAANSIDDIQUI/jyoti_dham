@@ -1,0 +1,9 @@
+ALTER TABLE users
+ADD COLUMN street_address VARCHAR(255) NULL AFTER phone,
+ADD COLUMN city VARCHAR(255) NULL AFTER street_address,
+ADD COLUMN state VARCHAR(255) NULL AFTER city,
+ADD COLUMN postal_code VARCHAR(255) NULL AFTER state,
+ADD COLUMN country VARCHAR(255) NULL AFTER postal_code;
+
+ALTER TABLE users
+DROP COLUMN address;

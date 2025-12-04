@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_role'])) {
 }
 
 // Fetch all users
-$sql = "SELECT id, user_id, name, email, role, created_at, gender, dob, phone, address, family_size, vehicle_number FROM users";
+$sql = "SELECT id, user_id, name, email, role, created_at, gender, dob, phone, street_address, city, state, postal_code, country, family_size, vehicle_number FROM users";
 $params = [];
 $conditions = [];
 
@@ -175,8 +175,15 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <p><strong>Date of Birth:</strong> ${user.dob || 'Not specified'}</p>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>Phone:</strong> ${user.phone || 'Not specified'}</p>
-                                                <p><strong>Address:</strong> ${user.address || 'Not specified'}</p>
+                                                <div class="form-group">
+                                                    <label><strong>Phone:</strong></label>
+                                                    <input type="tel" id="modal-user-phone" class="form-control" value="${user.phone || ''}" disabled style="padding-left: 120px;">
+                                                </div>
+                                                <p><strong>Address:</strong><br>
+                                                    ${user.street_address || ''}<br>
+                                                    ${user.city || ''}, ${user.state || ''} ${user.postal_code || ''}<br>
+                                                    ${user.country || ''}
+                                                </p>
                                                 <p><strong>Family Size:</strong> ${user.family_size || 'Not specified'}</p>
                                                 <p><strong>Vehicle Number:</strong> ${user.vehicle_number || 'Not specified'}</p>
                                                 <p><strong>Created At:</strong> ${user.created_at}</p>
@@ -197,6 +204,20 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     `;
                     document.body.insertAdjacentHTML('beforeend', modalContent);
                     $('#userDetailsModal').modal('show');
+
+                    // Initialize intl-tel-input for the modal
+                    const phoneInput = document.querySelector("#modal-user-phone");
+                    if (phoneInput) {
+                        const iti = window.intlTelInput(phoneInput, {
+                            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+                            separateDialCode: true,
+                            allowDropdown: false,
+                            readonly: true // Make the input readonly
+                        });
+                        // Style the input to look like text
+                        phoneInput.style.border = 'none';
+                        phoneInput.style.paddingLeft = '90px';
+                    }
 
                     // Fetch family members
                     fetch('get_family_members.php?id=' + userId)

@@ -45,8 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $confirm_password = $_POST['confirm_password'];
         $gender = htmlspecialchars(trim($_POST['gender']));
         $dob = htmlspecialchars(trim($_POST['dob']));
-        $phone = htmlspecialchars(trim($_POST['phone']));
-        $address = htmlspecialchars(trim($_POST['address']));
+        $phone = preg_replace('/[^+0-9]/', '', $_POST['phone']); // Sanitize phone number
+        $street_address = htmlspecialchars(trim($_POST['street_address']));
+        $city = htmlspecialchars(trim($_POST['city']));
+        $state = htmlspecialchars(trim($_POST['state']));
+        $postal_code = htmlspecialchars(trim($_POST['postal_code']));
+        $country = htmlspecialchars(trim($_POST['country']));
         $vehicle_number = htmlspecialchars(trim($_POST['vehicle_number']));
         $additional_family_members = (int)$_POST['family_size'];
         $family_size = $additional_family_members + 1;
@@ -92,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         // 3. INSERT into the users table
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password_hash, gender, dob, phone, address, family_size, vehicle_number, profile_image_url, profile_image_public_id)
-                                VALUES (:name, :email, :password_hash, :gender, :dob, :phone, :address, :family_size, :vehicle_number, :profile_image_url, :profile_image_public_id)");
+        $stmt = $conn->prepare("INSERT INTO users (name, email, password_hash, gender, dob, phone, street_address, city, state, postal_code, country, family_size, vehicle_number, profile_image_url, profile_image_public_id)
+                                VALUES (:name, :email, :password_hash, :gender, :dob, :phone, :street_address, :city, :state, :postal_code, :country, :family_size, :vehicle_number, :profile_image_url, :profile_image_public_id)");
 
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':email', $email);
@@ -101,7 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':gender', $gender);
         $stmt->bindParam(':dob', $dob);
         $stmt->bindParam(':phone', $phone);
-        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':street_address', $street_address);
+        $stmt->bindParam(':city', $city);
+        $stmt->bindParam(':state', $state);
+        $stmt->bindParam(':postal_code', $postal_code);
+        $stmt->bindParam(':country', $country);
         $stmt->bindParam(':family_size', $family_size);
         $stmt->bindParam(':vehicle_number', $vehicle_number);
         $stmt->bindParam(':profile_image_url', $profile_image_url);

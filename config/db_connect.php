@@ -9,9 +9,11 @@ class DB {
     private $conn;
 
     private function __construct() {
-        // Load environment variables from .env file
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
+        // Load environment variables from .env file only if not already set
+        if (!isset($_ENV['DB_HOST'])) {
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+            $dotenv->load();
+        }
 
         $dbHost = $_ENV['DB_HOST'];
         $dbName = $_ENV['DB_NAME'];

@@ -62,8 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gender = htmlspecialchars(trim($_POST['gender']));
         $dob = htmlspecialchars(trim($_POST['dob']));
         $phone = htmlspecialchars(trim($_POST['phone']));
-        $address = htmlspecialchars(trim($_POST['address']));
-
+        $street_address = htmlspecialchars(trim($_POST['street_address']));
+        $city = htmlspecialchars(trim($_POST['city']));
+        $state = htmlspecialchars(trim($_POST['state']));
+        $postal_code = htmlspecialchars(trim($_POST['postal_code']));
+        $country = htmlspecialchars(trim($_POST['country']));
         $vehicle_number = htmlspecialchars(trim($_POST['vehicle_number']));
 
         // Basic validation
@@ -84,7 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 gender = :gender,
                                 dob = :dob,
                                 phone = :phone,
-                                address = :address,
+                                street_address = :street_address,
+                                city = :city,
+                                state = :state,
+                                postal_code = :postal_code,
+                                country = :country,
                                 vehicle_number = :vehicle_number,
                                 profile_image_url = :profile_image_url,
                                 profile_image_public_id = :profile_image_public_id
@@ -94,7 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':gender', $gender);
         $stmt->bindParam(':dob', $dob);
         $stmt->bindParam(':phone', $phone);
-        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':street_address', $street_address);
+        $stmt->bindParam(':city', $city);
+        $stmt->bindParam(':state', $state);
+        $stmt->bindParam(':postal_code', $postal_code);
+        $stmt->bindParam(':country', $country);
         $stmt->bindParam(':vehicle_number', $vehicle_number);
         $stmt->bindParam(':profile_image_url', $profile_image_url);
         $stmt->bindParam(':profile_image_public_id', $profile_image_public_id);

@@ -2,32 +2,44 @@
 // See: https://developers.google.com/maps/documentation/javascript/places-autocomplete
 
 function initAutocomplete() {
-  // Create a new session token.
-  const sessionToken = new google.maps.places.AutocompleteSessionToken();
-
-  // Get all autocomplete input elements.
   const autocompleteInputs = document.querySelectorAll(".address-autocomplete");
-
   if (autocompleteInputs.length === 0) {
     console.error("No autocomplete input elements with class 'address-autocomplete' found.");
     return;
   }
+  autocompleteInputs.forEach(setupAutocomplete);
+}
 
-  autocompleteInputs.forEach(function(autocompleteInput) {
-    // Create the autocomplete object, restricting the search to geographical
-    // location types.
-    const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
-      types: ["address"],
-      // Restrict the fields to essentials to avoid unnecessary charges
-      fields: ["address_components", "geometry"],
-      sessionToken: sessionToken,
-    });
+function setupAutocomplete(autocompleteInput) {
+  // Create a new session token for each new autocomplete instance.
+  const sessionToken = new google.maps.places.AutocompleteSessionToken();
 
-    // When the user selects an address from the dropdown, populate the
-    // address fields in the form.
-    autocomplete.addListener("place_changed", function() {
-      fillInAddress(autocomplete, autocompleteInput);
-    });
+  // Create the autocomplete object, restricting the search to geographical
+  // location types.
+  const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+    types: ["address"],
+    // Restrict the fields to essentials to avoid unnecessary charges
+    fields: ["address_components", "geometry"],
+    sessionToken: sessionToken,
+  });
+
+  // When the user selects an address from the dropdown, populate the
+  // address fields in the form.
+  const placeChangedListener = () => {
+    fillInAddress(autocomplete, autocompleteInput);
+    // It's important to re-setup the autocomplete to get a new session token
+    // after a place has been selected.
+    google.maps.event.clearInstanceListeners(autocomplete); // Clear old listeners to prevent memory leaks
+    setupAutocomplete(autocompleteInput);
+  };
+
+  autocomplete.addListener("place_changed", placeChangedListener);
+
+  // Prevent form submission when pressing Enter in the autocomplete input
+  autocompleteInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
   });
 }
 
@@ -85,7 +97,7 @@ function fillInAddress(autocomplete, inputElement) {
             if (stateField) stateField.value = component.short_name;
             break;
         case "postal_code":
-            if (postalCodeField) postalCodeField.value = component.short_name;
+            if (postalCodeField) postalCodeField.value = component.long_name;
             break;
         case "country":
              if (countryField) countryField.value = component.long_name;

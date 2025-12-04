@@ -23,7 +23,7 @@ unset($_SESSION['add_family_member_form_data']);
 
 // Fetch user data
 try {
-    $stmt = $conn->prepare("SELECT id, user_id, name, email, gender, dob, phone, address, family_size, vehicle_number, profile_image_url, profile_image_public_id FROM users WHERE id = :id");
+    $stmt = $conn->prepare("SELECT id, user_id, name, email, gender, dob, phone, street_address, city, state, postal_code, country, family_size, vehicle_number, profile_image_url, profile_image_public_id FROM users WHERE id = :id");
     $stmt->bindParam(':id', $user_id);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -132,29 +132,30 @@ if (isset($_SESSION['message'])) {
                                 <label for="phone">Phone Number:</label>
                                 <input type="tel" id="phone" name="phone" class="form-control" value="<?php echo htmlspecialchars($profileFormData['phone'] ?? $user['phone'] ?? ''); ?>">
                             </div>
+                            <button type="button" id="edit-address-btn" class="btn btn-secondary mb-3">Edit Address</button>
                             <!-- Address Autocomplete Input -->
                             <div class="form-group">
                                 <label for="autocomplete">Search for Address</label>
-                                <input type="text" class="form-control address-autocomplete" placeholder="Start typing your address...">
+                                <input type="text" class="form-control address-autocomplete" placeholder="Start typing your address..." readonly>
                             </div>
 
                             <!-- Address Fields -->
                             <div class="form-group">
                                 <label for="street_address">Street Address</label>
-                                <input type="text" class="form-control" id="street_address" name="street_address" placeholder="Street Address" value="<?php echo htmlspecialchars($profileFormData['street_address'] ?? $user['street_address'] ?? ''); ?>" required>
+                                <input type="text" class="form-control address-field" id="street_address" name="street_address" placeholder="Street Address" value="<?php echo htmlspecialchars($profileFormData['street_address'] ?? $user['street_address'] ?? ''); ?>" readonly required>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="city">City</label>
-                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" value="<?php echo htmlspecialchars($profileFormData['city'] ?? $user['city'] ?? ''); ?>" required>
+                                        <input type="text" class="form-control address-field" id="city" name="city" placeholder="City" value="<?php echo htmlspecialchars($profileFormData['city'] ?? $user['city'] ?? ''); ?>" readonly required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="state">State / Province</label>
-                                        <input type="text" class="form-control" id="state" name="state" placeholder="State / Province" value="<?php echo htmlspecialchars($profileFormData['state'] ?? $user['state'] ?? ''); ?>" required>
+                                        <input type="text" class="form-control address-field" id="state" name="state" placeholder="State / Province" value="<?php echo htmlspecialchars($profileFormData['state'] ?? $user['state'] ?? ''); ?>" readonly required>
                                     </div>
                                 </div>
                             </div>
@@ -163,13 +164,13 @@ if (isset($_SESSION['message'])) {
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="postal_code">Zip / Postal Code</label>
-                                        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Zip / Postal Code" value="<?php echo htmlspecialchars($profileFormData['postal_code'] ?? $user['postal_code'] ?? ''); ?>" required>
+                                        <input type="text" class="form-control address-field" id="postal_code" name="postal_code" placeholder="Zip / Postal Code" value="<?php echo htmlspecialchars($profileFormData['postal_code'] ?? $user['postal_code'] ?? ''); ?>" readonly required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="country">Country</label>
-                                        <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="<?php echo htmlspecialchars($profileFormData['country'] ?? $user['country'] ?? ''); ?>" required>
+                                        <input type="text" class="form-control address-field" id="country" name="country" placeholder="Country" value="<?php echo htmlspecialchars($profileFormData['country'] ?? $user['country'] ?? ''); ?>" readonly required>
                                     </div>
                                 </div>
                             </div>
@@ -349,13 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize intl-tel-input
     var phoneInputField = document.querySelector("#phone");
     var iti = window.intlTelInput(phoneInputField, {
-        initialCountry: "auto",
-        geoIpLookup: function(callback) {
-            fetch('https://ipinfo.io/json')
-                .then(function(response) { return response.json(); })
-                .then(function(data) { callback(data.country); })
-                .catch(function() { callback("ca"); });
-        },
         separateDialCode: true,
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
     });
@@ -381,15 +375,29 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.find('.modal-body #edit_member_age').val(age);
         modal.find('.modal-body #edit_member_gender').val(gender);
     });
+
+    // Handle edit address button click
+    const editAddressBtn = document.getElementById('edit-address-btn');
+    const addressFields = document.querySelectorAll('.address-field');
+    const autocompleteField = document.querySelector('.address-autocomplete');
+
+    editAddressBtn.addEventListener('click', function() {
+        addressFields.forEach(function(field) {
+            field.readOnly = false;
+        });
+        autocompleteField.readOnly = false;
+        editAddressBtn.style.display = 'none';
+    });
 });
 </script>
 
 
 <!-- Google Maps API -->
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete" async defer></script> -->
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAInvDgYwKOXsI9h3moFBEP1wtWtipPOYc&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="js/address-autocomplete.js"></script>    
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAInvDgYwKOXsI9h3moFBEP1wtWtipPOYc&libraries=places&callback=initAutocomplete" async defer></script>
 
 <!-- Your custom autocomplete script -->
-<script src="js/address-autocomplete.js"></script>
+    
 
 <?php include 'includes/footer.php'; ?>
