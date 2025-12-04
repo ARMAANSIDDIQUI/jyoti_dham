@@ -8,7 +8,7 @@
         <div class="et_pb_column et_pb_column_4_4 et_pb_column_0  et_pb_css_mix_blend_mode_passthrough et-last-child">
             <div class="et_pb_module et_pb_text et_pb_text_0  et_pb_text_align_left et_pb_bg_layout_light">
                 <div class="et_pb_text_inner">
-                    <h1 class="podcast-h1">Podcast</h1>
+                    <h1 class="podcast-h1">Bhajan</h1>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
 
 <div class="podcast-content-wrapper">
     <div class="available-on">
-        <h2>Listen to our Podcasts on your favorite platforms</h2>
+        <h2>Listen to our Bhajans on your favorite platforms</h2>
     </div>
 
     <div class="container-fluid con">

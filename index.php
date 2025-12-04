@@ -108,14 +108,14 @@ try {
         <div class="card-container index-podcast-row">
             <?php foreach ($cards as $card): ?>
                 <div class="card index-podcast-col">
-                    <a href="podcast.php" class="index-podcast-link <?= $card['link_class'] ?>">
+                    <a href="bhajan.php" class="index-podcast-link <?= $card['link_class'] ?>">
                         <img src="<?= $card['img_src'] ?>" alt="<?= $card['alt'] ?>" class="index-podcast-card">
                     </a>
                 </div>
             <?php endforeach; ?>
         </div>
         <div class="view-div">
-            <a href="podcast.php" class="view-link">View All</a>
+            <a href="bhajan.php" class="view-link">View All</a>
         </div>
     </div>
 </section>

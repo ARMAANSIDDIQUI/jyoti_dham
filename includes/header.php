@@ -77,7 +77,7 @@ try {
                             <a class="nav-link" href="donate.php">Donate</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="podcast.php">Podcast</a>
+                            <a class="nav-link" href="bhajan.php">Bhajans</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="calendar.php">Calendar</a>
