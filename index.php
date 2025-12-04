@@ -31,7 +31,7 @@ try {
 </section>
     <section id="upcoming-events">
         <div class="container">
-            <h1 class="text-left text">Upcoming Events</h1>
+            <h1 class="text-center text">Upcoming Events</h1>
             <div class="upcoming-events-grid">
                 <?php foreach ($events as $event): ?>
                     <div class="event-card-index">
@@ -82,6 +82,43 @@ try {
             </div>
         </div>
     </section>
+
+    <section id="index-podcasts">
+    <div class="container">
+        <h1 class="text-center text">we are available on !!</h1>
+        <?php
+        $cards = [
+            [
+                'link_class' => 'amazon-music',
+                'alt' => 'Amazon Music',
+                'img_src' => 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764850505/amazon_music_o8yaqk.svg'
+            ],
+            [
+                'link_class' => 'red-circle',
+                'alt' => 'RedCircle',
+                'img_src' => 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764850467/redcircle_qhjsso.svg'
+            ],
+            [
+                'link_class' => 'apple-podcasts',
+                'alt' => 'Apple Podcasts',
+                'img_src' => 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764851629/applepodcasts_cssuzw.png'
+            ]
+        ];
+        ?>
+        <div class="card-container index-podcast-row">
+            <?php foreach ($cards as $card): ?>
+                <div class="card index-podcast-col">
+                    <a href="podcast.php" class="index-podcast-link <?= $card['link_class'] ?>">
+                        <img src="<?= $card['img_src'] ?>" alt="<?= $card['alt'] ?>" class="index-podcast-card">
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="view-div">
+            <a href="podcast.php" class="view-link">View All</a>
+        </div>
+    </div>
+</section>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

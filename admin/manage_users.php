@@ -94,6 +94,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <table class="table table-hover">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th><i class="fas fa-hashtag"></i> Serial</th>
                                     <th><i class="fas fa-id-badge"></i> ID</th>
                                     <th><i class="fas fa-user"></i> Name</th>
                                     <th><i class="fas fa-envelope"></i> Email</th>
@@ -103,8 +104,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($users as $user): ?>
+                            <?php $serial = 1; foreach ($users as $user): ?>
                                 <tr>
+                                    <td><?= $serial++ ?></td>
                                     <td><?= htmlspecialchars($user['user_id']) ?></td>
                                     <td><?= htmlspecialchars($user['name']) ?></td>
                                     <td><?= htmlspecialchars($user['email']) ?></td>

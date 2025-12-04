@@ -7,8 +7,8 @@ $conn = DB::getInstance()->getConnection();
 try {
     $conn->beginTransaction();
 
-    // Find all users where user_id is NULL
-    $stmt = $conn->prepare("SELECT id FROM users WHERE user_id IS NULL");
+    // Find all users
+    $stmt = $conn->prepare("SELECT id FROM users");
     $stmt->execute();
     $users_to_update = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -18,7 +18,26 @@ try {
 
     foreach ($users_to_update as $user) {
         $user_id = $user['id'];
-        $formatted_user_id = 'JD-' . str_pad($user_id, 4, '0', STR_PAD_LEFT);
+        $serial_str = (string)$user_id;
+        $n = strlen($serial_str);
+        $formatted_user_id = '';
+        $attempts = 0;
+        do {
+            $random_digits = '';
+            for ($i = 0; $i < 6 - $n; $i++) {
+                $random_digits .= mt_rand(0, 9);
+            }
+            $formatted_user_id = 'JD-' . $random_digits . $serial_str;
+            $check_stmt = $conn->prepare("SELECT id FROM users WHERE user_id = :user_id");
+            $check_stmt->bindParam(':user_id', $formatted_user_id);
+            $check_stmt->execute();
+            $attempts++;
+        } while ($check_stmt->rowCount() > 0 && $attempts < 100); // Prevent infinite loop
+
+        if ($attempts >= 100) {
+            echo "Failed to generate unique ID for user $user_id after 100 attempts. Skipping.\n";
+            continue;
+        }
 
         $update_stmt->bindParam(':formatted_user_id', $formatted_user_id);
         $update_stmt->bindParam(':user_id', $user_id);

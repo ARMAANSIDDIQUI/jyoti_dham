@@ -27,7 +27,7 @@ require_once __DIR__ . '/admin_header.php';
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3">
                             <a href="manage_satsang.php" class="btn admin-btn btn-block d-flex align-items-center justify-content-center">
-                                <i class="fas fa-video mr-2"></i>Manage Satsang
+                                <i class="fas fa-video mr-2"></i>Manage Livestreams
                             </a>
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3">

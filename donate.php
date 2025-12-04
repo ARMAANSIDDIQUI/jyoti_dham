@@ -130,20 +130,22 @@
                 </div>
 
                 <div class="et_pb_code et_pb_code_0 donate-payment-buttons">
-                    <div class="et_pb_code_inner">
-                        <table style="border: 0 !important;width:80%">
-                            <tr>
-                                <td>
-                                    <div
-                                        style="align-items: left; background: #FFFFFF; border-radius: 10px; font-family:'Lato',Helvetica,Arial,Lucida,sans-serif!important;">
-                                        <div style="padding: 0px;"><a id="donate-now-button" href="javascript:void(0)"
-                                                onclick="redirectToUrl()"
-                                                style="display: inline-block;font-size: 12px;line-height: 48px;height: 48px;color: #ffffff;min-width: 160px;background-color: #333333;text-align: center;box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;border-radius: 50px;">Credit
-                                                Card</a></div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                    <div class="et_pb_code_inner" style="display: flex; gap: 10px;">
+                        <div style="flex: 1; background: #FFFFFF; border-radius: 50px; font-family:'Lato',Helvetica,Arial,Lucida,sans-serif!important; display: flex; justify-content: center; align-items: center; height: 48px; width: 100%;">
+                            <a id="donate-now-button" href="javascript:void(0)" onclick="redirectToUrl()" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: #ffffff; background-color: #333333; text-align: center; box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset; border-radius: 50px; text-decoration: none; font-size: 12px; line-height: 48px;">
+                                Credit Card
+                            </a>
+                        </div>
+                        <div style="flex: 1; background: #FFFFFF; border-radius: 50px; font-family:'Lato',Helvetica,Arial,Lucida,sans-serif!important; display: flex; justify-content: center; align-items: center; height: 48px; width: 100%;" class="coming-soon-button">
+                            <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background-color: #333333; box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset; border-radius: 50px;">
+                                <img src="https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764447073/googlewhite_xu64un.png" alt="Google Pay" style="height: 68px; max-width: 240%;">
+                            </div>
+                        </div>
+                        <div style="flex: 1; background: #FFFFFF; border-radius: 50px; font-family:'Lato',Helvetica,Arial,Lucida,sans-serif!important; display: flex; justify-content: center; align-items: center; height: 48px; width: 100%;" class="coming-soon-button">
+                            <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background-color: #333333; box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset; border-radius: 50px;">
+                                <img src="https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764447339/applewhite_u5skwm.png" alt="Apple Pay" style="height: 24px; max-width: 100%;">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -151,7 +153,7 @@
                 <div class="et_pb_text et_pb_text_9 et_pb_text_align_justified et_pb_bg_layout_light">
                     <div class="et_pb_text_inner">
                         <p style="text-align: left;"><span style="font-weight: 500;"><span
-                                    style="text-decoration: underline;"><strong>Please Note:</strong></span> All the
+                                    style="text-decoration: underline;"><strong>Rest Assured:</strong></span> All the
                                 information provided on the payment gateway is encrypted and secure, and will not be
                                 shared with any third party.</span></p>
                     </div>
@@ -159,13 +161,20 @@
 
                 <div class="et_pb_text et_pb_text_10 et_pb_text_align_justified et_pb_bg_layout_light">
                     <div class="et_pb_text_inner">
+                        <p><span style="text-decoration: underline;"><em><strong>Please Note:</strong></em></span></p>
+                        <p style="font-size: 14px; color: #666; margin-top: 10px;"><em>We issue official tax receipts for all eligible donations since we are a registered Canadian charity.</em></p>
+                    </div>
+                    <div class="et_pb_text_inner">
                         <p><span style="text-decoration: underline;"><em><strong>We accept:</strong></em></span></p>
                     </div>
                 </div>
 
                 <div class="et_pb_image et_pb_image_1">
-                    <span class="et_pb_image_wrap"><img src="./images/payment-cards-updated.png" alt=""
-                            class="payment-logo" title="Payment Cards"></span>
+                    <span class="et_pb_image_wrap">
+                        <img src="./images/payment-cards-updated.png" alt="" class="payment-logo" title="Payment Cards" style="margin-right: 15px;">
+                        <img src="https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764445967/Logo-google-pay-vector-PNG_yw7nvy.png" alt="Google Pay" class="payment-logo" title="Google Pay" style="height: 40px; margin-right: 15px;">
+                        <img src="https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764446028/applepay-removebg-preview_jscmgw.png" alt="Apple Pay" class="payment-logo" title="Apple Pay" style="height: 40px;">
+                    </span>
                 </div>
             </div>
 

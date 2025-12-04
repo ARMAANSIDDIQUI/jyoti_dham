@@ -112,8 +112,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 4. Get the LAST_INSERT_ID() for the new user
         $new_user_id = $conn->lastInsertId();
 
-        // 5. Generate and update the formatted user_id
-        $formatted_user_id = 'JD-' . str_pad($new_user_id, 4, '0', STR_PAD_LEFT);
+        // 5. Generate and update the formatted user_id with serial embedded in random digits, ensuring uniqueness
+        $serial_str = (string)$new_user_id;
+        $n = strlen($serial_str);
+        $formatted_user_id = '';
+        $attempts = 0;
+        do {
+            $random_digits = '';
+            for ($i = 0; $i < 6 - $n; $i++) {
+                $random_digits .= mt_rand(0, 9);
+            }
+            $formatted_user_id = 'JD-' . $random_digits . $serial_str;
+            $check_stmt = $conn->prepare("SELECT id FROM users WHERE user_id = :user_id");
+            $check_stmt->bindParam(':user_id', $formatted_user_id);
+            $check_stmt->execute();
+            $attempts++;
+        } while ($check_stmt->rowCount() > 0 && $attempts < 100); // Prevent infinite loop
+
+        if ($attempts >= 100) {
+            throw new Exception("Unable to generate unique user ID after 100 attempts.");
+        }
+
         $update_stmt = $conn->prepare("UPDATE users SET user_id = :formatted_user_id WHERE id = :new_user_id");
         $update_stmt->bindParam(':formatted_user_id', $formatted_user_id);
         $update_stmt->bindParam(':new_user_id', $new_user_id);

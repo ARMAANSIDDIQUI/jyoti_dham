@@ -1,0 +1,56 @@
+#index-podcasts .card {
+    background-color: transparent;
+    border: none;
+}
+
+#index-podcasts .text-left.text {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.index-podcast-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; /* Crucial for single line */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    gap: 10px; /* Small gap only */
+}
+
+.index-podcast-col {
+    text-align: center;
+    margin: 0; /* Remove any side margins */
+}
+
+.index-podcast-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 110px; /* Force fixed width */
+    height: 60px; /* Force fixed height */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 0;
+}
+
+.index-podcast-link .index-podcast-card {
+    width: 80%; /* Logo width */
+    height: auto;
+    object-fit: contain; /* Contain logo within bounds */
+}
+
+/* Platform-specific colors */
+.amazon-music {
+    background-color: #1AC6D2;
+}
+
+.red-circle {
+    background-color: black;
+}
+
+.apple-podcasts {
+    background-color: #7A28CB;
+}

@@ -45,6 +45,13 @@ try {
     if (file_exists($dynamic_css_path)) {
         echo "<link rel='stylesheet' href='/css/{$page_name}.css?v=" . filemtime($dynamic_css_path) . "'>";
     }
+    // Add index-podcast.css for index.php
+    if ($page_name === 'index') {
+        $podcast_css_path = __DIR__ . '/../css/index-podcast.css';
+        if (file_exists($podcast_css_path)) {
+            echo "<link rel='stylesheet' href='/css/index-podcast.css?v=" . filemtime($podcast_css_path) . "'>";
+        }
+    }
     ?>
 </head>
 <body>
@@ -68,6 +75,9 @@ try {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="donate.php">Donate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="podcast.php">Podcast</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="calendar.php">Calendar</a>

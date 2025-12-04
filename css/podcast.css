@@ -1,0 +1,131 @@
+.podcast-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.podcast-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.con {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.available-on h2 {
+    font-size: 1.8rem;
+    font-weight: normal;
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-family: 'Lato', Helvetica, Arial, Lucida, sans-serif;
+    padding: 0 15px;
+}
+
+.podcast-col {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.podcast-link {
+    display: inline-block;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 100%;
+    max-width: 400px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.podcast-link:hover {
+    transform: scale(1.05);
+}
+
+.podcast-link img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.podcast-card {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 0;
+}
+
+.amazon-music {
+    background-color: #1AC6D2;
+}
+.red-circle {
+    background-color: black;
+}
+
+.apple-podcasts {
+    background-color: #7A28CB;
+}
+
+.podcast-h1 {
+    color: white;
+    font-size: 4rem;
+    text-align: center;
+    text-shadow: 2px 2px 4px #000000;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.podcast-title {
+    font-size: x-large;
+    color: #2e2e7f;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 992px) {
+    .podcast-link {
+        width: 250px;
+        height: 250px;
+    }
+
+    .podcast-card {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .available-on h2 {
+        margin: 30px 15px 30px 15px;
+    }
+    .podcast-row {
+        flex-direction: column;
+    }
+
+    .podcast-link {
+        width: 250px;
+        height: 150px;
+    }
+
+    .podcast-card {
+        width: 200px;
+        height: 200px;
+    }
+
+    .podcast-h1 {
+        font-size: 3rem;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+}

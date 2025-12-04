@@ -35,7 +35,7 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="col-12">
             <div class="card">
                 <div class="card-header text-center" style="background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%); color: #2e2e2e;">
-                    <h1 class="mb-0"><i class="fas fa-video"></i> Manage Satsangs</h1>
+                    <h1 class="mb-0"><i class="fas fa-video"></i> Manage Livestreams</h1>
                 </div>
                 <div class="card-body">
                     <!-- Add New Satsang Form -->
@@ -65,7 +65,7 @@ $satsangs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <label for="description">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Add Satsang</button>
+                        <button type="submit" class="btn btn-primary">Add Livestream</button>
                     </form>
 
                     <!-- Satsangs List -->

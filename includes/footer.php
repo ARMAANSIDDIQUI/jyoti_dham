@@ -64,12 +64,11 @@
                                         alt="Map Pin" />
 
                                     <?php
-                                        $address = "Jyotidham, 8351 Torbram Road, Brampton, ON L6T 4M9, Canada";
                                         $is_ios = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone") || stripos($_SERVER['HTTP_USER_AGENT'], "iPad") || stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
                                         if ($is_ios) {
-                                            $map_url = "http://maps.apple.com/?q=" . urlencode($address);
+                                            $map_url = "https://maps.apple.com/p/ZEVLdzQDFE_7NL";
                                         } else {
-                                            $map_url = "https://maps.google.com/?q=" . urlencode($address);
+                                            $map_url = "https://maps.app.goo.gl/FbzrVVRj6AdP7gqT8?g_st=ipc";
                                         }
                                     ?>
                                     <a href="<?php echo $map_url; ?>" style="text-decoration:none;color:white;">Jyotidham, 8351 Torbram Road, Brampton, ON L6T 4M9, Canada</a>

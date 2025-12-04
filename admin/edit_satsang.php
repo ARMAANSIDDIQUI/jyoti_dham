@@ -32,7 +32,7 @@ if (!$satsang) {
         <div class="col-12">
             <div class="card">
                 <div class="card-header text-center" style="background: linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%); color: #2e2e2e;">
-                    <h1 class="mb-0"><i class="fas fa-edit"></i> Edit Satsang</h1>
+                    <h1 class="mb-0"><i class="fas fa-edit"></i> Edit Livestream</h1>
                 </div>
                 <div class="card-body">
                     <form action="satsang_action.php" method="post">
@@ -62,7 +62,7 @@ if (!$satsang) {
                             <label for="description">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3"><?php echo htmlspecialchars($satsang['description']); ?></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Satsang</button>
+                        <button type="submit" class="btn btn-primary">Update Livestream</button>
                         <a href="manage_satsangs.php" class="btn btn-secondary">Cancel</a>
                     </form>
                 </div>
