@@ -132,9 +132,46 @@ if (isset($_SESSION['message'])) {
                                 <label for="phone">Phone Number:</label>
                                 <input type="tel" id="phone" name="phone" class="form-control" value="<?php echo htmlspecialchars($profileFormData['phone'] ?? $user['phone'] ?? ''); ?>">
                             </div>
+                            <!-- Address Autocomplete Input -->
                             <div class="form-group">
-                                <label for="address">Address:</label>
-                                <textarea id="address" name="address" class="form-control" rows="3"><?php echo htmlspecialchars($profileFormData['address'] ?? $user['address'] ?? ''); ?></textarea>
+                                <label for="autocomplete">Search for Address</label>
+                                <input type="text" class="form-control address-autocomplete" placeholder="Start typing your address...">
+                            </div>
+
+                            <!-- Address Fields -->
+                            <div class="form-group">
+                                <label for="street_address">Street Address</label>
+                                <input type="text" class="form-control" id="street_address" name="street_address" placeholder="Street Address" value="<?php echo htmlspecialchars($profileFormData['street_address'] ?? $user['street_address'] ?? ''); ?>" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" value="<?php echo htmlspecialchars($profileFormData['city'] ?? $user['city'] ?? ''); ?>" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="state">State / Province</label>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="State / Province" value="<?php echo htmlspecialchars($profileFormData['state'] ?? $user['state'] ?? ''); ?>" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="postal_code">Zip / Postal Code</label>
+                                        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Zip / Postal Code" value="<?php echo htmlspecialchars($profileFormData['postal_code'] ?? $user['postal_code'] ?? ''); ?>" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="country">Country</label>
+                                        <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="<?php echo htmlspecialchars($profileFormData['country'] ?? $user['country'] ?? ''); ?>" required>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="vehicle_number">Vehicle Number (Optional):</label>
@@ -346,5 +383,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+
+<!-- Google Maps API -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete" async defer></script> -->
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAInvDgYwKOXsI9h3moFBEP1wtWtipPOYc&libraries=places&callback=initAutocomplete" async defer></script>
+
+<!-- Your custom autocomplete script -->
+<script src="js/address-autocomplete.js"></script>
 
 <?php include 'includes/footer.php'; ?>
