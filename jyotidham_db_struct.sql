@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `contactformsubmissions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contactformsubmissions` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `message` text,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb4_general_ci,
   `submitted_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -39,7 +39,6 @@ CREATE TABLE `contactformsubmissions` (
 
 LOCK TABLES `contactformsubmissions` WRITE;
 /*!40000 ALTER TABLE `contactformsubmissions` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `contactformsubmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,20 +51,20 @@ DROP TABLE IF EXISTS `events`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `events` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `day` varchar(20) DEFAULT NULL,
+  `day` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `event_date` date DEFAULT NULL,
   `event_time` time DEFAULT NULL,
   `event_end_time` time DEFAULT NULL,
-  `time_zone` varchar(10) DEFAULT NULL,
-  `event_name` varchar(255) DEFAULT NULL,
-  `event_description` text,
-  `organizer` varchar(100) DEFAULT NULL,
-  `event_venue` varchar(255) DEFAULT NULL,
+  `time_zone` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `event_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `event_description` text COLLATE utf8mb4_general_ci,
+  `organizer` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `event_venue` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `latitude` decimal(10,6) DEFAULT NULL,
   `longitude` decimal(10,6) DEFAULT NULL,
   `is_featured` tinyint(1) DEFAULT NULL,
-  `google_event_id` varchar(255) DEFAULT NULL,
-  `image_url` varchar(255) DEFAULT NULL,
+  `google_event_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_by` int unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -80,7 +79,6 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,8 +92,8 @@ DROP TABLE IF EXISTS `family_members`;
 CREATE TABLE `family_members` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `gender` enum('male','female','other') NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `gender` enum('male','female','other') COLLATE utf8mb4_general_ci NOT NULL,
   `age` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -109,7 +107,6 @@ CREATE TABLE `family_members` (
 
 LOCK TABLES `family_members` WRITE;
 /*!40000 ALTER TABLE `family_members` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `family_members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,12 +121,12 @@ CREATE TABLE `satsang` (
   `id` int NOT NULL AUTO_INCREMENT,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `time_zone` varchar(10) NOT NULL DEFAULT 'EST',
-  `video_url` varchar(500) DEFAULT NULL,
+  `time_zone` varchar(10) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'EST',
+  `video_url` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `description` text,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `description` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -140,7 +137,6 @@ CREATE TABLE `satsang` (
 
 LOCK TABLES `satsang` WRITE;
 /*!40000 ALTER TABLE `satsang` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `satsang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,9 +149,9 @@ DROP TABLE IF EXISTS `satsangs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `satsangs` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `satsang_url` varchar(255) NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci,
+  `satsang_url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -169,7 +165,6 @@ CREATE TABLE `satsangs` (
 
 LOCK TABLES `satsangs` WRITE;
 /*!40000 ALTER TABLE `satsangs` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `satsangs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,8 +177,8 @@ DROP TABLE IF EXISTS `settings`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `settings` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `setting_key` varchar(255) NOT NULL,
-  `setting_value` text,
+  `setting_key` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `setting_value` text COLLATE utf8mb4_general_ci,
   `live_start_time` datetime DEFAULT NULL,
   `live_end_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -197,7 +192,6 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +221,6 @@ CREATE TABLE `user_events` (
 
 LOCK TABLES `user_events` WRITE;
 /*!40000 ALTER TABLE `user_events` DISABLE KEYS */;
--- Data removed
 /*!40000 ALTER TABLE `user_events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,22 +233,28 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `gender` enum('male','female','other','prefer_not_to_say') DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `gender` enum('male','female','other','prefer_not_to_say') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `dob` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `phone` varchar(255) DEFAULT NULL,
-  `address` text,
+  `phone` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `street_address` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `city` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `state` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `postal_code` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `country` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `family_size` int DEFAULT NULL,
-  `family_details` text,
-  `vehicle_number` varchar(255) DEFAULT NULL,
-  `profile_image_url` varchar(255) DEFAULT NULL,
-  `profile_image_public_id` varchar(255) DEFAULT NULL,
-  `role` varchar(50) NOT NULL DEFAULT 'user',
+  `family_details` text COLLATE utf8mb4_general_ci,
+  `vehicle_number` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `profile_image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `profile_image_public_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `role` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
+  `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -265,7 +264,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Jyoti Dham Admin','jyotidhamwebsite@gmail.com','$2y$12$tQ0Nv018g10ut0C/AW82Q.cbSI2IfEGZRlWiZcHKwsErtLTxDMTOm','male','2000-01-01','2025-11-15 14:28:54','9999999999','12',3,NULL,'12345678','https://res.cloudinary.com/dfxl3oy4y/image/upload/v1763502221/sgbdq6oggfepgabyjpkj.jpg','sgbdq6oggfepgabyjpkj','admin');
+INSERT INTO `users` VALUES (1,'Jyoti Dham Admin','jyotidhamwebsite@gmail.com','$2y$12$tQ0Nv018g10ut0C/AW82Q.cbSI2IfEGZRlWiZcHKwsErtLTxDMTOm','male','2000-01-01','2025-11-15 14:28:54','+14163210594','Torbram Road','Brampton','ON','M5C','Canada',0,NULL,'12345678','https://res.cloudinary.com/dfxl3oy4y/image/upload/v1763502221/sgbdq6oggfepgabyjpkj.jpg','sgbdq6oggfepgabyjpkj','admin','JD-000001');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -278,4 +277,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed
+-- Dump completed on 2025-12-05  0:02:03
