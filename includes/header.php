@@ -71,9 +71,6 @@ try {
                             <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo htmlspecialchars($satsang_link); ?>"><?php echo htmlspecialchars($satsang_status_text); ?></a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="donate.php">Donate</a>
                         </li>
                         <li class="nav-item">
@@ -84,6 +81,9 @@ try {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.php">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo htmlspecialchars($satsang_link); ?>"><?php echo htmlspecialchars($satsang_status_text); ?></a>
                         </li>
                         <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
                             <li class="nav-item">
