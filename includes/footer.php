@@ -64,12 +64,7 @@
                                         alt="Map Pin" />
 
                                     <?php
-                                        $is_ios = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone") || stripos($_SERVER['HTTP_USER_AGENT'], "iPad") || stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
-                                        if ($is_ios) {
-                                            $map_url = "https://maps.apple.com/p/ZEVLdzQDFE_7NL";
-                                        } else {
-                                            $map_url = "https://maps.app.goo.gl/FbzrVVRj6AdP7gqT8?g_st=ipc";
-                                        }
+                                        $map_url = "https://maps.app.goo.gl/FbzrVVRj6AdP7gqT8?g_st=ipc";
                                     ?>
                                     <a href="<?php echo $map_url; ?>" style="text-decoration:none;color:white;">Jyotidham, 260 Ingleton Blvd, Scarborough, ON M1V 3R1</a>
 
