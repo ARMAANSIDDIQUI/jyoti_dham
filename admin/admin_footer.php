@@ -37,25 +37,29 @@ window.initMapPickerCallback = function() {
     const displayAddCoordinatesSpan = document.getElementById('displayAddCoordinates');
 
     // 1. Initialize display values for static display
-    displayAddVenueSpan.textContent = defaultVenue;
-    displayAddCoordinatesSpan.textContent = `${defaultLat}, ${defaultLng}`;
+    if (displayAddVenueSpan) displayAddVenueSpan.textContent = defaultVenue;
+    if (displayAddCoordinatesSpan) displayAddCoordinatesSpan.textContent = `${defaultLat}, ${defaultLng}`;
 
     // 2. Initialize the map (always visible, initially non-interactive)
-    addEventMapInstance = initMapPicker(
-        "addEventMapInstance",
-        parseFloat(addEventLatitudeInput.value),
-        parseFloat(addEventLongitudeInput.value),
-        'addEventVenue',
-        'addEventLatitude',
-        'addEventLongitude',
-        'addEventAddressAutocomplete',
-        'addEventMap',
-        'displayAddVenue',
-        'displayAddCoordinates',
-        false                  // updateVenueInputField = false
-    );
-    // Set map to non-interactive initially
-    setMapInteractivity(addEventMapInstance, false);
+    if (addEventLatitudeInput && addEventLongitudeInput && typeof initMapPicker === 'function') {
+        addEventMapInstance = initMapPicker(
+            "addEventMapInstance",
+            parseFloat(addEventLatitudeInput.value),
+            parseFloat(addEventLongitudeInput.value),
+            'addEventVenue',
+            'addEventLatitude',
+            'addEventLongitude',
+            'addEventAddressAutocomplete',
+            'addEventMap',
+            'displayAddVenue',
+            'displayAddCoordinates',
+            false // updateVenueInputField = false
+        );
+        // Set map to non-interactive initially
+        if (addEventMapInstance) {
+            setMapInteractivity(addEventMapInstance, false);
+        }
+    }
 }
 
 
@@ -72,47 +76,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const displayAddCoordinatesSpan = document.getElementById('displayAddCoordinates');
 
     // If Google Maps API loads very fast, initMapPickerCallback might have already been called.
-    // If not, call it here.
     if (!addEventMapInstance) {
         window.initMapPickerCallback();
     }
 
     // 3. Set initial state of editor elements
-    addEventVenueInput.readOnly = true; // Ensure readonly initially
-    addEventAddressAutocompleteContainer.style.display = 'none'; // Hide search bar initially
+    if (addEventVenueInput) addEventVenueInput.readOnly = true; // Ensure readonly initially
+    if (addEventAddressAutocompleteContainer) addEventAddressAutocompleteContainer.style.display = 'none'; // Hide search bar initially
 
 
     // 4. Handle "Edit Location" button click
-    toggleAddLocationEditorBtn.addEventListener('click', function() {
-        const isEditing = addEventVenueInput.readOnly; // Check current state
+    if (toggleAddLocationEditorBtn && addEventVenueInput) {
+        toggleAddLocationEditorBtn.addEventListener('click', function() {
+            const isEditing = addEventVenueInput.readOnly; // Check current state
 
-        if (isEditing) {
-            // Switch to editing mode
-            toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Location';
-            addEventVenueInput.readOnly = false; // Make venue input editable
-            addEventAddressAutocompleteContainer.style.display = 'block'; // Show search bar
-            if (addEventMapInstance) { // Ensure map instance exists before interacting
-                setMapInteractivity(addEventMapInstance, true); // Make map interactive
-            }
-        } else {
-            // Switch back to non-editing mode
-            toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Edit Location';
-            addEventVenueInput.readOnly = true; // Make venue input read-only
-            addEventAddressAutocompleteContainer.style.display = 'none'; // Hide search bar
-            if (addEventMapInstance) { // Ensure map instance exists before interacting
-                setMapInteractivity(addEventMapInstance, false); // Make map non-interactive
-            }
+            if (isEditing) {
+                // Switch to editing mode
+                toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Location';
+                addEventVenueInput.readOnly = false; // Make venue input editable
+                if (addEventAddressAutocompleteContainer) addEventAddressAutocompleteContainer.style.display = 'block'; // Show search bar
+                if (addEventMapInstance) { // Ensure map instance exists before interacting
+                    setMapInteractivity(addEventMapInstance, true); // Make map interactive
+                }
+            } else {
+                // Switch back to non-editing mode
+                toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Edit Location';
+                addEventVenueInput.readOnly = true; // Make venue input read-only
+                if (addEventAddressAutocompleteContainer) addEventAddressAutocompleteContainer.style.display = 'none'; // Hide search bar
+                if (addEventMapInstance) { // Ensure map instance exists before interacting
+                    setMapInteractivity(addEventMapInstance, false); // Make map non-interactive
+                }
 
-            // Update displayed coordinates from the input fields after editing
-            displayAddCoordinatesSpan.textContent = `${addEventLatitudeInput.value}, ${addEventLongitudeInput.value}`;
-            displayAddVenueSpan.textContent = addEventVenueInput.value;
-        }
-    });
+                // Update displayed coordinates from the input fields after editing
+                if (displayAddCoordinatesSpan && addEventLatitudeInput && addEventLongitudeInput) displayAddCoordinatesSpan.textContent = `${addEventLatitudeInput.value}, ${addEventLongitudeInput.value}`;
+                if (displayAddVenueSpan) displayAddVenueSpan.textContent = addEventVenueInput.value;
+            }
+        });
+    }
 });
 
 // Primary toggleForm function
 function toggleForm() {
     var eventForm = document.getElementById('eventForm');
+    if (!eventForm) return;
+
     const toggleAddLocationEditorBtn = document.getElementById('toggleAddLocationEditor');
     const addEventVenueInput = document.getElementById('addEventVenue');
     const addEventAddressAutocompleteContainer = document.getElementById('addEventAddressAutocompleteContainer');
@@ -125,43 +132,64 @@ function toggleForm() {
         eventForm.style.display = 'block';
         // Reset the form values to defaults when opening the form
         // This ensures the form is clean for a new entry
-        document.getElementById('date').value = '';
-        document.getElementById('event_time').value = '';
-        document.getElementById('event_end_time').value = '';
-        document.getElementById('event_name').value = '';
-        document.getElementById('event_description').value = '';
-        document.getElementById('event_image').value = ''; // Clear file input
-        document.getElementById('organizer').value = '';
-        
+        const dateInput = document.getElementById('date');
+        if (dateInput) dateInput.value = '';
+
+        const eventTimeInput = document.getElementById('event_time');
+        if (eventTimeInput) eventTimeInput.value = '';
+
+        const eventEndTimeInput = document.getElementById('event_end_time');
+        if (eventEndTimeInput) eventEndTimeInput.value = '';
+
+        const eventNameInput = document.getElementById('event_name');
+        if (eventNameInput) eventNameInput.value = '';
+
+        const eventDescriptionInput = document.getElementById('event_description');
+        if (eventDescriptionInput) eventDescriptionInput.value = '';
+
+        const eventImageInput = document.getElementById('event_image');
+        if (eventImageInput) eventImageInput.value = ''; // Clear file input
+
+        const organizerInput = document.getElementById('organizer');
+        if (organizerInput) organizerInput.value = '';
+
         // Reset location editor to initial non-editing state when opening form
-        toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Edit Location';
-        addEventVenueInput.value = "Shri Param Hans Advait Mat (Jyoti Dham) Ontario"; // Reset venue text
-        addEventVenueInput.readOnly = true;
-        addEventAddressAutocompleteContainer.style.display = 'none';
-        addEventLatitudeInput.value = "43.8271272";
-        addEventLongitudeInput.value = "-79.26619269999999";
-        if (addEventMapInstance) {
+        if (toggleAddLocationEditorBtn) toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Edit Location';
+        if (addEventVenueInput) {
+            addEventVenueInput.value = "Shri Param Hans Advait Mat (Jyoti Dham) Ontario"; // Reset venue text
+            addEventVenueInput.readOnly = true;
+        }
+        if (addEventAddressAutocompleteContainer) addEventAddressAutocompleteContainer.style.display = 'none';
+        if (addEventLatitudeInput) addEventLatitudeInput.value = "43.8271272";
+        if (addEventLongitudeInput) addEventLongitudeInput.value = "-79.26619269999999";
+        if (addEventMapInstance && addEventLatitudeInput && addEventLongitudeInput) {
             setMapInteractivity(addEventMapInstance, false);
             // Also reset map center and marker position to default
-            addEventMapInstance.map.setCenter({ lat: parseFloat(addEventLatitudeInput.value), lng: parseFloat(addEventLongitudeInput.value) });
-            addEventMapInstance.marker.setPosition({ lat: parseFloat(addEventLatitudeInput.value), lng: parseFloat(addEventLongitudeInput.value) });
+            addEventMapInstance.map.setCenter({
+                lat: parseFloat(addEventLatitudeInput.value),
+                lng: parseFloat(addEventLongitudeInput.value)
+            });
+            addEventMapInstance.marker.setPosition({
+                lat: parseFloat(addEventLatitudeInput.value),
+                lng: parseFloat(addEventLongitudeInput.value)
+            });
         }
-        displayAddVenueSpan.textContent = addEventVenueInput.value;
-        displayAddCoordinatesSpan.textContent = `${addEventLatitudeInput.value}, ${addEventLongitudeInput.value}`;
+        if (displayAddVenueSpan && addEventVenueInput) displayAddVenueSpan.textContent = addEventVenueInput.value;
+        if (displayAddCoordinatesSpan && addEventLatitudeInput && addEventLongitudeInput) displayAddCoordinatesSpan.textContent = `${addEventLatitudeInput.value}, ${addEventLongitudeInput.value}`;
 
     } else {
         eventForm.style.display = 'none';
-        
+
         // Reset location editor to initial non-editing state when form is closed
-        toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Edit Location';
-        addEventVenueInput.readOnly = true;
-        addEventAddressAutocompleteContainer.style.display = 'none';
+        if (toggleAddLocationEditorBtn) toggleAddLocationEditorBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Edit Location';
+        if (addEventVenueInput) addEventVenueInput.readOnly = true;
+        if (addEventAddressAutocompleteContainer) addEventAddressAutocompleteContainer.style.display = 'none';
         if (addEventMapInstance) {
             setMapInteractivity(addEventMapInstance, false);
         }
         // Ensure displayed coordinates are updated to current state of hidden inputs
-        displayAddCoordinatesSpan.textContent = `${addEventLatitudeInput.value}, ${addEventLongitudeInput.value}`;
-        displayAddVenueSpan.textContent = addEventVenueInput.value; // Update display venue as well
+        if (displayAddCoordinatesSpan && addEventLatitudeInput && addEventLongitudeInput) displayAddCoordinatesSpan.textContent = `${addEventLatitudeInput.value}, ${addEventLongitudeInput.value}`;
+        if (displayAddVenueSpan && addEventVenueInput) displayAddVenueSpan.textContent = addEventVenueInput.value; // Update display venue as well
     }
 }
 </script>

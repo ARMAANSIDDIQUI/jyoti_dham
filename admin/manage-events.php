@@ -20,17 +20,128 @@ if (empty($googleMapsApiKey)) {
     echo "<div class='alert alert-danger'>Error: Google Maps API Key is not set. Please add GOOGLE_MAPS_API_KEY to your .env file.</div>";
 }
 ?>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= htmlspecialchars($googleMapsApiKey) ?>&libraries=places&callback=initMapPickerCallback"></script>
-<script src="../js/event-map-picker.js"></script>
 <script>
-    // Callback function required by Google Maps API to ensure map is initialized AFTER the API loads.
-    // This function will be called by the Google Maps script itself.
-    function initMapPickerCallback() {
-        // This function can remain empty or log a message, as the map initialization
-        // for the add event form is handled by the toggleForm() function when the form becomes visible.
-        console.log('Google Maps API loaded and initMapPickerCallback executed.');
+// Custom Map Picker Script (load first to define initMapPicker)
+let addMapDetails;
+let isLocationEditable = true; // Initial state for add event - editable since no existing location
+let googleMapsLoaded = false;
+
+// Callback function for Google Maps API to initialize the map for adding an event.
+// This function is called once the Google Maps API script has fully loaded.
+function initEditMapPickerCallback() {
+    googleMapsLoaded = true;
+    initializeMapIfFormVisible();
+}
+
+function initializeMapIfFormVisible() {
+    const eventForm = document.getElementById('eventForm');
+    if (eventForm && eventForm.style.display !== 'none' && googleMapsLoaded) {
+        initializeMap();
     }
+}
+
+function initializeMap() {
+    const initialLat = "43.8271272"; // Default lat
+    const initialLng = "-79.26619269999999"; // Default lng
+    const initialVenue = "Shri Param Hans Advait Mat (Jyoti Dham) Ontario";
+
+    // Set initial display for venue and coordinates
+    const displayVenueEl = document.getElementById('displayVenue');
+    if (displayVenueEl) {
+        displayVenueEl.textContent = initialVenue;
+    }
+
+    // Initialize map picker (always visible now)
+    if (typeof initMapPicker === 'function') {
+        addMapDetails = initMapPicker(
+            'addEvent', // Unique instance ID for this map
+            parseFloat(initialLat),
+            parseFloat(initialLng),
+            'editEventVenue',
+            'editEventLatitude',
+            'editEventLongitude',
+            'editEventAddressAutocomplete',
+            'editEventMap',
+            'displayVenue',
+            'displayCoordinates',
+            false // Do not update venue input field automatically by map
+        );
+
+        // For add event, since defaults are set, but to match edit-event, if lat/lng exist, readonly
+        // But task says for empty -> editable, but defaults are set, so perhaps editable
+        // Initial check for existing coordinates to set editability and display address
+        if (initialLat && initialLng && initialLat !== '0' && initialLng !== '0') {
+            isLocationEditable = false; // Location is set, so initially not editable
+            const venueEl = document.getElementById('editEventVenue');
+            const addressEl = document.getElementById('editEventAddressAutocomplete');
+            if (venueEl) venueEl.setAttribute('readonly', 'readonly');
+            if (addressEl) addressEl.setAttribute('disabled', 'disabled');
+            updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayCoordinates', addMapDetails.geocoder);
+        } else {
+            // No location set, so it's editable by default
+            isLocationEditable = true;
+            const venueEl = document.getElementById('editEventVenue');
+            const addressEl = document.getElementById('editEventAddressAutocomplete');
+            const coordsEl = document.getElementById('displayCoordinates');
+            if (venueEl) venueEl.removeAttribute('readonly');
+            if (addressEl) addressEl.removeAttribute('disabled');
+            if (coordsEl) coordsEl.textContent = 'Please set a location.';
+        }
+
+        // Apply initial interactivity state to the map
+        setMapInteractivity(addMapDetails, isLocationEditable);
+    } else {
+        console.error('initMapPicker function not available');
+    }
+}
+
+// Function to perform reverse geocoding for initial display
+function updateDisplayAddress(lat, lng, displayCoordinatesId, geocoder) {
+    if (lat && lng) {
+        const latLng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({ 'location': latLng }, function(results, status) {
+            if (status === 'OK' && results[0]) {
+                document.getElementById(displayCoordinatesId).textContent = results[0].formatted_address;
+            } else {
+                document.getElementById(displayCoordinatesId).textContent = `${lat}, ${lng} (Address not found)`;
+            }
+        });
+    } else {
+        document.getElementById(displayCoordinatesId).textContent = 'No location set.';
+    }
+}
+
+function toggleLocationEditability(type) {
+    const venueInput = document.getElementById('editEventVenue');
+    const addressAutocompleteInput = document.getElementById('editEventAddressAutocomplete');
+    const editButton = document.querySelector('button[onclick="toggleLocationEditability(\'edit\')"]');
+    const currentLocationDisplay = document.getElementById('currentLocationDisplay');
+
+    if (isLocationEditable) {
+        // Currently editable, switch to view-only
+        isLocationEditable = false;
+        venueInput.setAttribute('readonly', 'readonly');
+        addressAutocompleteInput.setAttribute('disabled', 'disabled');
+        setMapInteractivity(addMapDetails, false);
+        currentLocationDisplay.style.display = 'block';
+        document.getElementById('displayVenue').textContent = venueInput.value;
+        const lat = document.getElementById('editEventLatitude').value;
+        const lng = document.getElementById('editEventLongitude').value;
+        updateDisplayAddress(parseFloat(lat), parseFloat(lng), 'displayCoordinates', addMapDetails.geocoder);
+        editButton.innerHTML = 'Edit Location';
+    } else {
+        // Currently view-only, switch to editable
+        isLocationEditable = true;
+        venueInput.removeAttribute('readonly');
+        addressAutocompleteInput.removeAttribute('disabled');
+        setMapInteractivity(addMapDetails, true);
+        currentLocationDisplay.style.display = 'none';
+        editButton.innerHTML = 'Hide Location';
+    }
+}
 </script>
+<script src="../js/event-map-picker.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= htmlspecialchars($googleMapsApiKey) ?>&libraries=places&callback=initEditMapPickerCallback"></script>
 <?php
 // Admin check
 require_once __DIR__ . '/auth_check.php';
@@ -259,24 +370,24 @@ $stmt->execute($params);
 
                         <!-- Location Picker Section -->
                         <div class="form-group">
-                            <label>Event Location:</label>
-                            <span id="addEventVenueDisplay" style="margin-left: 10px;">
-                                <span id="displayAddVenue">Shri Param Hans Advait Mat (Jyoti Dham) Ontario</span><br>
-                                <span id="displayAddCoordinates"></span>
-                            </span>
-                            <button type="button" class="btn btn-info btn-sm mb-2" id="toggleAddLocationEditor"><i class="fas fa-map-marker-alt"></i> Edit Location</button>
-                            <div id="addEventLocationEditor" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
+                            <label>Event Location</label>
+                            <div id="currentLocationDisplay" style="margin-bottom: 10px; padding: 10px; border: 1px solid #e9ecef; border-radius: 5px; background-color: #f8f9fa;">
+                                <strong>Venue:</strong> <span id="displayVenue">Shri Param Hans Advait Mat (Jyoti Dham) Ontario</span><br>
+                                <strong>Address:</strong> <span id="displayCoordinates"></span>
+                            </div>
+                            <button type="button" class="btn btn-info btn-sm mb-2" onclick="toggleLocationEditability('edit')">Edit Location</button>
+                            <div id="editEventLocationEditor" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
                                 <div class="mb-3">
-                                    <label for="addEventVenue" class="form-label">Event Venue:</label>
-                                    <input type="text" id="addEventVenue" class="form-control" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
+                                    <label for="editEventVenue" class="form-label">Event Venue:</label>
+                                    <input type="text" id="editEventVenue" class="form-control" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
                                 </div>
-                                <div class="mb-3" id="addEventAddressAutocompleteContainer" style="display: none;">
-                                    <label for="addEventAddressAutocomplete" class="form-label">Search Location:</label>
-                                    <input type="text" id="addEventAddressAutocomplete" class="form-control" placeholder="Enter event location">
+                                <div class="mb-3">
+                                    <label for="editEventAddressAutocomplete" class="form-label">Search Location:</label>
+                                    <input type="text" id="editEventAddressAutocomplete" class="form-control" placeholder="Enter event location">
                                 </div>
-                                <div id="addEventMap" style="height: 400px; width: 100%; margin-bottom: 15px;"></div>
-                                <input type="hidden" id="addEventLatitude" name="latitude" value="43.8271272">
-                                <input type="hidden" id="addEventLongitude" name="longitude" value="-79.26619269999999">
+                                <div id="editEventMap" style="height: 400px; width: 100%; margin-bottom: 15px;"></div>
+                                <input type="hidden" id="editEventLatitude" name="latitude" value="43.8271272">
+                                <input type="hidden" id="editEventLongitude" name="longitude" value="-79.26619269999999">
                             </div>
                         </div>
 
@@ -295,4 +406,15 @@ $stmt->execute($params);
 <?php
 require_once __DIR__ . '/admin_footer.php';
 ?>
+<script>
+// Override toggleForm to initialize map when form is shown
+const originalToggleForm = toggleForm;
+toggleForm = function() {
+    originalToggleForm();
+    const eventForm = document.getElementById('eventForm');
+    if (eventForm && eventForm.style.display !== 'none') {
+        initializeMapIfFormVisible();
+    }
+};
+</script>
 

@@ -236,40 +236,52 @@ function initEditMapPickerCallback() {
     const initialLng = "<?= htmlspecialchars($event['longitude']) ?>";
     const initialVenue = "<?= htmlspecialchars($event['event_venue']) ?>";
 
-    // Set initial display for venue and coordinates
-    document.getElementById('displayVenue').textContent = initialVenue;
-    
-    // Initialize map picker (always visible now)
-    editMapDetails = initMapPicker(
-        'editEvent', // Unique instance ID for this map
-        parseFloat(initialLat),
-        parseFloat(initialLng),
-        'editEventVenue',
-        'editEventLatitude',
-        'editEventLongitude',
-        'editEventAddressAutocomplete',
-        'editEventMap',
-        'displayVenue',
-        'displayCoordinates',
-        false // Do not update venue input field automatically by map
-    );
-
-    // Initial check for existing coordinates to set editability and display address
-    if (initialLat && initialLng && initialLat !== '0' && initialLng !== '0') {
-        isLocationEditable = false; // Location is set, so initially not editable
-        document.getElementById('editEventVenue').setAttribute('readonly', 'readonly');
-        document.getElementById('editEventAddressAutocomplete').setAttribute('disabled', 'disabled');
-        updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayCoordinates', editMapDetails.geocoder);
-    } else {
-        // No location set, so it's editable by default
-        isLocationEditable = true;
-        document.getElementById('editEventVenue').removeAttribute('readonly');
-        document.getElementById('editEventAddressAutocomplete').removeAttribute('disabled');
-        document.getElementById('displayCoordinates').textContent = 'Please set a location.';
+    // Set initial display for venue and coordinates with null checks
+    const displayVenueEl = document.getElementById('displayVenue');
+    if (displayVenueEl) {
+        displayVenueEl.textContent = initialVenue;
     }
-    
-    // Apply initial interactivity state to the map
-    setMapInteractivity(editMapDetails, isLocationEditable);
+
+    // Initialize map picker (always visible now)
+    if (typeof initMapPicker === 'function') {
+        editMapDetails = initMapPicker(
+            'editEvent', // Unique instance ID for this map
+            parseFloat(initialLat),
+            parseFloat(initialLng),
+            'editEventVenue',
+            'editEventLatitude',
+            'editEventLongitude',
+            'editEventAddressAutocomplete',
+            'editEventMap',
+            'displayVenue',
+            'displayCoordinates',
+            false // Do not update venue input field automatically by map
+        );
+
+        // Initial check for existing coordinates to set editability and display address
+        if (initialLat && initialLng && initialLat !== '0' && initialLng !== '0') {
+            isLocationEditable = false; // Location is set, so initially not editable
+            const venueEl = document.getElementById('editEventVenue');
+            const addressEl = document.getElementById('editEventAddressAutocomplete');
+            if (venueEl) venueEl.setAttribute('readonly', 'readonly');
+            if (addressEl) addressEl.setAttribute('disabled', 'disabled');
+            updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayCoordinates', editMapDetails.geocoder);
+        } else {
+            // No location set, so it's editable by default
+            isLocationEditable = true;
+            const venueEl = document.getElementById('editEventVenue');
+            const addressEl = document.getElementById('editEventAddressAutocomplete');
+            const coordsEl = document.getElementById('displayCoordinates');
+            if (venueEl) venueEl.removeAttribute('readonly');
+            if (addressEl) addressEl.removeAttribute('disabled');
+            if (coordsEl) coordsEl.textContent = 'Please set a location.';
+        }
+
+        // Apply initial interactivity state to the map
+        setMapInteractivity(editMapDetails, isLocationEditable);
+    } else {
+        console.error('initMapPicker function not available');
+    }
 }
 
 // Function to perform reverse geocoding for initial display
@@ -320,10 +332,10 @@ function toggleLocationEditability(type) {
 }
 </script>
 
+<!-- Custom Map Picker Script (load first to define initMapPicker) -->
+<script src="../js/event-map-picker.js"></script>
 <!-- Google Maps API Script -->
 <script src="https://maps.googleapis.com/maps/api/js?key=<?= htmlspecialchars($googleMapsApiKey) ?>&libraries=places&callback=initEditMapPickerCallback" async defer></script>
-<!-- Custom Map Picker Script -->
-<script src="../js/event-map-picker.js"></script>
 
 
 <?php
