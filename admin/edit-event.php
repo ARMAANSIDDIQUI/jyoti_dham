@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $event_description = $_POST['event_description'];
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
+    $address = $_POST['address'];
 
     // --- Cloudinary Image Upload ---
     $imageUrl = $event['image_url']; // Keep old image by default
@@ -88,12 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         event_venue=?,
         latitude=?,
         longitude=?,
-        image_url=?
+        image_url=?,
+        address=?
         WHERE id = ?";
 
     $stmt = $conn->prepare($update_sql);
 
-    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $imageUrl, $event_id])) {
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $imageUrl, $address, $event_id])) {
         echo "<div class='alert alert-success'>Event updated successfully</div>";
         // Refresh form with updated data by re-fetching from the database
         $sql = "SELECT * FROM events WHERE id = ?";
@@ -199,12 +201,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label>Event Location</label>
                             <div id="currentLocationDisplay" style="margin-bottom: 10px; padding: 10px; border: 1px solid #e9ecef; border-radius: 5px; background-color: #f8f9fa;">
                                 <strong>Venue:</strong> <span id="displayVenue"><?= htmlspecialchars($event['event_venue']) ?></span><br>
-                                <strong>Address:</strong> <span id="displayCoordinates"></span>
+                                <strong>Address:</strong> <span id="displayAddress"><?= htmlspecialchars($event['address'] ?? '') ?></span><br>
+                                <strong>Coordinates:</strong> <span id="displayCoordinates"></span>
                             </div>
                             <button type="button" class="btn btn-info btn-sm mb-2" onclick="toggleLocationEditability('edit')">Edit Location</button>
                                                             <div id="editEventLocationEditor" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">                                <div class="mb-3">
                                     <label for="editEventVenue" class="form-label">Event Venue:</label>
                                     <input type="text" id="editEventVenue" class="form-control" name="event_venue" value="<?= htmlspecialchars($event['event_venue']) ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editEventAddress" class="form-label">Address:</label>
+                                    <textarea id="editEventAddress" name="address" class="form-control" rows="3"><?= htmlspecialchars($event['address'] ?? '') ?></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="editEventAddressAutocomplete" class="form-label">Search Location:</label>
@@ -254,8 +261,9 @@ function initEditMapPickerCallback() {
             'editEventAddressAutocomplete',
             'editEventMap',
             'displayVenue',
-            'displayCoordinates',
-            false // Do not update venue input field automatically by map
+            'displayCoordinates', // This will be used for coordinates display
+            false, // Do not update venue input field automatically by map
+            'editEventAddress' // NEW: ID of the address textarea
         );
 
         // Initial check for existing coordinates to set editability and display address
@@ -263,18 +271,25 @@ function initEditMapPickerCallback() {
             isLocationEditable = false; // Location is set, so initially not editable
             const venueEl = document.getElementById('editEventVenue');
             const addressEl = document.getElementById('editEventAddressAutocomplete');
+            const addressTextarea = document.getElementById('editEventAddress');
             if (venueEl) venueEl.setAttribute('readonly', 'readonly');
             if (addressEl) addressEl.setAttribute('disabled', 'disabled');
-            updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayCoordinates', editMapDetails.geocoder);
+            if (addressTextarea) addressTextarea.setAttribute('readonly', 'readonly');
+            updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayAddress', editMapDetails.geocoder);
+            document.getElementById('displayCoordinates').textContent = `${parseFloat(initialLat)}, ${parseFloat(initialLng)}`;
         } else {
             // No location set, so it's editable by default
             isLocationEditable = true;
             const venueEl = document.getElementById('editEventVenue');
             const addressEl = document.getElementById('editEventAddressAutocomplete');
+            const addressTextarea = document.getElementById('editEventAddress');
             const coordsEl = document.getElementById('displayCoordinates');
+            const displayAddressEl = document.getElementById('displayAddress');
             if (venueEl) venueEl.removeAttribute('readonly');
             if (addressEl) addressEl.removeAttribute('disabled');
+            if (addressTextarea) addressTextarea.removeAttribute('readonly');
             if (coordsEl) coordsEl.textContent = 'Please set a location.';
+            if (displayAddressEl) displayAddressEl.textContent = 'Please set a location.';
         }
 
         // Apply initial interactivity state to the map
@@ -285,18 +300,18 @@ function initEditMapPickerCallback() {
 }
 
 // Function to perform reverse geocoding for initial display
-function updateDisplayAddress(lat, lng, displayCoordinatesId, geocoder) {
+function updateDisplayAddress(lat, lng, displayAddressId, geocoder) {
     if (lat && lng) {
         const latLng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({ 'location': latLng }, function(results, status) {
             if (status === 'OK' && results[0]) {
-                document.getElementById(displayCoordinatesId).textContent = results[0].formatted_address;
+                document.getElementById(displayAddressId).textContent = results[0].formatted_address;
             } else {
-                document.getElementById(displayCoordinatesId).textContent = `${lat}, ${lng} (Address not found)`;
+                document.getElementById(displayAddressId).textContent = `${lat}, ${lng} (Address not found)`;
             }
         });
     } else {
-        document.getElementById(displayCoordinatesId).textContent = 'No location set.';
+        document.getElementById(displayAddressId).textContent = 'No location set.';
     }
 }
 
@@ -305,6 +320,7 @@ function updateDisplayAddress(lat, lng, displayCoordinatesId, geocoder) {
 function toggleLocationEditability(type) {
     const venueInput = document.getElementById('editEventVenue');
     const addressAutocompleteInput = document.getElementById('editEventAddressAutocomplete');
+    const addressTextarea = document.getElementById('editEventAddress');
     const editButton = document.querySelector('button[onclick="toggleLocationEditability(\'edit\')"]');
     const currentLocationDisplay = document.getElementById('currentLocationDisplay'); // Corrected: Retrieve element here
 
@@ -313,18 +329,21 @@ function toggleLocationEditability(type) {
         isLocationEditable = false;
         venueInput.setAttribute('readonly', 'readonly');
         addressAutocompleteInput.setAttribute('disabled', 'disabled');
+        addressTextarea.setAttribute('readonly', 'readonly');
         setMapInteractivity(editMapDetails, false);
         currentLocationDisplay.style.display = 'block';
         document.getElementById('displayVenue').textContent = venueInput.value;
         const lat = document.getElementById('editEventLatitude').value;
         const lng = document.getElementById('editEventLongitude').value;
-        updateDisplayAddress(parseFloat(lat), parseFloat(lng), 'displayCoordinates', editMapDetails.geocoder);
+        updateDisplayAddress(parseFloat(lat), parseFloat(lng), 'displayAddress', editMapDetails.geocoder);
+        document.getElementById('displayCoordinates').textContent = `${lat}, ${lng}`;
         editButton.innerHTML = 'Edit Location'; // Change button text
     } else {
         // Currently view-only, switch to editable
         isLocationEditable = true;
         venueInput.removeAttribute('readonly');
         addressAutocompleteInput.removeAttribute('disabled');
+        addressTextarea.removeAttribute('readonly');
         setMapInteractivity(editMapDetails, true);
         currentLocationDisplay.style.display = 'none';
         editButton.innerHTML = 'Hide Location'; // Change button text

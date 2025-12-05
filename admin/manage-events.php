@@ -41,8 +41,8 @@ function initializeMapIfFormVisible() {
 }
 
 function initializeMap() {
-    const initialLat = "43.8271272"; // Default lat
-    const initialLng = "-79.26619269999999"; // Default lng
+    const initialLat = "43.827377"; // Default lat
+    const initialLng = " -79.266829"; // Default lng
     const initialVenue = "Shri Param Hans Advait Mat (Jyoti Dham) Ontario";
 
     // Set initial display for venue and coordinates
@@ -63,8 +63,9 @@ function initializeMap() {
             'editEventAddressAutocomplete',
             'editEventMap',
             'displayVenue',
-            'displayCoordinates',
-            false // Do not update venue input field automatically by map
+            'displayCoordinates', // for coordinates
+            false, // Do not update venue input field automatically by map
+            'addEventAddress' // NEW: ID of the address textarea
         );
 
         // For add event, since defaults are set, but to match edit-event, if lat/lng exist, readonly
@@ -74,18 +75,26 @@ function initializeMap() {
             isLocationEditable = false; // Location is set, so initially not editable
             const venueEl = document.getElementById('editEventVenue');
             const addressEl = document.getElementById('editEventAddressAutocomplete');
+            const addressTextarea = document.getElementById('addEventAddress');
             if (venueEl) venueEl.setAttribute('readonly', 'readonly');
             if (addressEl) addressEl.setAttribute('disabled', 'disabled');
-            updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayCoordinates', addMapDetails.geocoder);
+            if (addressTextarea) addressTextarea.setAttribute('readonly', 'readonly');
+            updateDisplayAddress(parseFloat(initialLat), parseFloat(initialLng), 'displayAddress', addMapDetails.geocoder);
+            document.getElementById('displayCoordinates').textContent = `${parseFloat(initialLat)}, ${parseFloat(initialLng)}`;
+
         } else {
             // No location set, so it's editable by default
             isLocationEditable = true;
             const venueEl = document.getElementById('editEventVenue');
             const addressEl = document.getElementById('editEventAddressAutocomplete');
+            const addressTextarea = document.getElementById('addEventAddress');
             const coordsEl = document.getElementById('displayCoordinates');
+            const displayAddressEl = document.getElementById('displayAddress');
             if (venueEl) venueEl.removeAttribute('readonly');
             if (addressEl) addressEl.removeAttribute('disabled');
+            if (addressTextarea) addressTextarea.removeAttribute('readonly');
             if (coordsEl) coordsEl.textContent = 'Please set a location.';
+            if (displayAddressEl) displayAddressEl.textContent = 'Please set a location.';
         }
 
         // Apply initial interactivity state to the map
@@ -96,24 +105,30 @@ function initializeMap() {
 }
 
 // Function to perform reverse geocoding for initial display
-function updateDisplayAddress(lat, lng, displayCoordinatesId, geocoder) {
+function updateDisplayAddress(lat, lng, displayAddressId, geocoder) {
     if (lat && lng) {
         const latLng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({ 'location': latLng }, function(results, status) {
             if (status === 'OK' && results[0]) {
-                document.getElementById(displayCoordinatesId).textContent = results[0].formatted_address;
+                document.getElementById(displayAddressId).textContent = results[0].formatted_address;
+                // Also update the address textarea
+                const addressTextarea = document.getElementById('addEventAddress');
+                if(addressTextarea) {
+                    addressTextarea.value = results[0].formatted_address;
+                }
             } else {
-                document.getElementById(displayCoordinatesId).textContent = `${lat}, ${lng} (Address not found)`;
+                document.getElementById(displayAddressId).textContent = `${lat}, ${lng} (Address not found)`;
             }
         });
     } else {
-        document.getElementById(displayCoordinatesId).textContent = 'No location set.';
+        document.getElementById(displayAddressId).textContent = 'No location set.';
     }
 }
 
 function toggleLocationEditability(type) {
     const venueInput = document.getElementById('editEventVenue');
     const addressAutocompleteInput = document.getElementById('editEventAddressAutocomplete');
+    const addressTextarea = document.getElementById('addEventAddress');
     const editButton = document.querySelector('button[onclick="toggleLocationEditability(\'edit\')"]');
     const currentLocationDisplay = document.getElementById('currentLocationDisplay');
 
@@ -122,18 +137,21 @@ function toggleLocationEditability(type) {
         isLocationEditable = false;
         venueInput.setAttribute('readonly', 'readonly');
         addressAutocompleteInput.setAttribute('disabled', 'disabled');
+        addressTextarea.setAttribute('readonly', 'readonly');
         setMapInteractivity(addMapDetails, false);
         currentLocationDisplay.style.display = 'block';
         document.getElementById('displayVenue').textContent = venueInput.value;
         const lat = document.getElementById('editEventLatitude').value;
         const lng = document.getElementById('editEventLongitude').value;
-        updateDisplayAddress(parseFloat(lat), parseFloat(lng), 'displayCoordinates', addMapDetails.geocoder);
+        updateDisplayAddress(parseFloat(lat), parseFloat(lng), 'displayAddress', addMapDetails.geocoder);
+        document.getElementById('displayCoordinates').textContent = `${lat}, ${lng}`;
         editButton.innerHTML = 'Edit Location';
     } else {
         // Currently view-only, switch to editable
         isLocationEditable = true;
         venueInput.removeAttribute('readonly');
         addressAutocompleteInput.removeAttribute('disabled');
+        addressTextarea.removeAttribute('readonly');
         setMapInteractivity(addMapDetails, true);
         currentLocationDisplay.style.display = 'none';
         editButton.innerHTML = 'Hide Location';
@@ -178,8 +196,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $organizer = $_POST['organizer'];
     // Get event venue, latitude, and longitude from form submission
     $event_venue = $_POST['event_venue'] ?? 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
-    $latitude = $_POST['latitude'] ?? 43.8271272;
-    $longitude = $_POST['longitude'] ?? -79.26619269999999;
+    $latitude = $_POST['latitude'] ?? 43.827377;
+    $longitude = $_POST['longitude'] ??  -79.266829;
+    $address = $_POST['address'] ?? null;
     $image_url = 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg'; // Default image URL
 
     // Handle image upload
@@ -193,12 +212,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insert event into database using a prepared statement
-    $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, organizer, event_venue, latitude, longitude, created_by, image_url)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO events (day, event_date, event_time, event_end_time, time_zone, event_name, event_description, organizer, event_venue, latitude, longitude, created_by, image_url, address)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
 
-    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $created_by, $image_url])) {
+    if ($stmt->execute([$day, $event_date, $event_time, $event_end_time, $time_zone, $event_name, $event_description, $organizer, $event_venue, $latitude, $longitude, $created_by, $image_url, $address])) {
         echo "<div class='alert alert-success'>New event created successfully</div>";
     } else {
         echo "<div class='alert alert-danger'>Error: " . $stmt->errorInfo()[2] . "</div>";
@@ -373,7 +392,8 @@ $stmt->execute($params);
                             <label>Event Location</label>
                             <div id="currentLocationDisplay" style="margin-bottom: 10px; padding: 10px; border: 1px solid #e9ecef; border-radius: 5px; background-color: #f8f9fa;">
                                 <strong>Venue:</strong> <span id="displayVenue">Shri Param Hans Advait Mat (Jyoti Dham) Ontario</span><br>
-                                <strong>Address:</strong> <span id="displayCoordinates"></span>
+                                <strong>Address:</strong> <span id="displayAddress"></span><br>
+                                <strong>Coordinates:</strong> <span id="displayCoordinates"></span>
                             </div>
                             <button type="button" class="btn btn-info btn-sm mb-2" onclick="toggleLocationEditability('edit')">Edit Location</button>
                             <div id="editEventLocationEditor" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
@@ -382,12 +402,16 @@ $stmt->execute($params);
                                     <input type="text" id="editEventVenue" class="form-control" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
                                 </div>
                                 <div class="mb-3">
+                                    <label for="addEventAddress" class="form-label">Address:</label>
+                                    <textarea id="addEventAddress" name="address" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
                                     <label for="editEventAddressAutocomplete" class="form-label">Search Location:</label>
                                     <input type="text" id="editEventAddressAutocomplete" class="form-control" placeholder="Enter event location">
                                 </div>
                                 <div id="editEventMap" style="height: 400px; width: 100%; margin-bottom: 15px;"></div>
-                                <input type="hidden" id="editEventLatitude" name="latitude" value="43.8271272">
-                                <input type="hidden" id="editEventLongitude" name="longitude" value="-79.26619269999999">
+                                <input type="hidden" id="editEventLatitude" name="latitude" value="43.827377">
+                                <input type="hidden" id="editEventLongitude" name="longitude" value=" -79.266829">
                             </div>
                         </div>
 

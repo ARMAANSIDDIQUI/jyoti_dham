@@ -100,6 +100,12 @@ require_once 'includes/header.php';
         <div class="sidebar-card">
             <span class="sidebar-heading">Location</span>
             
+            <?php if (!empty($event['address'])): ?>
+            <p style="margin-bottom: 10px; font-weight: 500;">
+                <?= htmlspecialchars($event['address']); ?>
+            </p>
+            <?php endif; ?>
+
             <?php if (!empty($event['latitude']) && !empty($event['longitude'])): ?>
             <div style="width: 100%; background: #eee; border-radius: 8px; overflow: hidden;">
                 <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDP4YgDI3gOakb5Y-kqrCCtCT4M8pj9Mzk&q=<?= $event['latitude']; ?>,<?= $event['longitude']; ?>" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>

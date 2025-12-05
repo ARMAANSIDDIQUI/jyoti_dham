@@ -2,8 +2,8 @@
 
 let mapInstances = {}; // To store multiple map instances if needed, though for now only one 'add' map
 
-function initMapPicker(instanceId, initialLat, initialLng, venueInputId, latInputId, lngInputId, addressInputId, mapDivId, displayVenueId, displayCoordinatesId, updateVenueInputField = true) {
-    const defaultLocation = { lat: initialLat || 43.8271272, lng: initialLng || -79.26619269999999 };
+function initMapPicker(instanceId, initialLat, initialLng, venueInputId, latInputId, lngInputId, addressInputId, mapDivId, displayVenueId, displayCoordinatesId, updateVenueInputField = true, addressTextareaId = null) {
+    const defaultLocation = { lat: initialLat || 43.827377, lng: initialLng ||  -79.266829 };
     
     const map = new google.maps.Map(document.getElementById(mapDivId), {
         center: defaultLocation,
@@ -54,6 +54,7 @@ function initMapPicker(instanceId, initialLat, initialLng, venueInputId, latInpu
         displayVenueId: displayVenueId,
         displayCoordinatesId: displayCoordinatesId,
         updateVenueInputField: updateVenueInputField,
+        addressTextareaId: addressTextareaId,
         // Store references to listeners to remove them later
         dragendListener: null,
         placeChangedListener: null
@@ -64,7 +65,7 @@ function initMapPicker(instanceId, initialLat, initialLng, venueInputId, latInpu
 }
 
 // Function to perform reverse geocoding
-function reverseGeocode(latLng, venueInputId, displayVenueId, updateVenueInputField, geocoder, mapDetails) {
+function reverseGeocode(latLng, venueInputId, displayVenueId, updateVenueInputField, geocoder, addressTextareaId) {
     geocoder.geocode({ 'location': latLng }, function(results, status) {
         if (status === 'OK') {
             if (results[0]) {
@@ -73,6 +74,9 @@ function reverseGeocode(latLng, venueInputId, displayVenueId, updateVenueInputFi
                 }
                 if (displayVenueId) { // Update display venue
                     document.getElementById(displayVenueId).textContent = results[0].formatted_address;
+                }
+                if (addressTextareaId) {
+                    document.getElementById(addressTextareaId).value = results[0].formatted_address;
                 }
             } else {
                 console.log('No results found for reverse geocoding.');
@@ -84,7 +88,7 @@ function reverseGeocode(latLng, venueInputId, displayVenueId, updateVenueInputFi
 }
 
 function setMapInteractivity(mapDetails, editable) {
-    const { map, marker, autocomplete, geocoder, venueInputId, latInputId, lngInputId, addressInputId, displayVenueId, displayCoordinatesId, updateVenueInputField } = mapDetails;
+    const { map, marker, autocomplete, geocoder, venueInputId, latInputId, lngInputId, addressInputId, displayVenueId, displayCoordinatesId, updateVenueInputField, addressTextareaId } = mapDetails;
 
     // Set map controls
     map.setOptions({
@@ -117,7 +121,7 @@ function setMapInteractivity(mapDetails, editable) {
                 document.getElementById(displayCoordinatesId).textContent = `${newPosition.lat()}, ${newPosition.lng()}`;
             }
 
-            reverseGeocode(newPosition, venueInputId, displayVenueId, updateVenueInputField, geocoder, mapDetails);
+            reverseGeocode(newPosition, venueInputId, displayVenueId, updateVenueInputField, geocoder, addressTextareaId);
         });
 
         // Add place_changed listener for autocomplete
@@ -142,6 +146,10 @@ function setMapInteractivity(mapDetails, editable) {
                 
                 if (updateVenueInputField) {
                     document.getElementById(venueInputId).value = place.formatted_address;
+                }
+                
+                if (addressTextareaId) {
+                    document.getElementById(addressTextareaId).value = place.formatted_address;
                 }
 
                 if (displayVenueId) {

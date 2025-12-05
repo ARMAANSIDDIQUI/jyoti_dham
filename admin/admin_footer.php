@@ -26,8 +26,8 @@ let addEventMapInstance = null; // Store map details for the 'add' event form
 // This function will be called when the Google Maps API is loaded.
 // It is also called by DOMContentLoaded as a fallback if the API loads very fast.
 window.initMapPickerCallback = function() {
-    const defaultLat = "43.8271272";
-    const defaultLng = "-79.26619269999999";
+    const defaultLat = "43.827377";
+    const defaultLng = " -79.266829";
     const defaultVenue = "Shri Param Hans Advait Mat (Jyoti Dham) Ontario";
 
     // Get DOM elements
@@ -160,8 +160,8 @@ function toggleForm() {
             addEventVenueInput.readOnly = true;
         }
         if (addEventAddressAutocompleteContainer) addEventAddressAutocompleteContainer.style.display = 'none';
-        if (addEventLatitudeInput) addEventLatitudeInput.value = "43.8271272";
-        if (addEventLongitudeInput) addEventLongitudeInput.value = "-79.26619269999999";
+        if (addEventLatitudeInput) addEventLatitudeInput.value = "43.827377";
+        if (addEventLongitudeInput) addEventLongitudeInput.value = " -79.266829";
         if (addEventMapInstance && addEventLatitudeInput && addEventLongitudeInput) {
             setMapInteractivity(addEventMapInstance, false);
             // Also reset map center and marker position to default
