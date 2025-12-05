@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 require_once __DIR__ . '/includes/header.php'; // Include the header component
 
 // Protection: Redirect to login.php if user is not logged in

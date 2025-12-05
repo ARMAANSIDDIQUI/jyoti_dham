@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 require_once __DIR__ . '/includes/header.php'; // Include the header component
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config/db_connect.php';

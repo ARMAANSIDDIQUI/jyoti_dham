@@ -269,6 +269,14 @@ INSERT INTO `users` VALUES (1,'Jyoti Dham Admin','jyotidhamwebsite@gmail.com','$
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+INSERT INTO `events` (`id`, `day`, `event_date`, `event_time`, `event_end_time`, `time_zone`, `event_name`, `event_description`, `organizer`, `event_venue`, `latitude`, `longitude`, `is_featured`, `google_event_id`, `image_url`, `created_by`, `created_at`) VALUES
+(1, 'Sunday', '2025-11-30', '12:00:00', '14:00:00', 'EST', 'Satsang - November 30th, 2025', 'Jai Sachidanand Ji, please join us for our weekly Sunday satsang, followed by langar parshad.', 'jyotidham', 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario', 43.827127, -79.266193, NULL, NULL, 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg', 1, '2025-11-28 14:18:09'),
+(2, 'Sunday', '2025-12-07', '12:00:00', '14:00:00', 'EST', 'Sunday Satsang', 'Jai Sachidanand Ji, please join us for our weekly Sunday satsang, followed by langar parshad.', 'jyotidham', 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario', 43.827127, -79.266193, NULL, NULL, 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg', 1, '2025-11-30 22:44:30'),
+(3, 'Sunday', '2025-12-14', '12:00:00', '14:00:00', 'EST', 'Sunday Satsang', 'Jai Sachidanand Ji, please join us for our weekly Sunday satsang, followed by langar parshad.', 'jyotidham', 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario', 43.827127, -79.266193, NULL, NULL, 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg', 1, '2025-11-30 23:00:55'),
+(4, 'Sunday', '2025-12-21', '12:00:00', '14:00:00', 'EST', 'Sunday Satsang', 'Jai Sachidanand Ji, please join us for our weekly Sunday satsang, followed by langar parshad.', 'jyotidham', 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario', 43.827127, -79.266193, NULL, NULL, 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg', 1, '2025-11-30 23:19:10'),
+(5, 'Sunday', '2025-12-28', '12:00:00', '14:00:00', 'EST', 'Sunday Satsang', 'Jai Sachidanand Ji, please join us for our weekly Sunday satsang, followed by langar parshad.', 'jyotidham', 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario', 43.827127, -79.266193, NULL, NULL, 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg', 1, '2025-11-30 23:21:46');
+
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

@@ -1,5 +1,15 @@
 <?php
 if (session_status() == PHP_SESSION_NONE) {
+    // Setting session cookie parameters for better compatibility
+    $cookieParams = session_get_cookie_params();
+    session_set_cookie_params([
+        'lifetime' => $cookieParams['lifetime'],
+        'path' => '/', // Available for the whole domain
+        'domain' => $cookieParams['domain'], // Let browser decide
+        'secure' => isset($_SERVER['HTTPS']), // Only send over HTTPS
+        'httponly' => true, // Prevent JavaScript access
+        'samesite' => 'Lax' // CSRF protection
+    ]);
     session_start();
 }
 require_once __DIR__ . '/../config/db_connect.php';
