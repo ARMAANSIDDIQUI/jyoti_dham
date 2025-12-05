@@ -74,6 +74,8 @@ require_once 'includes/header.php';
                 </svg>
                 <span class="btn-text">Subscribe to Calendar</span>
             </summary>
+            <!-- Previous dynamic URLs using $_SERVER['HTTP_HOST'] (commented out for production deployment) -->
+            <!--
             <div class="dropdown-content">
                 <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
                     Subscribe on Android / Google
@@ -82,6 +84,19 @@ require_once 'includes/header.php';
                     Subscribe on iPhone / Apple
                 </a>
                 <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                    Subscribe on Outlook
+                </a>
+                <a href="feed.php">Sync to Mobile</a>
+            </div>
+            -->
+            <div class="dropdown-content">
+                <a href="https://calendar.google.com/calendar/render?cid=webcal://jyotidham.ca/feed.php" target="_blank">
+                    Subscribe on Android / Google
+                </a>
+                <a href="webcal://jyotidham.ca/feed.php">
+                    Subscribe on iPhone / Apple
+                </a>
+                <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://jyotidham.ca/feed.php" target="_blank">
                     Subscribe on Outlook
                 </a>
                 <a href="feed.php">Sync to Mobile</a>

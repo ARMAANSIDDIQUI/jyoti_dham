@@ -197,14 +197,42 @@ require_once 'includes/header.php';
             color: #991b1b;
             border: 1px solid #991b1b;
             border-radius: 8px;
-            padding: 12px 0;
+            padding: 0;
             font-weight: 600;
             text-decoration: none;
             text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             box-sizing: border-box;
+            position: relative;
+        }
+        .btn-subscribe .subscribe-button {
+            padding: 12px 0;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+        }
+        .btn-subscribe .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            min-width: 200px;
+        }
+        .btn-subscribe .dropdown-content a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+        .btn-subscribe .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        .btn-subscribe .dropdown-content a:hover {
+            background: #f9f9f9;
         }
     }
 
@@ -307,6 +335,8 @@ require_once 'includes/header.php';
                             </svg>
                             <span class="btn-text">Subscribe to Calendar</span>
                         </summary>
+                        <!-- Previous dynamic URLs using $_SERVER['HTTP_HOST'] (commented out for production deployment) -->
+                        <!--
                         <div class="dropdown-content">
                             <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
                                 Subscribe on Android / Google
@@ -315,6 +345,19 @@ require_once 'includes/header.php';
                                 Subscribe on iPhone / Apple
                             </a>
                             <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                                Subscribe on Outlook
+                            </a>
+                            <a href="feed.php">Sync to Mobile</a>
+                        </div>
+                        -->
+                        <div class="dropdown-content">
+                            <a href="https://calendar.google.com/calendar/render?cid=webcal://jyotidham.ca/feed.php" target="_blank">
+                                Subscribe on Android / Google
+                            </a>
+                            <a href="webcal://jyotidham.ca/feed.php">
+                                Subscribe on iPhone / Apple
+                            </a>
+                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://jyotidham.ca/feed.php" target="_blank">
                                 Subscribe on Outlook
                             </a>
                             <a href="feed.php">Sync to Mobile</a>
@@ -339,7 +382,36 @@ require_once 'includes/header.php';
             
                 <div class="mobile-action-row">
                     <a href="all-events.php" class="btn-view-all">View All</a>
-                    <a href="feed.php" class="btn-subscribe">Subscribe</a>
+                    <div class="btn-subscribe">
+                        <div class="subscribe-button">Subscribe</div>
+                        <!-- Previous dynamic URLs using $_SERVER['HTTP_HOST'] (commented out for production deployment) -->
+                        <!--
+                        <div class="dropdown-content">
+                            <a href="https://calendar.google.com/calendar/render?cid=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                                Subscribe on Android / Google
+                            </a>
+                            <a href="webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php">
+                                Subscribe on iPhone / Apple
+                            </a>
+                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://<?php echo $_SERVER['HTTP_HOST']; ?>/feed.php" target="_blank">
+                                Subscribe on Outlook
+                            </a>
+                            <a href="feed.php">Sync to Mobile</a>
+                        </div>
+                        -->
+                        <div class="dropdown-content">
+                            <a href="https://calendar.google.com/calendar/render?cid=webcal://jyotidham.ca/feed.php" target="_blank">
+                                Subscribe on Android / Google
+                            </a>
+                            <a href="webcal://jyotidham.ca/feed.php">
+                                Subscribe on iPhone / Apple
+                            </a>
+                            <a href="https://outlook.live.com/calendar/0/addfromurl?url=webcal://jyotidham.ca/feed.php" target="_blank">
+                                Subscribe on Outlook
+                            </a>
+                            <a href="feed.php">Sync to Mobile</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -436,10 +508,10 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             // Remove active class from all view switcher buttons in both headers
             document.querySelectorAll('.view-switcher button').forEach(btn => btn.classList.remove('active'));
-            
+
             // Add active class to the clicked button
             this.classList.add('active');
-            
+
             // Also add active class to the corresponding button in the other header
             const view = this.dataset.view;
             document.querySelectorAll(`.view-switcher button[data-view="${view}"]`).forEach(btn => btn.classList.add('active'));
@@ -447,6 +519,23 @@ document.addEventListener('DOMContentLoaded', function() {
             calendar.changeView(view);
         });
     });
+
+    // Mobile subscribe dropdown toggle
+    var subscribeButton = document.querySelector('.btn-subscribe .subscribe-button');
+    var dropdownContent = document.querySelector('.btn-subscribe .dropdown-content');
+    if (subscribeButton && dropdownContent) {
+        subscribeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!subscribeButton.contains(e.target) && !dropdownContent.contains(e.target)) {
+                dropdownContent.style.display = 'none';
+            }
+        });
+    }
 });
 </script>
 

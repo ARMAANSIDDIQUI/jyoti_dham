@@ -36,7 +36,8 @@ $eol = "\r\n";
 // 6. Generate Content
 echo "BEGIN:VCALENDAR" . $eol;
 echo "VERSION:2.0" . $eol;
-echo "PRODID:-//JyotiDham//NONSGML v1.0//EN" . $eol;
+echo "PRODID:-//jyotidham.ca//NONSGML v1.0//EN" . $eol;
+echo "NAME:Jyoti Dham Events" . $eol;
 echo "X-WR-CALNAME:Jyoti Dham Events" . $eol;
 echo "CALSCALE:GREGORIAN" . $eol;
 echo "METHOD:PUBLISH" . $eol; // Helpful for subscriptions
@@ -53,7 +54,7 @@ foreach ($events as $event) {
     $dtstamp = gmdate('Ymd\THis\Z');
 
     echo "BEGIN:VEVENT" . $eol;
-    echo "UID:" . $event['id'] . "@" . ($_SERVER['HTTP_HOST'] ?? 'jyotidham.org') . $eol;
+    echo "UID:" . $event['id'] . "@jyotidham.ca" . $eol;
     echo "DTSTAMP:" . $dtstamp . $eol;
     echo "DTSTART:" . $dtstart . $eol;
     echo "DTEND:" . $dtend . $eol;

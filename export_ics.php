@@ -33,7 +33,7 @@ echo "BEGIN:VCALENDAR\r\n";
 echo "VERSION:2.0\r\n";
 echo "PRODID:-//JyotiDham//NONSGML v1.0//EN\r\n";
 echo "BEGIN:VEVENT\r\n";
-echo "UID:" . $event['id'] . "@" . $_SERVER['HTTP_HOST'] . "\r\n";
+echo "UID:" . $event['id'] . "@jyotidham.ca\r\n";
 echo "DTSTAMP:" . gmdate('Ymd\THis\Z') . "\r\n";
 echo "DTSTART:" . $dtstart . "\r\n";
 echo "DTEND:" . $dtend . "\r\n";
