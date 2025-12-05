@@ -28,7 +28,7 @@ ob_end_clean();
 
 // 4. Send Headers
 header('Content-Type: text/calendar; charset=utf-8');
-header('Content-Disposition: attachment; filename="calendar_feed.ics"');
+// Removed Content-Disposition to allow inline serving for subscriptions
 
 // 5. Define Line Ending
 $eol = "\r\n";
