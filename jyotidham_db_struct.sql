@@ -59,7 +59,7 @@ CREATE TABLE `events` (
   `event_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `event_description` text COLLATE utf8mb4_general_ci,
   `organizer` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `event_venue` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `event_venue` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario',
   `latitude` decimal(10,6) DEFAULT NULL,
   `longitude` decimal(10,6) DEFAULT NULL,
   `is_featured` tinyint(1) DEFAULT NULL,

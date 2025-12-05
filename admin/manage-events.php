@@ -1,5 +1,12 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+// Load environment variables unconditionally at the earliest point
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 require_once __DIR__ . '/../config/db_connect.php';
 
 use Cloudinary\Configuration\Configuration;
@@ -7,6 +14,24 @@ use Cloudinary\Api\Upload\UploadApi;
 
 require_once __DIR__ . '/admin_header.php';
 
+// Ensure the Google Maps API Key is loaded from environment variables
+$googleMapsApiKey = $_ENV['GOOGLE_MAPS_API_KEY'] ?? '';
+if (empty($googleMapsApiKey)) {
+    echo "<div class='alert alert-danger'>Error: Google Maps API Key is not set. Please add GOOGLE_MAPS_API_KEY to your .env file.</div>";
+}
+?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= htmlspecialchars($googleMapsApiKey) ?>&libraries=places&callback=initMapPickerCallback"></script>
+<script src="../js/event-map-picker.js"></script>
+<script>
+    // Callback function required by Google Maps API to ensure map is initialized AFTER the API loads.
+    // This function will be called by the Google Maps script itself.
+    function initMapPickerCallback() {
+        // This function can remain empty or log a message, as the map initialization
+        // for the add event form is handled by the toggleForm() function when the form becomes visible.
+        console.log('Google Maps API loaded and initMapPickerCallback executed.');
+    }
+</script>
+<?php
 // Admin check
 require_once __DIR__ . '/auth_check.php';
 
@@ -40,9 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Default values
     $organizer = $_POST['organizer'];
-    $event_venue = 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
-    $latitude = 43.8271272;
-    $longitude = -79.26619269999999;
+    // Get event venue, latitude, and longitude from form submission
+    $event_venue = $_POST['event_venue'] ?? 'Shri Param Hans Advait Mat (Jyoti Dham) Ontario';
+    $latitude = $_POST['latitude'] ?? 43.8271272;
+    $longitude = $_POST['longitude'] ?? -79.26619269999999;
     $image_url = 'https://res.cloudinary.com/dfxl3oy4y/image/upload/v1764283656/events/wesh9skwtgulo9f2gavm.svg'; // Default image URL
 
     // Handle image upload
@@ -69,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch all events
-$sql = "SELECT id, event_name, event_date, event_time, event_end_time, organizer FROM events";
+$sql = "SELECT id, event_name, event_date, event_time, event_end_time, organizer, event_venue FROM events";
 $params = [];
 $conditions = [];
 
@@ -132,20 +158,20 @@ $stmt->execute($params);
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($stmt as $event_item): ?>
+                                <?php while ($event_item = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
                                 <tr>
-                                    <td><?= $event_item['id'] ?></td>
+                                    <td><?= htmlspecialchars($event_item['id']) ?></td>
                                     <td><?= htmlspecialchars($event_item['event_name']) ?></td>
-                                    <td><?= date('M j, Y', strtotime($event_item['event_date'])) ?></td>
-                                    <td><?= date('g:i A', strtotime($event_item['event_time'])) ?> - <?= $event_item['event_end_time'] ? date('g:i A', strtotime($event_item['event_end_time'])) : 'N/A' ?></td>
+                                    <td><?= htmlspecialchars($event_item['event_date']) ?></td>
+                                    <td><?= htmlspecialchars($event_item['event_time']) ?></td>
                                     <td><?= htmlspecialchars($event_item['organizer']) ?></td>
-                                    <td>Shri Param Hans Advait Mat (Jyoti Dham) Ontario</td>
+                                    <td><?= htmlspecialchars($event_item['event_venue']) ?></td>
                                     <td>
                                         <a href="../admin/edit-event.php?id=<?= $event_item['id'] ?>" class="btn btn-warning btn-sm me-2">Edit</a>
                                         <a href="?delete=<?= $event_item['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                                <?php endwhile; ?>
                         </tbody>
                     </table>
                 </div>
@@ -231,15 +257,27 @@ $stmt->execute($params);
                             <input type="text" class="form-control" id="organizer" name="organizer" placeholder="Enter organizer name" required>
                         </div>
 
-                        <!-- Venue (hidden) -->
-                        <input type="hidden" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
-
-                        <!-- Map (iframe) -->
+                        <!-- Location Picker Section -->
                         <div class="form-group">
-                            <label>Event Location</label>
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d46054.15022816234!2d-79.2661927!3d43.8271272!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6c80f26b0c5%3A0x30051dd9308eae70!2sShri%20Param%20Hans%20Advait%20Mat%20(Jyoti%20Dham)%20Ontario!5e0!3m2!1sen!2sin!4v1763492598758!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            <input type="hidden" name="latitude" value="43.8271272">
-                            <input type="hidden" name="longitude" value="-79.26619269999999">
+                            <label>Event Location:</label>
+                            <span id="addEventVenueDisplay" style="margin-left: 10px;">
+                                <span id="displayAddVenue">Shri Param Hans Advait Mat (Jyoti Dham) Ontario</span><br>
+                                <span id="displayAddCoordinates"></span>
+                            </span>
+                            <button type="button" class="btn btn-info btn-sm mb-2" id="toggleAddLocationEditor"><i class="fas fa-map-marker-alt"></i> Edit Location</button>
+                            <div id="addEventLocationEditor" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
+                                <div class="mb-3">
+                                    <label for="addEventVenue" class="form-label">Event Venue:</label>
+                                    <input type="text" id="addEventVenue" class="form-control" name="event_venue" value="Shri Param Hans Advait Mat (Jyoti Dham) Ontario">
+                                </div>
+                                <div class="mb-3" id="addEventAddressAutocompleteContainer" style="display: none;">
+                                    <label for="addEventAddressAutocomplete" class="form-label">Search Location:</label>
+                                    <input type="text" id="addEventAddressAutocomplete" class="form-control" placeholder="Enter event location">
+                                </div>
+                                <div id="addEventMap" style="height: 400px; width: 100%; margin-bottom: 15px;"></div>
+                                <input type="hidden" id="addEventLatitude" name="latitude" value="43.8271272">
+                                <input type="hidden" id="addEventLongitude" name="longitude" value="-79.26619269999999">
+                            </div>
                         </div>
 
                         <!-- Submit Button -->
@@ -254,17 +292,7 @@ $stmt->execute($params);
     </div>
 </div>
 
-<script>
-function toggleForm() {
-    var form = document.getElementById('eventForm');
-    if (form.style.display === 'none' || form.style.display === '') {
-        form.style.display = 'block';
-    } else {
-        form.style.display = 'none';
-    }
-}
-</script>
-
 <?php
 require_once __DIR__ . '/admin_footer.php';
 ?>
+

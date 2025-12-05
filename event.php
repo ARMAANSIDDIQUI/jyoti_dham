@@ -91,10 +91,14 @@ require_once 'includes/header.php';
         </div>
 
         <div class="sidebar-card">
-            <span class="sidebar-heading">Location</span>
+            <span class="sidebar-heading">Venue</span>
             <p style="margin-bottom: 10px; font-weight: 500;">
                 <?= htmlspecialchars($event['event_venue']); ?>
             </p>
+        </div>
+
+        <div class="sidebar-card">
+            <span class="sidebar-heading">Location</span>
             
             <?php if (!empty($event['latitude']) && !empty($event['longitude'])): ?>
             <div style="width: 100%; background: #eee; border-radius: 8px; overflow: hidden;">

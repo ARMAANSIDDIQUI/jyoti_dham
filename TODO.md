@@ -1,3 +1,0 @@
-- [x] Update admin/edit-event.php to use Configuration::instance($_ENV['CLOUDINARY_URL']) instead of separate env vars
-- [x] Update admin/manage-events.php to use Configuration::instance($_ENV['CLOUDINARY_URL']) for consistency
-- [x] Verify all event files use only CLOUDINARY_URL

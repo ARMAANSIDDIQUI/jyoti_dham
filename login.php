@@ -43,6 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['loggedin'] = true;
                 unset($_SESSION['form_data']); // Clear form data on successful login
 
+                // Ensure session is written before redirect
+                session_write_close();
+
                 // Role-based redirection
                 if ($user['role'] === 'admin') {
                     header("Location: admin/dashboard.php");
